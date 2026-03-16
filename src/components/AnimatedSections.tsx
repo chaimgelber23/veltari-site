@@ -235,6 +235,66 @@ export function AnimatedStatsRow() {
   );
 }
 
+/* ───────────────────── Logo Marquee ─────────────────── */
+export function AnimatedLogoMarquee() {
+  const logos = [
+    "TechVenture",
+    "GreenLeaf Co",
+    "Atlas Digital",
+    "Ironwork Studio",
+    "Peak Performance",
+    "Coastal Living",
+    "Urban Eats",
+    "Apex Solutions",
+  ];
+
+  const row = [...logos, ...logos]; // duplicate for seamless loop
+
+  return (
+    <section className="py-14 lg:py-16 bg-surface overflow-hidden border-b border-border">
+      <div className="max-w-6xl mx-auto px-6 mb-8">
+        <FadeIn className="text-center">
+          <p className="text-xs font-medium text-muted tracking-widest uppercase">
+            Trusted by businesses everywhere
+          </p>
+        </FadeIn>
+      </div>
+
+      {/* Row 1 — scrolls left */}
+      <div className="overflow-hidden mb-4">
+        <div className="marquee-track">
+          {row.map((logo, i) => (
+            <div
+              key={`r1-${i}`}
+              className="flex-shrink-0 mx-8 lg:mx-12 flex items-center justify-center"
+            >
+              <span className="font-heading text-xl lg:text-2xl text-primary/20 whitespace-nowrap select-none">
+                {logo}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Row 2 — scrolls right */}
+      <div className="overflow-hidden">
+        <div className="marquee-track-reverse">
+          {[...row].reverse().map((logo, i) => (
+            <div
+              key={`r2-${i}`}
+              className="flex-shrink-0 mx-8 lg:mx-12 flex items-center justify-center"
+            >
+              <span className="font-heading text-xl lg:text-2xl text-primary/20 whitespace-nowrap select-none">
+                {logo}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ────────────────── How It Works ────────────────── */
 export function AnimatedHowItWorks() {
   const steps = [
@@ -327,7 +387,7 @@ export function AnimatedPricingSection() {
       name: "Business",
       price: 899,
       priceDisplay: "$899",
-      monthly: "$199/mo x 5",
+      monthly: "$169/mo x 6",
       description: "For growing businesses that need more",
       features: [
         "Up to 5-page website",
@@ -347,7 +407,7 @@ export function AnimatedPricingSection() {
       name: "Premium",
       price: 1999,
       priceDisplay: "$1,999",
-      monthly: "$429/mo x 5",
+      monthly: "$229/mo x 10",
       description: "Full-scale web presence with everything included",
       features: [
         "Unlimited pages",
@@ -512,21 +572,29 @@ export function AnimatedPortfolioSection() {
       name: "The Corner Bakery",
       industry: "Food & Beverage",
       color: "from-amber-100 to-orange-50",
+      scoreBefore: 28,
+      scoreAfter: 91,
     },
     {
       name: "Atlas Fitness",
       industry: "Health & Fitness",
       color: "from-blue-100 to-indigo-50",
+      scoreBefore: 35,
+      scoreAfter: 94,
     },
     {
       name: "Greenleaf Dental",
       industry: "Healthcare",
       color: "from-emerald-100 to-teal-50",
+      scoreBefore: 22,
+      scoreAfter: 96,
     },
     {
       name: "Ironwork Studio",
       industry: "Creative Agency",
       color: "from-zinc-200 to-stone-100",
+      scoreBefore: 41,
+      scoreAfter: 93,
     },
   ];
 
@@ -546,20 +614,41 @@ export function AnimatedPortfolioSection() {
           {projects.map((project) => (
             <StaggerItem key={project.name}>
               <motion.div
-                className="group rounded-2xl overflow-hidden border border-border bg-card hover:border-accent/30 transition-all duration-500"
+                className="group portfolio-card rounded-2xl overflow-hidden border border-border bg-card hover:border-accent/30 transition-all duration-500"
                 whileHover={{ y: -6, scale: 1.01 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
+                data-cursor="view"
               >
-                {/* Screenshot placeholder */}
+                {/* Screenshot placeholder with dot pattern */}
                 <div
                   className={`aspect-[16/10] bg-gradient-to-br ${project.color} relative overflow-hidden`}
                 >
+                  {/* Dot pattern background */}
+                  <div className="absolute inset-0 dot-pattern opacity-60" />
+
+                  {/* Score badge */}
+                  <div className="absolute top-4 right-4 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-sm border border-white/80 shadow-lg">
+                    <span className="text-xs font-medium text-red-400 line-through">
+                      {project.scoreBefore}
+                    </span>
+                    <svg className="w-3 h-3 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                    <span className="text-xs font-bold text-accent">{project.scoreAfter}</span>
+                  </div>
+
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-3/4 h-3/4 rounded-lg bg-white/60 shadow-2xl border border-white/80 flex items-center justify-center backdrop-blur-sm">
                       <div className="text-center px-6">
-                        <div className="w-12 h-1 bg-primary/20 rounded-full mx-auto mb-3" />
-                        <div className="w-20 h-1 bg-primary/10 rounded-full mx-auto mb-2" />
-                        <div className="w-16 h-1 bg-primary/10 rounded-full mx-auto" />
+                        {/* Mini wireframe */}
+                        <div className="w-8 h-8 rounded-md bg-accent/20 mx-auto mb-3" />
+                        <div className="w-16 h-1.5 bg-primary/20 rounded-full mx-auto mb-2" />
+                        <div className="w-24 h-1 bg-primary/10 rounded-full mx-auto mb-1.5" />
+                        <div className="w-20 h-1 bg-primary/10 rounded-full mx-auto mb-4" />
+                        <div className="flex gap-2 justify-center">
+                          <div className="w-10 h-6 rounded bg-accent/15" />
+                          <div className="w-10 h-6 rounded bg-primary/5" />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -580,6 +669,90 @@ export function AnimatedPortfolioSection() {
                   </span>
                 </div>
               </motion.div>
+            </StaggerItem>
+          ))}
+        </StaggerChildren>
+      </div>
+    </section>
+  );
+}
+
+/* ───────────────── Testimonials ───────────────── */
+export function AnimatedTestimonialsSection() {
+  const testimonials = [
+    {
+      quote:
+        "We went from a dated WordPress site to a modern, blazing-fast website in under 24 hours. Our conversion rate doubled in the first month.",
+      name: "Sarah Chen",
+      business: "Peak Performance Gym",
+      role: "Owner",
+    },
+    {
+      quote:
+        "I was skeptical about the 24-hour promise, but they delivered. The site looks like something a $50K agency would build.",
+      name: "Marcus Rivera",
+      business: "Urban Eats",
+      role: "Founder",
+    },
+    {
+      quote:
+        "The free preview sold me. I could see exactly what my new site would look like before spending a cent. No other agency does this.",
+      name: "Dr. Emily Foster",
+      business: "Greenleaf Dental",
+      role: "Practice Owner",
+    },
+  ];
+
+  return (
+    <section className="py-24 lg:py-32 bg-surface">
+      <div className="max-w-6xl mx-auto px-6">
+        <FadeIn className="text-center mb-16">
+          <span className="text-xs font-medium text-accent tracking-widest uppercase mb-4 block">
+            Testimonials
+          </span>
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight">
+            What our clients say
+          </h2>
+        </FadeIn>
+
+        <StaggerChildren staggerDelay={0.15} className="grid md:grid-cols-3 gap-8">
+          {testimonials.map((t, i) => (
+            <StaggerItem key={i}>
+              <div className="testimonial-card rounded-2xl border border-border bg-card p-8 h-full flex flex-col">
+                {/* Stars */}
+                <div className="flex gap-1 mb-5">
+                  {[...Array(5)].map((_, j) => (
+                    <svg
+                      key={j}
+                      className="w-4 h-4 text-amber-400"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+
+                {/* Quote */}
+                <blockquote className="text-sm leading-relaxed text-primary/80 mb-6 flex-1">
+                  &ldquo;{t.quote}&rdquo;
+                </blockquote>
+
+                {/* Author */}
+                <div className="flex items-center gap-3 pt-4 border-t border-border">
+                  <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
+                    <span className="text-accent font-heading text-sm">
+                      {t.name.split(" ").map((n) => n[0]).join("")}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-primary">{t.name}</p>
+                    <p className="text-xs text-muted">
+                      {t.role}, {t.business}
+                    </p>
+                  </div>
+                </div>
+              </div>
             </StaggerItem>
           ))}
         </StaggerChildren>

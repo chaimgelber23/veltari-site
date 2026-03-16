@@ -3,10 +3,12 @@ import Navigation from "@/components/Navigation";
 import {
   AnimatedHero,
   AnimatedProblemSection,
+  AnimatedLogoMarquee,
   AnimatedStatsRow,
   AnimatedHowItWorks,
   AnimatedPricingSection,
   AnimatedPortfolioSection,
+  AnimatedTestimonialsSection,
   AnimatedTrustSection,
   AnimatedFAQSection,
   AnimatedCTASection,
@@ -28,16 +30,16 @@ function Footer() {
 
           {/* Links */}
           <div className="flex items-center gap-8">
-            <a href="/" className="text-sm text-surface/50 hover:text-surface/80 transition-colors">
+            <a href="/" data-cursor="pointer" className="text-sm text-surface/50 hover:text-surface/80 transition-colors">
               Home
             </a>
-            <a href="#pricing" className="text-sm text-surface/50 hover:text-surface/80 transition-colors">
+            <a href="#pricing" data-cursor="pointer" className="text-sm text-surface/50 hover:text-surface/80 transition-colors">
               Pricing
             </a>
-            <a href="#portfolio" className="text-sm text-surface/50 hover:text-surface/80 transition-colors">
+            <a href="#portfolio" data-cursor="pointer" className="text-sm text-surface/50 hover:text-surface/80 transition-colors">
               Portfolio
             </a>
-            <Link href="/start" className="text-sm text-surface/50 hover:text-surface/80 transition-colors">
+            <Link href="/start" data-cursor="pointer" className="text-sm text-surface/50 hover:text-surface/80 transition-colors">
               Start Your Project
             </Link>
           </div>
@@ -68,10 +70,12 @@ export default function Home() {
       <Navigation />
       <AnimatedHero />
       <AnimatedProblemSection />
+      <AnimatedLogoMarquee />
       <AnimatedStatsRow />
       <AnimatedHowItWorks />
       <AnimatedPricingSection />
       <AnimatedPortfolioSection />
+      <AnimatedTestimonialsSection />
       <AnimatedTrustSection />
       <AnimatedFAQSection />
       <AnimatedCTASection />

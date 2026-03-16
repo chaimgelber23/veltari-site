@@ -144,3 +144,55 @@ body {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+
+/* Connector line draw-in animation */
+.connector-line {
+  background: linear-gradient(90deg, var(--accent) 0%, var(--border) 100%);
+  transform-origin: left;
+  animation: drawLine 0.8s ease-out forwards;
+  animation-play-state: paused;
+}
+
+@keyframes drawLine {
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* Popular pricing card glow */
+.popular-card-glow {
+  box-shadow:
+    0 0 40px rgba(99, 102, 241, 0.12),
+    0 0 80px rgba(99, 102, 241, 0.06);
+  animation: cardGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes cardGlow {
+  from {
+    box-shadow:
+      0 0 40px rgba(99, 102, 241, 0.12),
+      0 0 80px rgba(99, 102, 241, 0.06);
+  }
+  to {
+    box-shadow:
+      0 0 50px rgba(99, 102, 241, 0.18),
+      0 0 100px rgba(99, 102, 241, 0.08);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

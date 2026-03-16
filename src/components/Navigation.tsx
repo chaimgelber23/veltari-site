@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
@@ -32,8 +33,11 @@ export default function Navigation() {
   ];
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <motion.nav
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
           ? "bg-surface/95 backdrop-blur-md border-b border-border shadow-sm"
           : "bg-transparent"
@@ -129,6 +133,6 @@ export default function Navigation() {
           </Link>
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 }

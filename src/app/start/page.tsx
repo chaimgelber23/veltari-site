@@ -53,7 +53,7 @@ export default function StartPage() {
 
   if (submitted) {
     return (
-      <main className="min-h-screen bg-surface">
+      <main id="main" className="min-h-screen bg-surface">
         <Navigation />
         <div className="min-h-screen flex items-center justify-center px-6 pt-20">
           <div className="max-w-lg text-center">
@@ -92,7 +92,7 @@ export default function StartPage() {
   }
 
   return (
-    <main className="min-h-screen bg-surface">
+    <main id="main" className="min-h-screen bg-surface">
       <Navigation />
 
       <div className="max-w-3xl mx-auto px-6 pt-28 pb-20">

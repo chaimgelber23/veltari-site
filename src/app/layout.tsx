@@ -17,10 +17,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://veltari.com"),
+  metadataBase: new URL("https://pristinesite.com"),
   title: {
-    default: "Veltari — Custom Websites in 24 Hours",
-    template: "%s | Veltari",
+    default: "Pristine Site — Custom Websites in 24 Hours",
+    template: "%s | Pristine Site",
   },
   description:
     "Premium custom websites delivered in 24 hours. No templates. No waiting. Built to convert. 100% satisfaction guarantee.",
@@ -34,20 +34,20 @@ export const metadata: Metadata = {
     "business website",
     "website redesign",
   ],
-  authors: [{ name: "Veltari" }],
-  creator: "Veltari",
+  authors: [{ name: "Pristine Site" }],
+  creator: "Pristine Site",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://veltari.com",
-    siteName: "Veltari",
-    title: "Veltari — Custom Websites in 24 Hours",
+    url: "https://pristinesite.com",
+    siteName: "Pristine Site",
+    title: "Pristine Site — Custom Websites in 24 Hours",
     description:
       "Premium custom websites delivered in 24 hours. No templates. No waiting. Built to convert.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Veltari — Custom Websites in 24 Hours",
+    title: "Pristine Site — Custom Websites in 24 Hours",
     description:
       "Premium custom websites delivered in 24 hours. No templates. No waiting. Built to convert.",
   },
@@ -67,6 +67,7 @@ export default function RootLayout({
       <body
         className={`${dmSerif.variable} ${inter.variable} antialiased bg-surface text-primary`}
       >
+        <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-black">Skip to content</a>
         <CustomCursor />
         <div className="noise-overlay" aria-hidden="true" />
         {children}

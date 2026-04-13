@@ -23,9 +23,9 @@ function Footer() {
           {/* Logo */}
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-accent flex items-center justify-center">
-              <span className="text-white font-bold text-xs">V</span>
+              <span className="text-white font-bold text-xs">P</span>
             </div>
-            <span className="font-heading text-lg text-surface">Veltari</span>
+            <span className="font-heading text-lg text-surface">Pristine Site</span>
           </div>
 
           {/* Links */}
@@ -47,7 +47,7 @@ function Footer() {
 
         <div className="border-t border-white/5 mt-10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-surface/30">
-            &copy; 2026 Veltari. All rights reserved.
+            &copy; 2026 Pristine Site. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <a href="#" className="text-xs text-surface/30 hover:text-surface/50 transition-colors">
@@ -66,7 +66,7 @@ function Footer() {
 /* ────────────────── Page ────────────────── */
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main id="main" className="min-h-screen">
       <Navigation />
       <AnimatedHero />
       <AnimatedProblemSection />

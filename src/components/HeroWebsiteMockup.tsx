@@ -14,8 +14,11 @@
 // The hero uses the dental variant by default — most fleshed-out vertical.
 // ============================================================================
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+
+// useLayoutEffect on client, no-op on server (avoids React SSR warning).
+const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 type BadgePosition = "top-left" | "top-right" | "bottom-left" | "bottom-right";
 
@@ -454,31 +457,41 @@ function ScrollingDentalSite() {
 // browser frame. Loops indefinitely.
 // ============================================================================
 
-const SCROLL_DURATION_S = 14; // 14s top-to-bottom scroll
-const PAUSE_S = 1.5;          // pause at top + bottom
+const SCROLL_DURATION_S = 12;   // smooth top→bottom
+const PAUSE_AT_END_S = 1.2;     // brief pause at top + bottom (via repeatDelay)
+// Fallback scroll distance when measurement isn't available yet (or fails).
+// Inner site has min-height ~1100px below; viewport is roughly 580px on
+// desktop hero column. So 500-600px of scroll always.
+const FALLBACK_SCROLL_PX = 540;
 
 export function HeroWebsiteMockup() {
   const [mounted, setMounted] = useState(false);
   const innerRef = useRef<HTMLDivElement | null>(null);
   const viewportRef = useRef<HTMLDivElement | null>(null);
-  const [maxScroll, setMaxScroll] = useState(0);
+  // Start with the fallback so the animation runs from the very first render
+  // — don't wait on measurement. ResizeObserver corrects it after.
+  const [scrollDistance, setScrollDistance] = useState(FALLBACK_SCROLL_PX);
 
   useEffect(() => setMounted(true), []);
 
-  // Measure scroll distance after mount + on resize
-  useEffect(() => {
+  // Measure on mount + on resize. Uses useLayoutEffect so it runs before
+  // paint when the DOM is ready.
+  useIsoLayoutEffect(() => {
     const measure = () => {
       const inner = innerRef.current;
       const viewport = viewportRef.current;
       if (!inner || !viewport) return;
-      setMaxScroll(Math.max(0, inner.offsetHeight - viewport.offsetHeight));
+      const dist = Math.max(0, inner.offsetHeight - viewport.offsetHeight);
+      // Only update if measurement gives a sensible non-zero value.
+      // Otherwise keep the fallback so the animation still runs.
+      if (dist > 50) setScrollDistance(dist);
     };
     measure();
     const ro = new ResizeObserver(measure);
     if (innerRef.current) ro.observe(innerRef.current);
     if (viewportRef.current) ro.observe(viewportRef.current);
     return () => ro.disconnect();
-  }, [mounted]);
+  }, []);
 
   return (
     <div className="relative mx-auto w-full max-w-[460px]">
@@ -514,58 +527,44 @@ export function HeroWebsiteMockup() {
         >
           <motion.div
             ref={innerRef}
-            className="absolute inset-x-0 top-0 will-change-transform"
-            animate={
-              maxScroll > 0
-                ? { y: [0, 0, -maxScroll, -maxScroll, 0] }
-                : { y: 0 }
-            }
-            transition={
-              maxScroll > 0
-                ? {
-                    duration: SCROLL_DURATION_S + PAUSE_S * 2,
-                    times: [
-                      0,
-                      PAUSE_S / (SCROLL_DURATION_S + PAUSE_S * 2),
-                      (PAUSE_S + SCROLL_DURATION_S) / (SCROLL_DURATION_S + PAUSE_S * 2),
-                      (PAUSE_S + SCROLL_DURATION_S + PAUSE_S) / (SCROLL_DURATION_S + PAUSE_S * 2),
-                      1,
-                    ],
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }
-                : { duration: 0 }
-            }
+            // Hardcoded min-height so the inner is GUARANTEED taller than the
+            // viewport, so scrolling always has somewhere to go even before
+            // measurement runs.
+            className="absolute inset-x-0 top-0 will-change-transform min-h-[1100px]"
+            // Two-keyframe animation with reverse-repeat = clean bounce
+            // top → bottom → top → bottom forever. RepeatDelay gives the
+            // pause at each extreme.
+            animate={{ y: [0, -scrollDistance] }}
+            transition={{
+              duration: SCROLL_DURATION_S,
+              ease: "easeInOut",
+              repeat: Infinity,
+              repeatType: "reverse",
+              repeatDelay: PAUSE_AT_END_S,
+            }}
           >
             <ScrollingDentalSite />
           </motion.div>
 
           {/* Soft top + bottom fades to mask scroll boundaries */}
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-4 bg-gradient-to-b from-white to-transparent z-10" />
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-5 bg-gradient-to-b from-white to-transparent z-10" />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-white to-transparent z-10" />
 
-          {/* Scroll-progress dot — gives subtle "this is scrolling" hint */}
-          {maxScroll > 0 && (
-            <div className="absolute right-1.5 top-3 bottom-3 w-1 rounded-full bg-slate-200/40 z-10">
-              <motion.div
-                className="absolute left-0 right-0 rounded-full bg-rose-500/70"
-                style={{ height: "20%" }}
-                animate={{ top: ["0%", "0%", "80%", "80%", "0%"] }}
-                transition={{
-                  duration: SCROLL_DURATION_S + PAUSE_S * 2,
-                  times: [
-                    0,
-                    PAUSE_S / (SCROLL_DURATION_S + PAUSE_S * 2),
-                    (PAUSE_S + SCROLL_DURATION_S) / (SCROLL_DURATION_S + PAUSE_S * 2),
-                    (PAUSE_S + SCROLL_DURATION_S + PAUSE_S) / (SCROLL_DURATION_S + PAUSE_S * 2),
-                    1,
-                  ],
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-            </div>
-          )}
+          {/* Scroll-progress dot — synced to the same animation */}
+          <div className="absolute right-1.5 top-3 bottom-3 w-1 rounded-full bg-slate-200/40 z-10">
+            <motion.div
+              className="absolute left-0 right-0 rounded-full bg-rose-500/70"
+              style={{ height: "20%" }}
+              animate={{ top: ["0%", "80%"] }}
+              transition={{
+                duration: SCROLL_DURATION_S,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatType: "reverse",
+                repeatDelay: PAUSE_AT_END_S,
+              }}
+            />
+          </div>
         </div>
       </motion.div>
     </div>

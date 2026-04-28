@@ -14,11 +14,25 @@ import {
 } from "./animations";
 import {
   HeroWebsiteMockup,
-  MockedWebsiteContent,
   SITE_VARIANTS,
   VARIANT_LABELS,
   ScrollingRestaurantSite,
+  ScrollingDentalSite,
+  ScrollingSalonSite,
+  ScrollingRealEstateSite,
+  type SiteVariant,
 } from "./HeroWebsiteMockup";
+
+// Map each vertical to its polished scrolling site. Used in the Portfolio
+// "Other styles" grid so each card shows a scaled-down view of the actual
+// polished build (not a schematic placeholder), demonstrating the same
+// quality bar across every vertical we build for.
+const SCROLLING_SITE_FOR: Record<SiteVariant, () => React.JSX.Element> = {
+  dental: ScrollingDentalSite,
+  salon: ScrollingSalonSite,
+  restaurant: ScrollingRestaurantSite,
+  realestate: ScrollingRealEstateSite,
+};
 import { BeforeAfterScrollingMockup } from "./BeforeAfterScrollingMockup";
 import { FAQPageJsonLd } from "./JsonLd";
 
@@ -634,35 +648,52 @@ export function AnimatedPortfolioSection() {
         </FadeIn>
 
         <StaggerChildren staggerDelay={0.12} className="grid sm:grid-cols-3 gap-6">
-          {otherVariants.map((variant) => (
-            <StaggerItem key={variant}>
-              <motion.div
-                className="group rounded-2xl overflow-hidden border border-border bg-card hover:border-accent/30 transition-all duration-500"
-                whileHover={{ y: -6 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-              >
-                <div className="aspect-[4/5] sm:aspect-[3/4] overflow-hidden">
-                  <MockedWebsiteContent variant={variant} />
-                </div>
-                <div className="p-4 flex items-center justify-between border-t border-border">
-                  <div>
-                    <span className="text-[10px] font-medium text-accent tracking-widest uppercase">
-                      Style example
-                    </span>
-                    <h3 className="font-heading text-base leading-tight mt-0.5">
-                      {VARIANT_LABELS[variant]}
-                    </h3>
+          {otherVariants.map((variant) => {
+            const ScrollingSite = SCROLLING_SITE_FOR[variant];
+            return (
+              <StaggerItem key={variant}>
+                <motion.div
+                  className="group rounded-2xl overflow-hidden border border-border bg-card hover:border-accent/30 transition-all duration-500"
+                  whileHover={{ y: -6 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                >
+                  {/* Scaled-down view of the FULL polished build for this
+                      vertical. transform-origin top-left + scale 0.55 +
+                      compensating width/height so the card crops to the
+                      top portion of the actual site (nav + hero + first
+                      sections). Shows real design density, not a wireframe. */}
+                  <div className="aspect-[4/5] sm:aspect-[3/4] overflow-hidden relative bg-white">
+                    <div
+                      className="absolute top-0 left-0 origin-top-left pointer-events-none"
+                      style={{
+                        transform: "scale(0.55)",
+                        width: "182%",
+                        height: "182%",
+                      }}
+                    >
+                      <ScrollingSite />
+                    </div>
                   </div>
-                  <Link
-                    href="/start"
-                    className="text-xs font-medium text-accent opacity-70 group-hover:opacity-100 transition-opacity duration-300"
-                  >
-                    Start
-                  </Link>
-                </div>
-              </motion.div>
-            </StaggerItem>
-          ))}
+                  <div className="p-4 flex items-center justify-between border-t border-border">
+                    <div>
+                      <span className="text-[10px] font-medium text-accent tracking-widest uppercase">
+                        Style example
+                      </span>
+                      <h3 className="font-heading text-base leading-tight mt-0.5">
+                        {VARIANT_LABELS[variant]}
+                      </h3>
+                    </div>
+                    <Link
+                      href="/start"
+                      className="text-xs font-medium text-accent opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+                    >
+                      Start
+                    </Link>
+                  </div>
+                </motion.div>
+              </StaggerItem>
+            );
+          })}
         </StaggerChildren>
       </div>
     </section>

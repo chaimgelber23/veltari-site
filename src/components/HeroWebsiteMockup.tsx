@@ -707,6 +707,362 @@ export function ScrollingDentalSite() {
 }
 
 // ============================================================================
+// ScrollingSalonSite — polished salon site (Luna). Same 6-section structure
+// + Pristine-Site quality bar as the dental/restaurant builds. Restrained
+// amber/stone palette, lookbook strip + service price menu replace the
+// dental booking widget — vertical-appropriate layout twist proves "custom
+// per industry, not template".
+// ============================================================================
+
+export function ScrollingSalonSite() {
+  return (
+    <div className="bg-stone-50">
+      {/* Sticky nav */}
+      <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-2.5 bg-stone-50/95 backdrop-blur border-b border-stone-300/60">
+        <div className="flex items-center gap-1.5">
+          <div className="w-4 h-4 rounded-md bg-gradient-to-br from-amber-700 to-amber-900" />
+          <div className="font-serif text-[11px] font-bold text-stone-900 tracking-tight">Luna</div>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-[7px] text-stone-500 uppercase tracking-wide">Services</span>
+          <span className="text-[7px] text-stone-500 uppercase tracking-wide">Stylists</span>
+          <span className="text-[7px] text-stone-500 uppercase tracking-wide">Lookbook</span>
+          <div className="h-4 px-2 rounded-md bg-amber-800 flex items-center text-[8px] font-semibold text-white">
+            Book
+          </div>
+        </div>
+      </div>
+
+      {/* Section 1 — Hero */}
+      <section className="bg-gradient-to-b from-stone-100 via-stone-50 to-stone-50 px-4 py-5">
+        <div className="grid grid-cols-[1fr_auto] gap-3 items-center">
+          <div>
+            <div className="inline-block rounded bg-amber-50 px-1.5 py-0.5 mb-1.5">
+              <span className="text-[7px] font-semibold text-amber-900 tracking-wide uppercase">Saturday slots open</span>
+            </div>
+            <div className="font-serif text-[17px] font-semibold leading-[1.1] text-stone-900">
+              Hair that turns <em className="text-amber-800 not-italic font-bold">heads</em>.
+            </div>
+            <div className="mt-1.5 text-[8px] text-stone-500 leading-snug max-w-[160px]">
+              Balayage · color · cut. Master stylists. No chair-rentals.
+            </div>
+            <div className="mt-2.5 flex items-center gap-1.5">
+              <div className="h-5 px-2.5 rounded-full bg-stone-900 text-white text-[8px] font-semibold flex items-center">Book online</div>
+              <div className="h-5 px-2.5 rounded-full border border-stone-400 text-stone-700 text-[8px] font-semibold flex items-center">Lookbook</div>
+            </div>
+          </div>
+          <FakeImg className="w-20 h-24 rounded-xl ring-2 ring-white shadow-md shrink-0" gradient="from-amber-200 via-stone-200 to-stone-400" />
+        </div>
+        {/* Photo strip */}
+        <div className="mt-4 grid grid-cols-4 gap-1">
+          <FakeImg className="aspect-square rounded" gradient="from-amber-200 to-amber-400" />
+          <FakeImg className="aspect-square rounded" gradient="from-stone-300 to-stone-500" />
+          <FakeImg className="aspect-square rounded" gradient="from-rose-200 to-rose-400" />
+          <FakeImg className="aspect-square rounded" gradient="from-amber-300 to-stone-500" />
+        </div>
+      </section>
+
+      {/* Section 2 — Service price menu */}
+      <section className="px-4 py-5 bg-stone-50">
+        <div className="text-center mb-3">
+          <div className="text-[7px] font-semibold text-amber-800 tracking-widest uppercase mb-1">The menu</div>
+          <div className="font-serif text-[14px] font-semibold text-stone-900 leading-tight">Transparent pricing. No surprises.</div>
+        </div>
+        <div className="space-y-1.5">
+          {[
+            { d: "Signature Balayage", s: "Hand-painted highlights · 3hr", p: "$185" },
+            { d: "Full Color + Gloss", s: "Single-process color · finish blow", p: "$135" },
+            { d: "Precision Cut", s: "Consultation · cut · style", p: "$85" },
+            { d: "Olaplex Treatment", s: "Add to any service", p: "+$45" },
+          ].map((m) => (
+            <div key={m.d} className="rounded-md bg-white border border-stone-200 p-2 flex items-start gap-2">
+              <div className="flex-1">
+                <div className="font-serif text-[10px] font-semibold text-stone-900 leading-tight">{m.d}</div>
+                <div className="text-[7px] text-stone-500 italic mt-0.5">{m.s}</div>
+              </div>
+              <div className="text-[10px] font-bold text-amber-900 shrink-0">{m.p}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Section 3 — Featured stylist */}
+      <section className="px-4 py-5 bg-amber-50/60">
+        <div className="grid grid-cols-[auto_1fr] gap-3 items-start">
+          <FakeImg className="w-16 h-16 rounded-full ring-2 ring-white shadow shrink-0" gradient="from-amber-300 to-amber-500" />
+          <div>
+            <div className="text-[7px] font-semibold text-amber-800 uppercase tracking-widest">Meet your stylist</div>
+            <div className="font-serif text-[13px] font-semibold text-stone-900 leading-tight mt-0.5">
+              Mara Lindqvist
+            </div>
+            <div className="text-[8px] text-stone-700 leading-relaxed mt-1.5">
+              8 years in balayage, formerly senior at Sally Hershberger NYC. Specializes in lived-in
+              color for fine and curly textures. Trains the rest of the team monthly.
+            </div>
+            <div className="mt-2 flex flex-wrap gap-1">
+              {["Balayage Master", "Olaplex Cert", "Curly specialist"].map((c) => (
+                <span key={c} className="text-[7px] font-semibold text-amber-900 bg-amber-100 px-1.5 py-0.5 rounded">{c}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 4 — Lookbook grid */}
+      <section className="px-4 py-5 bg-stone-50">
+        <div className="text-center mb-3">
+          <div className="text-[7px] font-semibold text-amber-800 tracking-widest uppercase mb-1">Recent work</div>
+          <div className="font-serif text-[14px] font-semibold text-stone-900 leading-tight">Color stories from the chair.</div>
+        </div>
+        <div className="grid grid-cols-3 gap-1.5">
+          {[
+            "from-amber-200 to-amber-500",
+            "from-stone-300 to-stone-600",
+            "from-rose-200 to-amber-300",
+            "from-amber-100 to-stone-400",
+            "from-stone-200 to-rose-300",
+            "from-amber-300 to-stone-500",
+          ].map((g, i) => (
+            <FakeImg key={i} className="aspect-[3/4] rounded" gradient={g} />
+          ))}
+        </div>
+        <div className="mt-2 text-center">
+          <span className="text-[7px] text-stone-500 italic">Tap any look to book that style</span>
+        </div>
+      </section>
+
+      {/* Section 5 — Reviews */}
+      <section className="px-4 py-5 bg-stone-100">
+        <div className="text-center mb-3">
+          <div className="text-[7px] font-semibold text-amber-800 tracking-widest uppercase mb-1">Client love</div>
+          <div className="font-serif text-[14px] font-semibold text-stone-900 leading-tight">4.9★ across 180 visits.</div>
+        </div>
+        <div className="space-y-1.5">
+          {[
+            { q: "Mara totally got what I wanted from one Pinterest board. Best color I've had in years.", n: "J. Whitfield", r: "Balayage · 2024" },
+            { q: "Finally found a salon that handles my curls without trying to straighten them out.", n: "A. Okafor", r: "Cut + gloss · 2024" },
+          ].map((t, i) => (
+            <div key={i} className="rounded-md bg-white border border-stone-200 p-2">
+              <div className="flex gap-0.5 mb-1">
+                {Array.from({ length: 5 }).map((_, j) => (
+                  <svg key={j} className="w-2 h-2 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <div className="text-[8px] text-stone-700 leading-relaxed italic">&ldquo;{t.q}&rdquo;</div>
+              <div className="text-[7px] text-stone-500 mt-1">— {t.n} · {t.r}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Section 6 — Footer */}
+      <section className="px-4 py-5 bg-stone-900 text-white">
+        <div className="grid grid-cols-[1fr_auto] gap-3 items-start">
+          <div>
+            <div className="font-serif text-[11px] font-bold tracking-tight">Luna Salon</div>
+            <div className="text-[7px] text-stone-400 mt-1.5 leading-relaxed">
+              78 Greenpoint Ave · Brooklyn<br />
+              (718) 555-0192
+            </div>
+            <div className="text-[7px] text-stone-400 mt-2 uppercase tracking-wide">Hours</div>
+            <div className="text-[7px] text-stone-300 mt-0.5">Tue-Sat · 10am – 7pm</div>
+            <div className="text-[7px] text-stone-300">Sun-Mon · closed</div>
+          </div>
+          <div className="w-20 h-16 rounded bg-stone-700 relative overflow-hidden shrink-0">
+            <div className="absolute inset-0 opacity-50">
+              <div className="absolute top-1/3 left-0 right-0 h-px bg-stone-500" />
+              <div className="absolute top-2/3 left-0 right-0 h-px bg-stone-500" />
+              <div className="absolute top-0 bottom-0 left-1/3 w-px bg-stone-500" />
+            </div>
+            <div className="absolute top-1/2 left-1/2 w-2 h-2 rounded-full bg-amber-400 ring-2 ring-white -translate-x-1/2 -translate-y-1/2" />
+          </div>
+        </div>
+        <div className="mt-3 pt-3 border-t border-white/10 text-[6px] text-stone-500">
+          &copy; 2026 Luna Salon &middot; Built by Pristine Site
+        </div>
+      </section>
+    </div>
+  );
+}
+
+// ============================================================================
+// ScrollingRealEstateSite — polished real-estate site (Harbor View). Hero
+// puts a featured property photo + price overlay front and center; listings
+// grid + sell-side CTA + market-stats panel are vertical-specific layout
+// twists. Same 6-section quality bar as the others.
+// ============================================================================
+
+export function ScrollingRealEstateSite() {
+  return (
+    <div className="bg-white">
+      {/* Sticky nav */}
+      <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-2.5 bg-white/95 backdrop-blur border-b border-slate-200/70">
+        <div className="flex items-center gap-1.5">
+          <div className="w-4 h-4 rounded-md bg-gradient-to-br from-slate-700 to-slate-900" />
+          <div className="font-serif text-[11px] font-bold text-slate-900 tracking-tight">Harbor View Properties</div>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-[7px] text-slate-500 uppercase tracking-wide">Listings</span>
+          <span className="text-[7px] text-slate-500 uppercase tracking-wide">Sell</span>
+          <span className="text-[7px] text-slate-500 uppercase tracking-wide">Team</span>
+          <div className="h-4 px-2 rounded-md bg-slate-800 flex items-center text-[8px] font-semibold text-white">
+            See homes
+          </div>
+        </div>
+      </div>
+
+      {/* Section 1 — Hero with featured property image */}
+      <section className="bg-gradient-to-b from-slate-100 via-white to-white px-4 py-5">
+        <div className="text-center mb-3">
+          <div className="inline-block rounded bg-slate-100 px-1.5 py-0.5 mb-1.5">
+            <span className="text-[7px] font-semibold text-slate-800 tracking-wide uppercase">32 listings · this week</span>
+          </div>
+          <div className="font-serif text-[17px] font-semibold leading-[1.1] text-slate-900 px-2">
+            The <em className="text-slate-800 not-italic font-bold">harbor</em> is calling.
+          </div>
+          <div className="mt-1.5 text-[8px] text-slate-500 leading-snug">
+            Waterfront homes from $480K. New listings every Friday.
+          </div>
+        </div>
+        {/* Featured property card with overlay */}
+        <div className="relative rounded-lg overflow-hidden shadow-sm">
+          <FakeImg className="w-full h-28" gradient="from-slate-400 via-slate-600 to-slate-800" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
+          <div className="absolute bottom-2 left-2 right-2 flex items-end justify-between text-white">
+            <div>
+              <div className="text-[7px] font-semibold uppercase tracking-widest text-slate-300">Featured</div>
+              <div className="font-serif text-[11px] font-bold leading-tight">412 Harbor Bluff Road</div>
+              <div className="text-[7px] text-slate-200 mt-0.5">4 bd · 3 ba · 2,840 sqft</div>
+            </div>
+            <div className="text-right">
+              <div className="font-serif text-[12px] font-bold">$1.4M</div>
+              <div className="text-[6px] text-slate-300 uppercase tracking-wide">Just listed</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 2 — Listings grid */}
+      <section className="px-4 py-5 bg-white">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <div className="text-[7px] font-semibold text-slate-800 tracking-widest uppercase">Active listings</div>
+            <div className="font-serif text-[13px] font-semibold text-slate-900 leading-tight">This week&apos;s waterfront.</div>
+          </div>
+          <div className="text-[7px] font-semibold text-slate-700 underline decoration-dotted">View all 32 →</div>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            { p: "$890K", b: "3·2", a: "1,940", g: "from-sky-200 to-sky-400" },
+            { p: "$1.1M", b: "4·3", a: "2,310", g: "from-slate-300 to-slate-500" },
+            { p: "$680K", b: "3·2", a: "1,520", g: "from-blue-300 to-slate-500" },
+          ].map((l, i) => (
+            <div key={i} className="rounded-md overflow-hidden border border-slate-200 bg-white">
+              <FakeImg className="aspect-[4/3]" gradient={l.g} />
+              <div className="p-1.5">
+                <div className="font-serif text-[10px] font-bold text-slate-900 leading-tight">{l.p}</div>
+                <div className="text-[7px] text-slate-500 mt-0.5">{l.b} · {l.a} sqft</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Section 3 — Sell-side CTA */}
+      <section className="px-4 py-5 bg-slate-50">
+        <div className="rounded-lg bg-white border border-slate-200 p-3">
+          <div className="grid grid-cols-[1fr_auto] gap-3 items-center">
+            <div>
+              <div className="text-[7px] font-semibold text-slate-800 tracking-widest uppercase mb-0.5">Thinking of selling?</div>
+              <div className="font-serif text-[12px] font-semibold text-slate-900 leading-tight">
+                Get your home&apos;s value in 60 seconds.
+              </div>
+              <div className="text-[7px] text-slate-500 mt-1 leading-snug">
+                Free, no-pressure estimate. Used by 600+ homeowners on the bluff this year.
+              </div>
+            </div>
+            <div className="h-6 px-2.5 rounded-full bg-slate-900 text-white text-[8px] font-semibold flex items-center shrink-0">
+              Get value
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 4 — Featured agent */}
+      <section className="px-4 py-5 bg-white">
+        <div className="grid grid-cols-[auto_1fr] gap-3 items-start">
+          <FakeImg className="w-16 h-16 rounded-full ring-2 ring-white shadow shrink-0" gradient="from-slate-300 to-slate-500" />
+          <div>
+            <div className="text-[7px] font-semibold text-slate-800 uppercase tracking-widest">Meet your agent</div>
+            <div className="font-serif text-[13px] font-semibold text-slate-900 leading-tight mt-0.5">
+              Eleanor Whitfield
+            </div>
+            <div className="text-[8px] text-slate-700 leading-relaxed mt-1.5">
+              20 years on the harbor. Closed $48M in waterfront last year. Specializes in
+              first-time buyers and estate sales. Lives on the bluff she sells.
+            </div>
+            <div className="mt-2 flex flex-wrap gap-1">
+              {["Top 1% local", "$48M / yr", "Lived here 20yr"].map((c) => (
+                <span key={c} className="text-[7px] font-semibold text-slate-800 bg-slate-100 px-1.5 py-0.5 rounded">{c}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 5 — Market stats grid */}
+      <section className="px-4 py-5 bg-slate-50">
+        <div className="text-center mb-3">
+          <div className="text-[7px] font-semibold text-slate-800 tracking-widest uppercase mb-1">The harbor in numbers</div>
+          <div className="font-serif text-[14px] font-semibold text-slate-900 leading-tight">Updated weekly &middot; Q4 2025</div>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            { v: "$890K", l: "Median price" },
+            { v: "18 days", l: "Avg time to sell" },
+            { v: "+4.2%", l: "YoY appreciation" },
+          ].map((s) => (
+            <div key={s.l} className="rounded-md bg-white border border-slate-200 p-2 text-center">
+              <div className="font-serif text-[12px] font-bold text-slate-900">{s.v}</div>
+              <div className="text-[7px] text-slate-500 uppercase tracking-wide mt-0.5">{s.l}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Section 6 — Footer */}
+      <section className="px-4 py-5 bg-slate-900 text-white">
+        <div className="grid grid-cols-[1fr_auto] gap-3 items-start">
+          <div>
+            <div className="font-serif text-[11px] font-bold tracking-tight">Harbor View Properties</div>
+            <div className="text-[7px] text-slate-400 mt-1.5 leading-relaxed">
+              22 Wharf Lane · Marblehead, MA<br />
+              (781) 555-0177
+            </div>
+            <div className="text-[7px] text-slate-400 mt-2 uppercase tracking-wide">Office hours</div>
+            <div className="text-[7px] text-slate-300 mt-0.5">Mon-Fri · 9am – 6pm</div>
+            <div className="text-[7px] text-slate-300">Sat · by appointment</div>
+          </div>
+          <div className="w-20 h-16 rounded bg-slate-700 relative overflow-hidden shrink-0">
+            <div className="absolute inset-0 opacity-50">
+              <div className="absolute top-1/2 left-0 right-0 h-px bg-slate-500" />
+              <div className="absolute top-0 bottom-0 left-1/3 w-px bg-slate-500" />
+              <div className="absolute top-0 bottom-0 left-2/3 w-px bg-slate-500" />
+            </div>
+            <div className="absolute top-1/2 left-1/2 w-2 h-2 rounded-full bg-sky-400 ring-2 ring-white -translate-x-1/2 -translate-y-1/2" />
+          </div>
+        </div>
+        <div className="mt-3 pt-3 border-t border-white/10 text-[6px] text-slate-500">
+          &copy; 2026 Harbor View Properties &middot; Built by Pristine Site
+        </div>
+      </section>
+    </div>
+  );
+}
+
+// ============================================================================
 // Hero — auto-scrolls the polished dental site top to bottom inside the
 // browser frame. Loops indefinitely.
 // ============================================================================

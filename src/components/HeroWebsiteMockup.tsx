@@ -20,6 +20,25 @@ import { motion } from "framer-motion";
 // useLayoutEffect on client, no-op on server (avoids React SSR warning).
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
+// Attribution banner — sits above each scrolling site's sticky nav so it's
+// unambiguously OUR concept work, not a fake business pretending to be real.
+// Reads as a "Pristine Site presents:" strip — explicit, restrained.
+function SampleBanner() {
+  return (
+    <div className="px-4 py-1.5 bg-primary text-white flex items-center justify-between border-b border-white/5">
+      <div className="flex items-center gap-1.5">
+        <div className="w-2.5 h-2.5 rounded-sm bg-accent" />
+        <span className="text-[7px] font-semibold tracking-[0.22em] uppercase">
+          Pristine Site
+        </span>
+      </div>
+      <span className="text-[7px] font-medium text-white/60 tracking-[0.18em] uppercase">
+        Sample Build &middot; Concept
+      </span>
+    </div>
+  );
+}
+
 type BadgePosition = "top-left" | "top-right" | "bottom-left" | "bottom-right";
 
 interface ProofBadge {
@@ -316,6 +335,7 @@ export { VARIANT_LABELS, VARIANT_DOMAINS };
 export function ScrollingRestaurantSite() {
   return (
     <div className="bg-stone-50">
+      <SampleBanner />
       {/* Sticky nav */}
       <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-2.5 bg-stone-50/95 backdrop-blur border-b border-stone-300/70">
         <div className="flex items-center gap-1.5">
@@ -512,6 +532,7 @@ function FakeImg({ className = "", gradient = "from-rose-200 to-rose-300" }: { c
 export function ScrollingDentalSite() {
   return (
     <div className="bg-white">
+      <SampleBanner />
       {/* Sticky-look mini nav */}
       <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-2.5 bg-white/95 backdrop-blur border-b border-slate-200/70">
         <div className="flex items-center gap-1.5">
@@ -720,6 +741,7 @@ export function ScrollingDentalSite() {
 export function ScrollingSalonSite() {
   return (
     <div className="bg-stone-50">
+      <SampleBanner />
       {/* Sticky nav */}
       <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-2.5 bg-stone-50/95 backdrop-blur border-b border-stone-300/60">
         <div className="flex items-center gap-1.5">
@@ -900,6 +922,7 @@ export function ScrollingSalonSite() {
 export function ScrollingRealEstateSite() {
   return (
     <div className="bg-white">
+      <SampleBanner />
       {/* Sticky nav */}
       <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-2.5 bg-white/95 backdrop-blur border-b border-slate-200/70">
         <div className="flex items-center gap-1.5">

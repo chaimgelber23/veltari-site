@@ -53,12 +53,12 @@ function Footer() {
             &copy; 2026 Pristine Site. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <a href="#" className="text-xs text-surface/30 hover:text-surface/50 transition-colors">
+            <Link href="/privacy" className="text-xs text-surface/30 hover:text-surface/50 transition-colors">
               Privacy Policy
-            </a>
-            <a href="#" className="text-xs text-surface/30 hover:text-surface/50 transition-colors">
+            </Link>
+            <Link href="/terms" className="text-xs text-surface/30 hover:text-surface/50 transition-colors">
               Terms of Service
-            </a>
+            </Link>
           </div>
         </div>
       </div>

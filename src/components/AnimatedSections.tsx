@@ -18,6 +18,7 @@ import {
   SITE_VARIANTS,
   VARIANT_LABELS,
 } from "./HeroWebsiteMockup";
+import { FAQPageJsonLd } from "./JsonLd";
 
 /* ───────────────────────── Hero ───────────────────────── */
 export function AnimatedHero() {
@@ -802,12 +803,13 @@ export function AnimatedFAQSection() {
     },
     {
       q: "Can I update my site myself?",
-      a: "Yes. Business and Premium plans include a content management system (CMS) that lets you edit text, images, and blog posts without touching code. We also offer a $49/mo plan where we handle all updates for you.",
+      a: "Yes. Business and Premium plans include a content management system (CMS) that lets you edit text, images, and blog posts without touching code. If you'd rather have us handle ongoing updates, email hello@pristinesite.com and we'll quote a maintenance arrangement that fits your needs.",
     },
   ];
 
   return (
     <section id="faq" className="py-24 lg:py-32 mesh-gradient">
+      <FAQPageJsonLd items={faqs.map((f) => ({ question: f.q, answer: f.a }))} />
       <div className="max-w-3xl mx-auto px-6">
         <FadeIn className="text-center mb-16">
           <span className="text-xs font-medium text-accent tracking-widest uppercase mb-4 block">

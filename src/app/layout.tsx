@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Serif_Display, Inter } from "next/font/google";
+import { OrganizationJsonLd, WebSiteJsonLd, ServiceJsonLd } from "@/components/JsonLd";
 import "./globals.css";
 
 const dmSerif = DM_Serif_Display({
@@ -63,6 +64,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <OrganizationJsonLd />
+        <WebSiteJsonLd />
+        <ServiceJsonLd />
+      </head>
       <body
         className={`${dmSerif.variable} ${inter.variable} antialiased bg-surface text-primary`}
       >

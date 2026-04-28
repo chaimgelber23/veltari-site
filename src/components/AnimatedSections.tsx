@@ -12,11 +12,12 @@ import {
   MagneticButton,
   RevealOnScroll,
 } from "./animations";
+import { HeroWebsiteMockup } from "./HeroWebsiteMockup";
 
 /* ───────────────────────── Hero ───────────────────────── */
 export function AnimatedHero() {
   return (
-    <section className="relative min-h-[100vh] flex items-center justify-center overflow-hidden hero-gradient">
+    <section className="relative min-h-[100vh] flex items-center overflow-hidden hero-gradient">
       {/* Mesh gradient blobs with parallax */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <ParallaxLayer speed={0.3}>
@@ -33,99 +34,73 @@ export function AnimatedHero() {
         </ParallaxLayer>
       </div>
 
-      <div className="relative max-w-5xl mx-auto px-6 text-center pt-24 pb-20">
-        {/* Badge */}
-        <FadeIn delay={0}>
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-card/80 backdrop-blur-sm mb-8">
-            <span className="w-2 h-2 rounded-full bg-accent animate-pulse-slow" />
-            <span className="text-xs font-medium text-muted tracking-wide uppercase">
-              Premium Web Design Studio
-            </span>
-          </div>
-        </FadeIn>
+      <div className="relative w-full max-w-7xl mx-auto px-6 lg:px-10 pt-28 pb-20 lg:pt-24 lg:pb-32">
+        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
+          {/* LEFT — text content */}
+          <div className="lg:col-span-6 lg:pr-6 text-center lg:text-left">
+            {/* Badge */}
+            <FadeIn delay={0}>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-card/80 backdrop-blur-sm mb-8">
+                <span className="w-2 h-2 rounded-full bg-accent animate-pulse-slow" />
+                <span className="text-xs font-medium text-muted tracking-wide uppercase">
+                  Premium Web Design Studio
+                </span>
+              </div>
+            </FadeIn>
 
-        {/* Headline */}
-        <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl xl:text-8xl leading-[1.05] tracking-tight mb-6">
-          <TextReveal text="Your Custom Website." delay={0.1} />
-          <br />
-          <TextReveal
-            text="Live in 24 Hours."
-            className="text-gradient"
-            delay={0.4}
-          />
-        </h1>
+            {/* Headline */}
+            <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl leading-[1.05] tracking-tight mb-6">
+              <TextReveal text="Your Custom Website." delay={0.1} />
+              <br />
+              <TextReveal
+                text="Live in 24 Hours."
+                className="text-gradient"
+                delay={0.4}
+              />
+            </h1>
 
-        {/* Subtitle */}
-        <FadeIn delay={0.6}>
-          <p className="text-lg sm:text-xl text-muted max-w-2xl mx-auto mb-10 leading-relaxed">
-            Premium design. Built to convert. No templates. No waiting.
-          </p>
-        </FadeIn>
+            {/* Subtitle */}
+            <FadeIn delay={0.6}>
+              <p className="text-lg sm:text-xl text-muted max-w-xl mx-auto lg:mx-0 mb-10 leading-relaxed">
+                Premium design. Built to convert. No templates. No waiting.
+              </p>
+            </FadeIn>
 
-        {/* CTAs */}
-        <FadeIn delay={0.8}>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <MagneticButton>
-              <Link
-                href="/start"
-                className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-accent hover:bg-accent-light rounded-xl transition-all duration-300 shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 hover:-translate-y-0.5"
-              >
-                Get Your Free Preview
-                <svg
-                  className="ml-2 w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
+            {/* CTAs */}
+            <FadeIn delay={0.8}>
+              <div className="flex flex-col sm:flex-row items-center lg:items-start gap-4 sm:justify-center lg:justify-start">
+                <MagneticButton>
+                  <Link
+                    href="/start"
+                    className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-accent hover:bg-accent-light rounded-xl transition-all duration-300 shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 hover:-translate-y-0.5"
+                  >
+                    Get Your Free Preview
+                    <svg
+                      className="ml-2 w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </Link>
+                </MagneticButton>
+                <a
+                  href="#portfolio"
+                  className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-primary bg-card hover:bg-card-hover border border-border rounded-xl transition-all duration-300"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
-            </MagneticButton>
-            <a
-              href="#portfolio"
-              className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-primary bg-card hover:bg-card-hover border border-border rounded-xl transition-all duration-300"
-            >
-              See Our Work
-            </a>
+                  See Our Work
+                </a>
+              </div>
+            </FadeIn>
           </div>
-        </FadeIn>
 
-        {/* Social proof line */}
-        <FadeIn delay={1.0}>
-          <div className="flex items-center justify-center gap-6 mt-14 text-sm text-muted">
-            <div className="flex items-center gap-2">
-              <svg className="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  fillRule="evenodd"
-                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span>24-hour delivery</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <svg className="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  fillRule="evenodd"
-                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span>100% satisfaction guarantee</span>
-            </div>
-            <div className="hidden sm:flex items-center gap-2">
-              <svg className="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  fillRule="evenodd"
-                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span>Free hosting included</span>
-            </div>
+          {/* RIGHT — animated website mockup with floating proof badges */}
+          <div className="lg:col-span-6 mt-4 lg:mt-0">
+            <HeroWebsiteMockup />
           </div>
-        </FadeIn>
+        </div>
       </div>
 
       {/* Bottom fade */}

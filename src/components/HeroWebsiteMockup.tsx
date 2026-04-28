@@ -219,56 +219,237 @@ interface MockedWebsiteContentProps {
   variant: SiteVariant;
 }
 
-export function MockedWebsiteContent({ variant }: MockedWebsiteContentProps) {
-  const v = VARIANTS[variant];
+// Shared mini-nav atom (consistent across all variants — top of every site)
+function MiniNav({ v, navItems }: { v: VariantTheme; navItems: string[] }) {
   return (
-    <div className={`bg-gradient-to-br ${v.bg} h-full p-3 sm:p-5 flex flex-col gap-3`}>
-      {/* Mini nav */}
-      <div className="flex items-center justify-between pb-2.5 border-b border-slate-200/70">
-        <div className="flex items-center gap-1.5">
-          <div className={`w-4 h-4 rounded-md ${v.accentBg}`} />
-          <div className="font-serif text-[11px] font-bold text-slate-900 tracking-tight">{v.brandName}</div>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="h-1.5 w-7 rounded-full bg-slate-300" />
-          <div className="h-1.5 w-5 rounded-full bg-slate-300" />
-          <div className="h-1.5 w-6 rounded-full bg-slate-300" />
-          <div className={`h-4 w-12 rounded-md ${v.accentBg}`} />
-        </div>
+    <div className="flex items-center justify-between pb-2.5 border-b border-slate-200/70 shrink-0">
+      <div className="flex items-center gap-1.5">
+        <div className={`w-4 h-4 rounded-md ${v.accentBg}`} />
+        <div className="font-serif text-[11px] font-bold text-slate-900 tracking-tight">{v.brandName}</div>
       </div>
-
-      {/* Mini hero */}
-      <div className="flex-1 flex flex-col justify-center items-center text-center px-2">
-        <div className={`inline-flex items-center gap-1 rounded-full ${v.accentSoftBg} px-2 py-0.5 mb-2`}>
-          <span className={`text-[8px] font-semibold ${v.accentSoftText} tracking-wide uppercase`}>
-            {v.badgeText}
+      <div className="flex items-center gap-2.5">
+        {navItems.map((item) => (
+          <span key={item} className="text-[7px] text-slate-500 uppercase tracking-wide hidden sm:inline">
+            {item}
           </span>
-        </div>
-        <div className="font-serif text-[15px] sm:text-lg font-semibold leading-tight text-slate-900">
-          {v.headline}
-        </div>
-        <div className="mt-1.5 text-[9px] text-slate-500 max-w-[180px] leading-snug">{v.subhead}</div>
-        <div className="mt-2.5 flex items-center gap-1.5">
-          <div className="h-5 px-2.5 rounded-full bg-slate-900 flex items-center text-[8px] font-semibold text-white">
-            {v.primaryCta}
-          </div>
-          <div className="h-5 px-2.5 rounded-full border border-slate-300 flex items-center text-[8px] font-semibold text-slate-700">
-            {v.secondaryCta}
-          </div>
-        </div>
-      </div>
-
-      {/* Mini stats row */}
-      <div className="grid grid-cols-3 gap-1.5 pt-2 border-t border-slate-200/70">
-        {v.stats.map((s, i) => (
-          <div key={i} className="text-center">
-            <div className="font-serif text-[11px] font-bold text-slate-900">{s.v}</div>
-            <div className="text-[7px] text-slate-500 uppercase tracking-wide">{s.l}</div>
-          </div>
         ))}
+        <div className={`h-4 px-2 rounded-md ${v.accentBg} flex items-center text-[8px] font-semibold text-white`}>
+          {v.primaryCta}
+        </div>
       </div>
     </div>
   );
+}
+
+// ── Variant 1: Dental — clinical, appointment-led with insurance trust ──
+function DentalLayout({ v }: { v: VariantTheme }) {
+  return (
+    <div className={`bg-gradient-to-br ${v.bg} h-full p-3 sm:p-4 flex flex-col gap-3`}>
+      <MiniNav v={v} navItems={["Services", "Team", "Insurance"]} />
+      {/* Hero: photo placeholder + appointment CTA */}
+      <div className="grid grid-cols-[1fr_auto] gap-3 items-center">
+        <div>
+          <div className={`inline-block rounded ${v.accentSoftBg} px-1.5 py-0.5 mb-1.5`}>
+            <span className={`text-[7px] font-semibold ${v.accentSoftText} tracking-wide uppercase`}>{v.badgeText}</span>
+          </div>
+          <div className="font-serif text-[14px] font-semibold leading-tight text-slate-900">{v.headline}</div>
+          <div className="mt-1 text-[8px] text-slate-500 leading-snug max-w-[140px]">{v.subhead}</div>
+        </div>
+        {/* Doctor avatar bubble */}
+        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-rose-200 to-rose-300 ring-2 ring-white shadow-sm flex items-end justify-center overflow-hidden">
+          <div className="w-8 h-6 rounded-t-full bg-rose-100" />
+        </div>
+      </div>
+      {/* Appointment slots widget — vertical-specific */}
+      <div className="rounded-md bg-white/80 border border-slate-200/70 p-2 shrink-0">
+        <div className="text-[7px] font-semibold text-slate-500 uppercase tracking-wide mb-1">Next available</div>
+        <div className="grid grid-cols-3 gap-1">
+          {[
+            { d: "Tue", t: "10:30" },
+            { d: "Wed", t: "2:00", on: true },
+            { d: "Thu", t: "9:15" },
+          ].map((s, i) => (
+            <div
+              key={i}
+              className={`rounded px-1.5 py-1 text-center ${
+                s.on ? `${v.accentBg} text-white` : "bg-slate-100 text-slate-700"
+              }`}
+            >
+              <div className="text-[7px] font-semibold uppercase">{s.d}</div>
+              <div className="text-[8px] font-bold">{s.t}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Insurance trust strip — vertical-specific */}
+      <div className="mt-auto pt-2 border-t border-slate-200/70">
+        <div className="text-[7px] text-slate-400 uppercase tracking-wide mb-1.5 text-center">In-network with</div>
+        <div className="flex items-center justify-center gap-2">
+          {["BCBS", "Aetna", "Cigna", "Delta"].map((p) => (
+            <div key={p} className="text-[8px] font-bold text-slate-400 tracking-tight">{p}</div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Variant 2: Salon — image-led, gallery + price-list dominant ──
+function SalonLayout({ v }: { v: VariantTheme }) {
+  return (
+    <div className={`bg-gradient-to-br ${v.bg} h-full p-3 sm:p-4 flex flex-col gap-3`}>
+      <MiniNav v={v} navItems={["Stylists", "Lookbook", "Book"]} />
+      <div className="text-center px-1 shrink-0">
+        <div className="font-serif text-[13px] font-semibold leading-tight text-slate-900">{v.headline}</div>
+      </div>
+      {/* Look gallery — 3 image squares with overlay labels */}
+      <div className="grid grid-cols-3 gap-1.5 shrink-0">
+        {[
+          { l: "Balayage", c: "from-amber-200 to-orange-300" },
+          { l: "Blonde", c: "from-yellow-100 to-amber-200" },
+          { l: "Brunette", c: "from-amber-700 to-stone-700" },
+        ].map((s, i) => (
+          <div key={i} className={`relative aspect-square rounded bg-gradient-to-br ${s.c} overflow-hidden`}>
+            <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-[6px] font-semibold text-white text-center py-0.5 uppercase tracking-wide">
+              {s.l}
+            </div>
+          </div>
+        ))}
+      </div>
+      {/* Price list — vertical-specific */}
+      <div className="rounded-md bg-white/80 border border-slate-200/70 p-2 shrink-0">
+        <div className="text-[7px] font-semibold text-slate-500 uppercase tracking-wide mb-1">Services</div>
+        {[
+          { s: "Balayage · long", p: "$215" },
+          { s: "Color refresh", p: "$95" },
+          { s: "Cut + style", p: "$75" },
+        ].map((row) => (
+          <div key={row.s} className="flex items-center justify-between text-[8px] py-0.5">
+            <span className="text-slate-700">{row.s}</span>
+            <span className={`font-bold ${v.accentClass}`}>{row.p}</span>
+          </div>
+        ))}
+      </div>
+      {/* Book CTA */}
+      <div className="mt-auto flex items-center justify-center">
+        <div className={`h-5 px-3 rounded-full ${v.accentBg} flex items-center text-[8px] font-semibold text-white shadow-sm`}>
+          {v.primaryCta}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Variant 3: Restaurant — menu-led with reservation widget ──
+function RestaurantLayout({ v }: { v: VariantTheme }) {
+  return (
+    <div className={`bg-gradient-to-br ${v.bg} h-full p-3 sm:p-4 flex flex-col gap-3`}>
+      <MiniNav v={v} navItems={["Menu", "Reserve", "Hours"]} />
+      <div className="text-center px-1 shrink-0">
+        <div className="font-serif text-[13px] italic text-slate-900 leading-tight">{v.headline}</div>
+        <div className="mt-1 text-[8px] text-slate-500 italic">{v.subhead}</div>
+      </div>
+      {/* Tonight's menu cards — vertical-specific */}
+      <div className="grid grid-cols-2 gap-1.5 shrink-0">
+        {[
+          { d: "Roasted Branzino", p: "$32", n: "Lemon · capers · fennel" },
+          { d: "Wild Mushroom Risotto", p: "$26", n: "Truffle · pecorino" },
+        ].map((m) => (
+          <div key={m.d} className="rounded-md bg-white/85 border border-slate-200/70 p-1.5">
+            <div className="font-serif text-[9px] font-semibold text-slate-900 leading-tight">{m.d}</div>
+            <div className="text-[6px] text-slate-500 italic mt-0.5">{m.n}</div>
+            <div className={`text-[8px] font-bold mt-1 ${v.accentClass}`}>{m.p}</div>
+          </div>
+        ))}
+      </div>
+      {/* Reservation widget — vertical-specific */}
+      <div className="rounded-md bg-slate-900 text-white p-2 shrink-0 mt-auto">
+        <div className="text-[7px] font-semibold uppercase tracking-wide opacity-60 mb-1">Reserve a table</div>
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1">
+            {[2, 4, 6].map((n) => (
+              <div key={n} className="w-5 h-5 rounded border border-white/20 flex items-center justify-center text-[8px] font-medium">
+                {n}
+              </div>
+            ))}
+          </div>
+          <div className={`h-5 px-2.5 rounded-md ${v.accentBg} flex items-center text-[8px] font-semibold`}>
+            6:00pm
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Variant 4: Real Estate — listing cards + map sliver ──
+function RealestateLayout({ v }: { v: VariantTheme }) {
+  return (
+    <div className={`bg-gradient-to-br ${v.bg} h-full p-3 sm:p-4 flex flex-col gap-3`}>
+      <MiniNav v={v} navItems={["Listings", "Sold", "Agents"]} />
+      <div className="px-1 shrink-0">
+        <div className={`inline-block rounded ${v.accentSoftBg} px-1.5 py-0.5 mb-1`}>
+          <span className={`text-[7px] font-semibold ${v.accentSoftText} tracking-wide uppercase`}>{v.badgeText}</span>
+        </div>
+        <div className="font-serif text-[13px] font-semibold leading-tight text-slate-900">{v.headline}</div>
+      </div>
+      {/* Listing cards — vertical-specific */}
+      <div className="space-y-1.5 shrink-0">
+        {[
+          { addr: "12 Harbor View Rd", p: "$895K", b: "4bd · 3ba · 2,400 sqft", c: "from-sky-200 to-sky-300" },
+          { addr: "47 Pier Lane", p: "$675K", b: "3bd · 2ba · 1,850 sqft", c: "from-blue-200 to-sky-200" },
+        ].map((l) => (
+          <div key={l.addr} className="flex items-center gap-2 rounded-md bg-white/85 border border-slate-200/70 p-1.5">
+            <div className={`w-10 h-10 rounded bg-gradient-to-br ${l.c} shrink-0`} />
+            <div className="flex-1 min-w-0">
+              <div className="font-serif text-[10px] font-semibold text-slate-900 truncate leading-tight">{l.addr}</div>
+              <div className="text-[7px] text-slate-500 truncate">{l.b}</div>
+            </div>
+            <div className={`text-[10px] font-bold ${v.accentClass} shrink-0`}>{l.p}</div>
+          </div>
+        ))}
+      </div>
+      {/* Map sliver — vertical-specific */}
+      <div className="mt-auto rounded-md overflow-hidden border border-slate-200/70 h-12 relative bg-gradient-to-br from-slate-100 to-slate-200">
+        {/* Fake roads */}
+        <div className="absolute inset-0 opacity-50">
+          <div className="absolute top-1/3 left-0 right-0 h-px bg-slate-400" />
+          <div className="absolute top-2/3 left-0 right-0 h-px bg-slate-400" />
+          <div className="absolute top-0 bottom-0 left-1/4 w-px bg-slate-400" />
+          <div className="absolute top-0 bottom-0 left-2/3 w-px bg-slate-400" />
+        </div>
+        {/* Pins */}
+        {[
+          { x: "20%", y: "30%" },
+          { x: "55%", y: "60%" },
+          { x: "75%", y: "40%" },
+        ].map((pin, i) => (
+          <div
+            key={i}
+            className={`absolute w-2 h-2 rounded-full ${v.accentBg} ring-2 ring-white shadow`}
+            style={{ left: pin.x, top: pin.y, transform: "translate(-50%, -50%)" }}
+          />
+        ))}
+        <div className="absolute bottom-0.5 right-1.5 text-[6px] font-semibold text-slate-600 bg-white/80 px-1 rounded">
+          32 listings
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function MockedWebsiteContent({ variant }: MockedWebsiteContentProps) {
+  const v = VARIANTS[variant];
+  switch (variant) {
+    case "dental":
+      return <DentalLayout v={v} />;
+    case "salon":
+      return <SalonLayout v={v} />;
+    case "restaurant":
+      return <RestaurantLayout v={v} />;
+    case "realestate":
+      return <RealestateLayout v={v} />;
+  }
 }
 
 export const SITE_VARIANTS: SiteVariant[] = ["dental", "salon", "restaurant", "realestate"];

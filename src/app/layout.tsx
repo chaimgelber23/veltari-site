@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { DM_Serif_Display, Inter } from "next/font/google";
-import CustomCursor from "@/components/CustomCursor";
 import "./globals.css";
 
 const dmSerif = DM_Serif_Display({
@@ -68,7 +67,6 @@ export default function RootLayout({
         className={`${dmSerif.variable} ${inter.variable} antialiased bg-surface text-primary`}
       >
         <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-black">Skip to content</a>
-        <CustomCursor />
         <div className="noise-overlay" aria-hidden="true" />
         {children}
       </body>

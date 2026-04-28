@@ -411,14 +411,9 @@ export function AnimatedPricingSection() {
     },
   ];
 
-  // Logo Design removed — we don't offer brand identity work, only website
-  // builds. If a customer needs a logo we refer out to a designer.
-  const addons = [
-    { name: "SEO Management", price: "$79/mo" },
-    { name: "Content Updates", price: "$49/mo" },
-    { name: "Additional Pages", price: "$99 each" },
-    { name: "Custom Animations", price: "$149" },
-  ];
+  // Add-ons removed — we don't have a confirmed list of add-ons we actually
+  // offer at fixed prices yet. Pretending to have a SEO/content/animation
+  // menu would set false expectations. Replaced with a "Talk to us" CTA below.
 
   return (
     <section id="pricing" className="py-24 lg:py-32 bg-surface">
@@ -530,21 +525,22 @@ export function AnimatedPricingSection() {
           ))}
         </StaggerChildren>
 
-        {/* Add-ons */}
+        {/* Custom requests — replaces fake addons menu */}
         <RevealOnScroll>
-          <div className="max-w-2xl mx-auto">
-            <h3 className="font-heading text-xl text-center mb-6">Optional Add-ons</h3>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {addons.map((addon) => (
-                <div
-                  key={addon.name}
-                  className="flex items-center justify-between p-4 rounded-xl border border-border bg-card"
-                >
-                  <span className="text-sm text-primary">{addon.name}</span>
-                  <span className="text-sm font-medium text-accent">{addon.price}</span>
-                </div>
-              ))}
-            </div>
+          <div className="max-w-2xl mx-auto text-center">
+            <p className="text-sm text-muted leading-relaxed mb-4">
+              Need something not in the plans above? E-commerce, custom integration,
+              ongoing maintenance, anything else — tell us about it and we&apos;ll quote it honestly.
+            </p>
+            <Link
+              href="/start"
+              className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:text-accent-light transition-colors"
+            >
+              Talk to us about a custom build
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
           </div>
         </RevealOnScroll>
       </div>

@@ -309,15 +309,9 @@ body {
   background-size: 256px 256px;
 }
 
-/* ── Cursor style override for custom cursor ── */
-@media (pointer: fine) {
-  body {
-    cursor: none;
-  }
-  a, button, [role="button"], input, textarea, select, [data-cursor] {
-    cursor: none;
-  }
-}
+/* Custom cursor disabled — native mouse pointer is more reliable across
+   different OS / mouse-color combinations. The cursor: none + custom indigo
+   dot caused the cursor to blend into accent-colored backgrounds. */
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {

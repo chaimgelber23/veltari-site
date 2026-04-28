@@ -9,6 +9,16 @@
   --border: #e4e4e7;
   --card: #ffffff;
   --card-hover: #f4f4f5;
+
+  /* Opacity hierarchy — design-director "secret weapon".
+     Single near-black tint, varied by alpha, gives instant visual hierarchy
+     without juggling 5 different gray values. Use these instead of ad-hoc
+     text-muted/text-primary mixes. */
+  --text-headline: rgba(10, 10, 10, 1);
+  --text-body: rgba(10, 10, 10, 0.85);
+  --text-sub: rgba(10, 10, 10, 0.7);
+  --text-secondary: rgba(10, 10, 10, 0.6);
+  --text-muted: rgba(10, 10, 10, 0.4);
 }
 
 @theme inline {

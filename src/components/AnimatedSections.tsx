@@ -145,9 +145,9 @@ export function AnimatedProblemSection() {
   ];
 
   return (
-    <section className="py-24 lg:py-32 bg-surface">
+    <section className="py-20 lg:py-24 bg-surface">
       <div className="max-w-6xl mx-auto px-6">
-        <FadeIn className="text-center mb-16">
+        <FadeIn className="text-center mb-14">
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight mb-4">
             Your website is your best salesperson.
             <br />
@@ -554,9 +554,9 @@ export function AnimatedPortfolioSection() {
   const otherVariants = SITE_VARIANTS.filter((v) => v !== "restaurant");
 
   return (
-    <section id="portfolio" className="py-24 lg:py-32 mesh-gradient">
+    <section id="portfolio" className="py-20 lg:py-28 mesh-gradient">
       <div className="max-w-6xl mx-auto px-6">
-        <FadeIn className="text-center mb-16">
+        <FadeIn className="text-center mb-14">
           <span className="text-xs font-medium text-accent tracking-widest uppercase mb-4 block">
             What a transformation looks like
           </span>
@@ -693,9 +693,9 @@ export function AnimatedTestimonialsSection() {
   ];
 
   return (
-    <section className="py-24 lg:py-32 bg-surface">
+    <section className="py-20 lg:py-24 bg-surface">
       <div className="max-w-6xl mx-auto px-6">
-        <FadeIn className="text-center mb-16">
+        <FadeIn className="text-center mb-14">
           <span className="text-xs font-medium text-accent tracking-widest uppercase mb-4 block">
             Our honest promise
           </span>

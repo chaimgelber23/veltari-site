@@ -243,6 +243,197 @@ export const SITE_VARIANTS: SiteVariant[] = ["dental", "salon", "restaurant", "r
 export { VARIANT_LABELS, VARIANT_DOMAINS };
 
 // ============================================================================
+// ScrollingRestaurantSite — polished restaurant site for AFTER pane in the
+// portfolio when the BEFORE is a real restaurant prospect's screenshot.
+// 6 sections: nav · hero · tonight's menu · chef · reservation · reviews · footer.
+// Same scroll-friendly structure as the dental version.
+// ============================================================================
+
+export function ScrollingRestaurantSite() {
+  return (
+    <div className="bg-stone-50">
+      {/* Sticky nav */}
+      <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-2.5 bg-stone-50/95 backdrop-blur border-b border-stone-300/70">
+        <div className="flex items-center gap-1.5">
+          <div className="w-4 h-4 rounded-md bg-gradient-to-br from-emerald-700 to-emerald-900" />
+          <div className="font-serif text-[11px] italic font-bold text-stone-900 tracking-tight">Corner Table</div>
+        </div>
+        <div className="flex items-center gap-2.5">
+          {["Menu", "Reserve", "Hours", "About"].map((n) => (
+            <span key={n} className="text-[7px] text-stone-500 uppercase tracking-wide hidden sm:inline">{n}</span>
+          ))}
+          <div className="h-4 px-2 rounded-md bg-emerald-800 text-white text-[8px] font-semibold flex items-center">
+            Reserve
+          </div>
+        </div>
+      </div>
+
+      {/* Section 1 — Hero */}
+      <section className="bg-gradient-to-b from-amber-50 via-stone-50 to-stone-50 px-4 py-6">
+        <div className="text-center">
+          <div className="inline-block rounded bg-emerald-100 px-1.5 py-0.5 mb-1.5">
+            <span className="text-[7px] font-semibold text-emerald-800 uppercase tracking-wide">Tonight · 6pm slot open</span>
+          </div>
+          <div className="font-serif italic text-[18px] font-semibold leading-[1.1] text-stone-900">
+            Where <span className="text-emerald-800 font-bold not-italic">neighbors</span> meet.
+          </div>
+          <div className="mt-1.5 text-[8px] text-stone-600 italic max-w-[200px] mx-auto leading-snug">
+            Seasonal menu · local sourcing · open every night except Sunday.
+          </div>
+          <div className="mt-3 flex items-center justify-center gap-1.5">
+            <div className="h-5 px-2.5 rounded-full bg-stone-900 text-white text-[8px] font-semibold flex items-center">Reserve a table</div>
+            <div className="h-5 px-2.5 rounded-full border border-stone-400 text-stone-700 text-[8px] font-semibold flex items-center">View menu</div>
+          </div>
+        </div>
+        {/* Photo strip */}
+        <div className="mt-4 grid grid-cols-3 gap-1">
+          <div className="aspect-square rounded bg-gradient-to-br from-amber-300 to-orange-500" />
+          <div className="aspect-square rounded bg-gradient-to-br from-emerald-200 to-emerald-500" />
+          <div className="aspect-square rounded bg-gradient-to-br from-rose-300 to-rose-500" />
+        </div>
+      </section>
+
+      {/* Section 2 — Tonight's menu */}
+      <section className="px-4 py-5 bg-stone-50">
+        <div className="text-center mb-3">
+          <div className="text-[7px] font-semibold text-emerald-800 tracking-widest uppercase mb-1">Tonight&apos;s menu</div>
+          <div className="font-serif italic text-[14px] font-semibold text-stone-900 leading-tight">Chef Marco&apos;s seasonal picks.</div>
+        </div>
+        <div className="space-y-1.5">
+          {[
+            { d: "Roasted Branzino", s: "Lemon · capers · fennel · charred radicchio", p: "$32" },
+            { d: "Wild Mushroom Risotto", s: "Truffle · pecorino · spring herbs", p: "$26" },
+            { d: "Bavette Steak Frites", s: "Béarnaise · twice-cooked fries · arugula", p: "$34" },
+            { d: "Heirloom Tomato Burrata", s: "Aged balsamic · basil oil · sea salt", p: "$18" },
+          ].map((m) => (
+            <div key={m.d} className="rounded-md bg-white border border-stone-200 p-2 flex items-start gap-2">
+              <div className="flex-1">
+                <div className="font-serif text-[10px] font-semibold text-stone-900 leading-tight">{m.d}</div>
+                <div className="text-[7px] text-stone-500 italic mt-0.5">{m.s}</div>
+              </div>
+              <div className="text-[10px] font-bold text-emerald-800 shrink-0">{m.p}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Section 3 — Chef bio */}
+      <section className="px-4 py-5 bg-stone-100">
+        <div className="grid grid-cols-[auto_1fr] gap-3 items-start">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-stone-300 to-stone-500 ring-2 ring-white shadow shrink-0" />
+          <div>
+            <div className="text-[7px] font-semibold text-emerald-800 uppercase tracking-widest">Meet our chef</div>
+            <div className="font-serif italic text-[13px] font-semibold text-stone-900 leading-tight mt-0.5">Chef Marco Bianchi</div>
+            <div className="text-[8px] text-stone-700 leading-relaxed mt-1.5">
+              15 years in Italian kitchens, last 6 leading the line at Spritz in NYC.
+              Focused on what&apos;s in season locally — menu changes monthly with the produce.
+            </div>
+            <div className="mt-2 flex flex-wrap gap-1">
+              {["Italian", "Farm-to-table", "BYOB Tue-Wed"].map((c) => (
+                <span key={c} className="text-[7px] font-semibold text-emerald-900 bg-emerald-100 px-1.5 py-0.5 rounded">{c}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 4 — Reservation widget */}
+      <section className="px-4 py-5 bg-stone-50">
+        <div className="text-center mb-3">
+          <div className="text-[7px] font-semibold text-emerald-800 tracking-widest uppercase mb-1">Reserve a table</div>
+          <div className="font-serif italic text-[14px] font-semibold text-stone-900 leading-tight">Confirmed instantly.</div>
+        </div>
+        <div className="rounded-md bg-stone-900 text-white p-2.5">
+          <div className="text-[7px] font-semibold uppercase tracking-wide opacity-60 mb-2 text-center">Tonight</div>
+          <div className="grid grid-cols-6 gap-1 mb-2">
+            {[2, 3, 4, 5, 6, 8].map((n, i) => (
+              <div
+                key={n}
+                className={`h-5 rounded flex items-center justify-center text-[8px] font-semibold ${
+                  i === 1 ? "bg-emerald-600" : "bg-white/10"
+                }`}
+              >
+                {n}
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-4 gap-1">
+            {["5:30pm", "6:00pm", "6:30pm", "7:00pm", "7:30pm", "8:00pm", "8:30pm", "9:00pm"].map((t, i) => (
+              <div
+                key={t}
+                className={`h-5 rounded flex items-center justify-center text-[7px] font-semibold ${
+                  i === 1 ? "bg-emerald-600" : "bg-white/5 border border-white/10 text-white/80"
+                }`}
+              >
+                {t}
+              </div>
+            ))}
+          </div>
+          <div className="mt-2 text-center">
+            <div className="inline-flex h-5 px-3 rounded-full bg-white text-stone-900 text-[8px] font-semibold items-center">
+              Confirm 6:00pm · party of 3
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 5 — Reviews */}
+      <section className="px-4 py-5 bg-stone-100">
+        <div className="text-center mb-3">
+          <div className="text-[7px] font-semibold text-emerald-800 tracking-widest uppercase mb-1">What guests say</div>
+          <div className="font-serif italic text-[14px] font-semibold text-stone-900 leading-tight">5-star, every time.</div>
+        </div>
+        <div className="space-y-1.5">
+          {[
+            { q: "Best risotto I've had outside Italy. Marco's attention to seasonality shows.", n: "L. Park", r: "Sept 2024" },
+            { q: "Our anniversary spot. Patio in summer, fireplace in winter — never disappoints.", n: "T. Murray", r: "Nov 2024" },
+          ].map((t, i) => (
+            <div key={i} className="rounded-md bg-white border border-stone-200 p-2">
+              <div className="flex gap-0.5 mb-1">
+                {Array.from({ length: 5 }).map((_, j) => (
+                  <svg key={j} className="w-2 h-2 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <div className="text-[8px] text-stone-700 leading-relaxed italic">&ldquo;{t.q}&rdquo;</div>
+              <div className="text-[7px] text-stone-500 mt-1">— {t.n} · {t.r}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Section 6 — Footer */}
+      <section className="px-4 py-5 bg-stone-900 text-white">
+        <div className="grid grid-cols-[1fr_auto] gap-3 items-start">
+          <div>
+            <div className="font-serif italic text-[11px] font-bold tracking-tight">Corner Table</div>
+            <div className="text-[7px] text-stone-400 mt-1.5 leading-relaxed">
+              218 East Ave · East Nashville<br />
+              (615) 555-0144
+            </div>
+            <div className="text-[7px] text-stone-400 mt-2 uppercase tracking-wide">Hours</div>
+            <div className="text-[7px] text-stone-300 mt-0.5">Mon-Sat · 5pm–11pm</div>
+            <div className="text-[7px] text-stone-300">Sunday · closed</div>
+          </div>
+          <div className="w-20 h-16 rounded bg-stone-700 relative overflow-hidden shrink-0">
+            <div className="absolute inset-0 opacity-50">
+              <div className="absolute top-1/3 left-0 right-0 h-px bg-stone-500" />
+              <div className="absolute top-2/3 left-0 right-0 h-px bg-stone-500" />
+              <div className="absolute top-0 bottom-0 left-1/2 w-px bg-stone-500" />
+            </div>
+            <div className="absolute top-1/2 left-1/2 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-white -translate-x-1/2 -translate-y-1/2" />
+          </div>
+        </div>
+        <div className="mt-3 pt-3 border-t border-white/10 text-[6px] text-stone-500">
+          © 2026 Corner Table · Built by Pristine Site
+        </div>
+      </section>
+    </div>
+  );
+}
+
+// ============================================================================
 // ScrollingDentalSite — the polished site that lives inside the hero frame.
 // 6 stacked sections rendered with real-feeling layout/density. The parent
 // hero auto-scrolls the inner content from y=0 to y=-(innerHeight - viewport)

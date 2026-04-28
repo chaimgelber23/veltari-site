@@ -150,12 +150,23 @@ export function BoringDentalBefore() {
 export interface BeforeAfterScrollingMockupProps {
   beforeUrl: string;
   afterUrl: string;
-  before: React.ReactNode; // typically fits the viewport without scroll
-  after: React.ReactNode;  // typically a tall site that scrolls
+  /**
+   * BEFORE pane content. Either a React node (for CSS mockups) OR
+   * an `{ image: ... }` to display a real screenshot URL (e.g. from
+   * thum.io of a real prospect's site). Image renders as object-cover
+   * scrolling slowly to reveal full-page screenshots that are taller
+   * than the viewport.
+   */
+  before: React.ReactNode | { image: string; alt?: string };
+  after: React.ReactNode;
   /** Time each state is shown in ms. Default 6000. */
   intervalMs?: number;
   /** Cross-fade duration in ms. Default 600. */
   transitionMs?: number;
+}
+
+function isImageBefore(b: BeforeAfterScrollingMockupProps["before"]): b is { image: string; alt?: string } {
+  return typeof b === "object" && b !== null && "image" in b && typeof (b as { image: string }).image === "string";
 }
 
 export function BeforeAfterScrollingMockup({
@@ -238,9 +249,28 @@ export function BeforeAfterScrollingMockup({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: transitionMs / 1000, ease: "easeInOut" }}
-              className="absolute inset-0"
+              className="absolute inset-0 overflow-hidden"
             >
-              {before}
+              {isImageBefore(before) ? (
+                // Real screenshot — auto-pans top→bottom to reveal full-page
+                // captures that are usually taller than the viewport.
+                <motion.img
+                  // eslint-disable-next-line @next/next/no-img-element
+                  src={before.image}
+                  alt={before.alt || "Before — real prospect site we'd transform"}
+                  className="absolute inset-x-0 top-0 w-full will-change-transform"
+                  initial={{ y: 0 }}
+                  animate={{ y: ["0%", "-65%"] }}
+                  transition={{
+                    duration: 5,
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                  }}
+                />
+              ) : (
+                before
+              )}
             </motion.div>
           )}
         </AnimatePresence>

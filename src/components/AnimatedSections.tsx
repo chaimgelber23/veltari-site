@@ -17,12 +17,9 @@ import {
   MockedWebsiteContent,
   SITE_VARIANTS,
   VARIANT_LABELS,
-  ScrollingDentalSite,
+  ScrollingRestaurantSite,
 } from "./HeroWebsiteMockup";
-import {
-  BeforeAfterScrollingMockup,
-  BoringDentalBefore,
-} from "./BeforeAfterScrollingMockup";
+import { BeforeAfterScrollingMockup } from "./BeforeAfterScrollingMockup";
 import { FAQPageJsonLd } from "./JsonLd";
 
 /* ───────────────────────── Hero ───────────────────────── */
@@ -562,9 +559,9 @@ export function AnimatedPricingSection() {
    followed by 3 small "style example" cards for the other verticals so
    the section still shows breadth. */
 export function AnimatedPortfolioSection() {
-  // The featured card uses the dental variant. The 3 small examples below
-  // are the OTHER three verticals so we don't repeat the dental one twice.
-  const otherVariants = SITE_VARIANTS.filter((v) => v !== "dental");
+  // The featured card uses the real restaurant prospect transformation.
+  // The 3 small examples below are the OTHER three verticals.
+  const otherVariants = SITE_VARIANTS.filter((v) => v !== "restaurant");
 
   return (
     <section id="portfolio" className="py-24 lg:py-32 mesh-gradient">
@@ -583,15 +580,24 @@ export function AnimatedPortfolioSection() {
           </p>
         </FadeIn>
 
-        {/* Featured BEFORE/AFTER card — the showcase */}
+        {/* Featured BEFORE/AFTER card — uses a REAL screenshot of a real
+            prospect site for the BEFORE pane (anonymized URL bar). The
+            AFTER is a polished restaurant-vertical mockup. */}
         <FadeIn className="mb-16">
           <div className="grid lg:grid-cols-[3fr_2fr] gap-8 lg:gap-12 items-center">
             <div className="mx-auto w-full max-w-[460px] lg:max-w-none">
               <BeforeAfterScrollingMockup
-                beforeUrl="brightsmiledental.tripod.com/index.html"
-                afterUrl="brightsmiledental.com"
-                before={<BoringDentalBefore />}
-                after={<ScrollingDentalSite />}
+                beforeUrl="your-current-site.com"
+                afterUrl="your-new-site.com"
+                before={{
+                  // Real screenshot via thum.io (free public service).
+                  // maxAge=3600 caches for 1 hour so we don't hammer them.
+                  // The URL bar above is masked; only the screenshot is real.
+                  image:
+                    "https://image.thum.io/get/width/720/maxAge/3600/png/https://stregabar.com",
+                  alt: "A real prospect site we'd transform",
+                }}
+                after={<ScrollingRestaurantSite />}
               />
             </div>
             <div className="text-center lg:text-left">
@@ -599,13 +605,18 @@ export function AnimatedPortfolioSection() {
                 Featured transformation
               </span>
               <h3 className="font-heading text-2xl sm:text-3xl tracking-tight mt-2 mb-4">
-                Dental practice rebuild
+                Restaurant rebuild
               </h3>
-              <p className="text-muted leading-relaxed text-sm mb-5">
-                A typical practice walks in with a 2009-era site that hurts to look at — bad fonts,
-                visitor counters, no mobile design, copy that buries every reason to book. We replace it
-                with a modern site that actually books appointments: insurance trust strip, services
-                grid, doctor bio, live booking widget, real testimonials, mobile-first.
+              <p className="text-muted leading-relaxed text-sm mb-3">
+                Real prospect site on the BEFORE — exactly the kind of cluttered, hard-to-read
+                local-restaurant page that loses reservations. The AFTER is a 24-hour rebuild:
+                seasonal menu cards, chef bio, live reservation widget with party-size + time
+                pickers, real reviews, mobile-first.
+              </p>
+              <p className="text-muted/70 text-[11px] mb-5 italic">
+                BEFORE is a real public site we&apos;ve engaged with as a prospect; the URL bar above is
+                anonymized. AFTER is a CSS mockup of what we&apos;d build — actual builds are tailored
+                to each customer.
               </p>
               <Link
                 href="/start"

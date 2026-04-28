@@ -3,21 +3,19 @@
 // ============================================================================
 // <HeroWebsiteMockup /> + <MockedWebsiteContent />
 //
-// The hero shows a fake browser window wrapping a CSS-only stylized website
-// preview. The inner preview auto-cycles through 4 industry variants
-// (dental, salon, restaurant, real estate) on a 5s cross-fade so visitors
-// see multiple styles we can build, not just one.
+// The hero shows a fake browser window wrapping a TALL polished website that
+// auto-scrolls top-to-bottom inside the frame, like watching someone scroll
+// through a real site preview. After reaching the bottom it pauses then
+// restarts. Way more interesting than a static screenshot or a slideshow of
+// 4 mini-mockups.
 //
-// MockedWebsiteContent is exported so the Portfolio section can render the
-// same 4 variants as static "style example" cards (replacing what used to
-// be fake-named project screenshots — see feedback_no_fake_social_proof_own_sites).
-//
-// All CSS, no images: perfectly crisp at any resolution, fast first paint,
-// honest about what they are (stylistic mockups, not specific real clients).
+// MockedWebsiteContent is also exported (in 4 vertical variants) so the
+// Portfolio section can render style examples for different industries.
+// The hero uses the dental variant by default — most fleshed-out vertical.
 // ============================================================================
 
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 type BadgePosition = "top-left" | "top-right" | "bottom-left" | "bottom-right";
 
@@ -101,7 +99,8 @@ function FloatingBadge({ badge }: { badge: ProofBadge }) {
 }
 
 // ============================================================================
-// MockedWebsiteContent — 4 industry style variants, all pure CSS
+// MockedWebsiteContent — short variants for the Portfolio "style examples"
+// section. The hero uses ScrollingDentalSite below instead.
 // ============================================================================
 
 export type SiteVariant = "dental" | "salon" | "restaurant" | "realestate";
@@ -121,12 +120,12 @@ const VARIANT_DOMAINS: Record<SiteVariant, string> = {
 };
 
 interface VariantTheme {
-  bg: string; // gradient classes
+  bg: string;
   brandName: string;
-  accentClass: string; // e.g. text-rose-500
-  accentBg: string;   // e.g. bg-rose-500
-  accentSoftBg: string; // e.g. bg-rose-100
-  accentSoftText: string; // e.g. text-rose-700
+  accentClass: string;
+  accentBg: string;
+  accentSoftBg: string;
+  accentSoftText: string;
   badgeText: string;
   pillText: string;
   headline: React.ReactNode;
@@ -146,15 +145,11 @@ const VARIANTS: Record<SiteVariant, VariantTheme> = {
     accentSoftText: "text-rose-700",
     badgeText: "Now booking · Sat 1pm",
     pillText: "Book a visit",
-    headline: <>The <em className="text-rose-500 not-italic font-bold">smile</em> you've been hiding.</>,
+    headline: <>The <em className="text-rose-500 not-italic font-bold">smile</em> you&apos;ve been hiding.</>,
     subhead: "Same-day crowns. All insurance. Open evenings & weekends.",
     primaryCta: "Book a visit",
     secondaryCta: "Meet Dr. Chen",
-    stats: [
-      { v: "4.9★", l: "240 reviews" },
-      { v: "12yr", l: "in practice" },
-      { v: "Same", l: "day crowns" },
-    ],
+    stats: [{ v: "4.9★", l: "240 reviews" }, { v: "12yr", l: "in practice" }, { v: "Same", l: "day crowns" }],
   },
   salon: {
     bg: "from-pink-50 via-white to-orange-50",
@@ -169,11 +164,7 @@ const VARIANTS: Record<SiteVariant, VariantTheme> = {
     subhead: "Balayage · color · cut. Master stylists, no chair-rentals.",
     primaryCta: "Book online",
     secondaryCta: "See lookbook",
-    stats: [
-      { v: "8yr", l: "balayage focus" },
-      { v: "$185", l: "starting" },
-      { v: "Free", l: "consult" },
-    ],
+    stats: [{ v: "8yr", l: "balayage focus" }, { v: "$185", l: "starting" }, { v: "Free", l: "consult" }],
   },
   restaurant: {
     bg: "from-stone-100 via-amber-50 to-stone-100",
@@ -188,11 +179,7 @@ const VARIANTS: Record<SiteVariant, VariantTheme> = {
     subhead: "Seasonal menu. Local sourcing. Open every night except Sunday.",
     primaryCta: "Reserve table",
     secondaryCta: "View menu",
-    stats: [
-      { v: "Farm", l: "to table" },
-      { v: "BYOB", l: "Tue-Wed" },
-      { v: "5★", l: "Yelp" },
-    ],
+    stats: [{ v: "Farm", l: "to table" }, { v: "BYOB", l: "Tue-Wed" }, { v: "5★", l: "Yelp" }],
   },
   realestate: {
     bg: "from-sky-50 via-white to-slate-50",
@@ -207,11 +194,7 @@ const VARIANTS: Record<SiteVariant, VariantTheme> = {
     subhead: "Waterfront homes from $480K. New listings every Friday.",
     primaryCta: "Browse homes",
     secondaryCta: "Talk to an agent",
-    stats: [
-      { v: "$480K+", l: "starting" },
-      { v: "32", l: "active listings" },
-      { v: "20yr", l: "local" },
-    ],
+    stats: [{ v: "$480K+", l: "starting" }, { v: "32", l: "active listings" }, { v: "20yr", l: "local" }],
   },
 };
 
@@ -219,262 +202,283 @@ interface MockedWebsiteContentProps {
   variant: SiteVariant;
 }
 
-// Shared mini-nav atom (consistent across all variants — top of every site)
-function MiniNav({ v, navItems }: { v: VariantTheme; navItems: string[] }) {
+export function MockedWebsiteContent({ variant }: MockedWebsiteContentProps) {
+  // Compact card-sized version of each variant for the Portfolio section.
+  // The hero uses ScrollingDentalSite (fully-built tall site) instead.
+  const v = VARIANTS[variant];
   return (
-    <div className="flex items-center justify-between pb-2.5 border-b border-slate-200/70 shrink-0">
-      <div className="flex items-center gap-1.5">
-        <div className={`w-4 h-4 rounded-md ${v.accentBg}`} />
-        <div className="font-serif text-[11px] font-bold text-slate-900 tracking-tight">{v.brandName}</div>
-      </div>
-      <div className="flex items-center gap-2.5">
-        {navItems.map((item) => (
-          <span key={item} className="text-[7px] text-slate-500 uppercase tracking-wide hidden sm:inline">
-            {item}
-          </span>
-        ))}
+    <div className={`bg-gradient-to-br ${v.bg} h-full p-3 sm:p-4 flex flex-col gap-3`}>
+      <div className="flex items-center justify-between pb-2.5 border-b border-slate-200/70 shrink-0">
+        <div className="flex items-center gap-1.5">
+          <div className={`w-4 h-4 rounded-md ${v.accentBg}`} />
+          <div className="font-serif text-[11px] font-bold text-slate-900 tracking-tight">{v.brandName}</div>
+        </div>
         <div className={`h-4 px-2 rounded-md ${v.accentBg} flex items-center text-[8px] font-semibold text-white`}>
           {v.primaryCta}
         </div>
       </div>
-    </div>
-  );
-}
-
-// ── Variant 1: Dental — clinical, appointment-led with insurance trust ──
-function DentalLayout({ v }: { v: VariantTheme }) {
-  return (
-    <div className={`bg-gradient-to-br ${v.bg} h-full p-3 sm:p-4 flex flex-col gap-3`}>
-      <MiniNav v={v} navItems={["Services", "Team", "Insurance"]} />
-      {/* Hero: photo placeholder + appointment CTA */}
-      <div className="grid grid-cols-[1fr_auto] gap-3 items-center">
-        <div>
-          <div className={`inline-block rounded ${v.accentSoftBg} px-1.5 py-0.5 mb-1.5`}>
-            <span className={`text-[7px] font-semibold ${v.accentSoftText} tracking-wide uppercase`}>{v.badgeText}</span>
-          </div>
-          <div className="font-serif text-[14px] font-semibold leading-tight text-slate-900">{v.headline}</div>
-          <div className="mt-1 text-[8px] text-slate-500 leading-snug max-w-[140px]">{v.subhead}</div>
+      <div className="flex-1 flex flex-col justify-center items-center text-center px-1">
+        <div className={`inline-flex items-center gap-1 rounded-full ${v.accentSoftBg} px-2 py-0.5 mb-2`}>
+          <span className={`text-[8px] font-semibold ${v.accentSoftText} tracking-wide uppercase`}>{v.badgeText}</span>
         </div>
-        {/* Doctor avatar bubble */}
-        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-rose-200 to-rose-300 ring-2 ring-white shadow-sm flex items-end justify-center overflow-hidden">
-          <div className="w-8 h-6 rounded-t-full bg-rose-100" />
-        </div>
+        <div className="font-serif text-[15px] font-semibold leading-tight text-slate-900">{v.headline}</div>
+        <div className="mt-1.5 text-[9px] text-slate-500 max-w-[180px] leading-snug">{v.subhead}</div>
       </div>
-      {/* Appointment slots widget — vertical-specific */}
-      <div className="rounded-md bg-white/80 border border-slate-200/70 p-2 shrink-0">
-        <div className="text-[7px] font-semibold text-slate-500 uppercase tracking-wide mb-1">Next available</div>
-        <div className="grid grid-cols-3 gap-1">
-          {[
-            { d: "Tue", t: "10:30" },
-            { d: "Wed", t: "2:00", on: true },
-            { d: "Thu", t: "9:15" },
-          ].map((s, i) => (
-            <div
-              key={i}
-              className={`rounded px-1.5 py-1 text-center ${
-                s.on ? `${v.accentBg} text-white` : "bg-slate-100 text-slate-700"
-              }`}
-            >
-              <div className="text-[7px] font-semibold uppercase">{s.d}</div>
-              <div className="text-[8px] font-bold">{s.t}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-      {/* Insurance trust strip — vertical-specific */}
-      <div className="mt-auto pt-2 border-t border-slate-200/70">
-        <div className="text-[7px] text-slate-400 uppercase tracking-wide mb-1.5 text-center">In-network with</div>
-        <div className="flex items-center justify-center gap-2">
-          {["BCBS", "Aetna", "Cigna", "Delta"].map((p) => (
-            <div key={p} className="text-[8px] font-bold text-slate-400 tracking-tight">{p}</div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ── Variant 2: Salon — image-led, gallery + price-list dominant ──
-function SalonLayout({ v }: { v: VariantTheme }) {
-  return (
-    <div className={`bg-gradient-to-br ${v.bg} h-full p-3 sm:p-4 flex flex-col gap-3`}>
-      <MiniNav v={v} navItems={["Stylists", "Lookbook", "Book"]} />
-      <div className="text-center px-1 shrink-0">
-        <div className="font-serif text-[13px] font-semibold leading-tight text-slate-900">{v.headline}</div>
-      </div>
-      {/* Look gallery — 3 image squares with overlay labels */}
-      <div className="grid grid-cols-3 gap-1.5 shrink-0">
-        {[
-          { l: "Balayage", c: "from-amber-200 to-orange-300" },
-          { l: "Blonde", c: "from-yellow-100 to-amber-200" },
-          { l: "Brunette", c: "from-amber-700 to-stone-700" },
-        ].map((s, i) => (
-          <div key={i} className={`relative aspect-square rounded bg-gradient-to-br ${s.c} overflow-hidden`}>
-            <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-[6px] font-semibold text-white text-center py-0.5 uppercase tracking-wide">
-              {s.l}
-            </div>
+      <div className="grid grid-cols-3 gap-1.5 pt-2 border-t border-slate-200/70 shrink-0">
+        {v.stats.map((s, i) => (
+          <div key={i} className="text-center">
+            <div className="font-serif text-[11px] font-bold text-slate-900">{s.v}</div>
+            <div className="text-[7px] text-slate-500 uppercase tracking-wide">{s.l}</div>
           </div>
         ))}
       </div>
-      {/* Price list — vertical-specific */}
-      <div className="rounded-md bg-white/80 border border-slate-200/70 p-2 shrink-0">
-        <div className="text-[7px] font-semibold text-slate-500 uppercase tracking-wide mb-1">Services</div>
-        {[
-          { s: "Balayage · long", p: "$215" },
-          { s: "Color refresh", p: "$95" },
-          { s: "Cut + style", p: "$75" },
-        ].map((row) => (
-          <div key={row.s} className="flex items-center justify-between text-[8px] py-0.5">
-            <span className="text-slate-700">{row.s}</span>
-            <span className={`font-bold ${v.accentClass}`}>{row.p}</span>
-          </div>
-        ))}
-      </div>
-      {/* Book CTA */}
-      <div className="mt-auto flex items-center justify-center">
-        <div className={`h-5 px-3 rounded-full ${v.accentBg} flex items-center text-[8px] font-semibold text-white shadow-sm`}>
-          {v.primaryCta}
-        </div>
-      </div>
     </div>
   );
-}
-
-// ── Variant 3: Restaurant — menu-led with reservation widget ──
-function RestaurantLayout({ v }: { v: VariantTheme }) {
-  return (
-    <div className={`bg-gradient-to-br ${v.bg} h-full p-3 sm:p-4 flex flex-col gap-3`}>
-      <MiniNav v={v} navItems={["Menu", "Reserve", "Hours"]} />
-      <div className="text-center px-1 shrink-0">
-        <div className="font-serif text-[13px] italic text-slate-900 leading-tight">{v.headline}</div>
-        <div className="mt-1 text-[8px] text-slate-500 italic">{v.subhead}</div>
-      </div>
-      {/* Tonight's menu cards — vertical-specific */}
-      <div className="grid grid-cols-2 gap-1.5 shrink-0">
-        {[
-          { d: "Roasted Branzino", p: "$32", n: "Lemon · capers · fennel" },
-          { d: "Wild Mushroom Risotto", p: "$26", n: "Truffle · pecorino" },
-        ].map((m) => (
-          <div key={m.d} className="rounded-md bg-white/85 border border-slate-200/70 p-1.5">
-            <div className="font-serif text-[9px] font-semibold text-slate-900 leading-tight">{m.d}</div>
-            <div className="text-[6px] text-slate-500 italic mt-0.5">{m.n}</div>
-            <div className={`text-[8px] font-bold mt-1 ${v.accentClass}`}>{m.p}</div>
-          </div>
-        ))}
-      </div>
-      {/* Reservation widget — vertical-specific */}
-      <div className="rounded-md bg-slate-900 text-white p-2 shrink-0 mt-auto">
-        <div className="text-[7px] font-semibold uppercase tracking-wide opacity-60 mb-1">Reserve a table</div>
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1">
-            {[2, 4, 6].map((n) => (
-              <div key={n} className="w-5 h-5 rounded border border-white/20 flex items-center justify-center text-[8px] font-medium">
-                {n}
-              </div>
-            ))}
-          </div>
-          <div className={`h-5 px-2.5 rounded-md ${v.accentBg} flex items-center text-[8px] font-semibold`}>
-            6:00pm
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ── Variant 4: Real Estate — listing cards + map sliver ──
-function RealestateLayout({ v }: { v: VariantTheme }) {
-  return (
-    <div className={`bg-gradient-to-br ${v.bg} h-full p-3 sm:p-4 flex flex-col gap-3`}>
-      <MiniNav v={v} navItems={["Listings", "Sold", "Agents"]} />
-      <div className="px-1 shrink-0">
-        <div className={`inline-block rounded ${v.accentSoftBg} px-1.5 py-0.5 mb-1`}>
-          <span className={`text-[7px] font-semibold ${v.accentSoftText} tracking-wide uppercase`}>{v.badgeText}</span>
-        </div>
-        <div className="font-serif text-[13px] font-semibold leading-tight text-slate-900">{v.headline}</div>
-      </div>
-      {/* Listing cards — vertical-specific */}
-      <div className="space-y-1.5 shrink-0">
-        {[
-          { addr: "12 Harbor View Rd", p: "$895K", b: "4bd · 3ba · 2,400 sqft", c: "from-sky-200 to-sky-300" },
-          { addr: "47 Pier Lane", p: "$675K", b: "3bd · 2ba · 1,850 sqft", c: "from-blue-200 to-sky-200" },
-        ].map((l) => (
-          <div key={l.addr} className="flex items-center gap-2 rounded-md bg-white/85 border border-slate-200/70 p-1.5">
-            <div className={`w-10 h-10 rounded bg-gradient-to-br ${l.c} shrink-0`} />
-            <div className="flex-1 min-w-0">
-              <div className="font-serif text-[10px] font-semibold text-slate-900 truncate leading-tight">{l.addr}</div>
-              <div className="text-[7px] text-slate-500 truncate">{l.b}</div>
-            </div>
-            <div className={`text-[10px] font-bold ${v.accentClass} shrink-0`}>{l.p}</div>
-          </div>
-        ))}
-      </div>
-      {/* Map sliver — vertical-specific */}
-      <div className="mt-auto rounded-md overflow-hidden border border-slate-200/70 h-12 relative bg-gradient-to-br from-slate-100 to-slate-200">
-        {/* Fake roads */}
-        <div className="absolute inset-0 opacity-50">
-          <div className="absolute top-1/3 left-0 right-0 h-px bg-slate-400" />
-          <div className="absolute top-2/3 left-0 right-0 h-px bg-slate-400" />
-          <div className="absolute top-0 bottom-0 left-1/4 w-px bg-slate-400" />
-          <div className="absolute top-0 bottom-0 left-2/3 w-px bg-slate-400" />
-        </div>
-        {/* Pins */}
-        {[
-          { x: "20%", y: "30%" },
-          { x: "55%", y: "60%" },
-          { x: "75%", y: "40%" },
-        ].map((pin, i) => (
-          <div
-            key={i}
-            className={`absolute w-2 h-2 rounded-full ${v.accentBg} ring-2 ring-white shadow`}
-            style={{ left: pin.x, top: pin.y, transform: "translate(-50%, -50%)" }}
-          />
-        ))}
-        <div className="absolute bottom-0.5 right-1.5 text-[6px] font-semibold text-slate-600 bg-white/80 px-1 rounded">
-          32 listings
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export function MockedWebsiteContent({ variant }: MockedWebsiteContentProps) {
-  const v = VARIANTS[variant];
-  switch (variant) {
-    case "dental":
-      return <DentalLayout v={v} />;
-    case "salon":
-      return <SalonLayout v={v} />;
-    case "restaurant":
-      return <RestaurantLayout v={v} />;
-    case "realestate":
-      return <RealestateLayout v={v} />;
-  }
 }
 
 export const SITE_VARIANTS: SiteVariant[] = ["dental", "salon", "restaurant", "realestate"];
 export { VARIANT_LABELS, VARIANT_DOMAINS };
 
 // ============================================================================
-// Hero — auto-cycles through all 4 variants
+// ScrollingDentalSite — the polished site that lives inside the hero frame.
+// 6 stacked sections rendered with real-feeling layout/density. The parent
+// hero auto-scrolls the inner content from y=0 to y=-(innerHeight - viewport)
+// over ~14s, pauses 1s, then restarts. Looks like watching a real visitor
+// scroll through a finished site.
 // ============================================================================
 
-const CYCLE_INTERVAL_MS = 5000;
+function FakeImg({ className = "", gradient = "from-rose-200 to-rose-300" }: { className?: string; gradient?: string }) {
+  return <div className={`bg-gradient-to-br ${gradient} ${className}`} />;
+}
+
+function ScrollingDentalSite() {
+  return (
+    <div className="bg-white">
+      {/* Sticky-look mini nav */}
+      <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-2.5 bg-white/95 backdrop-blur border-b border-slate-200/70">
+        <div className="flex items-center gap-1.5">
+          <div className="w-4 h-4 rounded-md bg-gradient-to-br from-rose-500 to-rose-600" />
+          <div className="font-serif text-[11px] font-bold text-slate-900 tracking-tight">Bright Smile Dental</div>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-[7px] text-slate-500 uppercase tracking-wide">Services</span>
+          <span className="text-[7px] text-slate-500 uppercase tracking-wide">Team</span>
+          <span className="text-[7px] text-slate-500 uppercase tracking-wide">Insurance</span>
+          <div className="h-4 px-2 rounded-md bg-rose-500 flex items-center text-[8px] font-semibold text-white">
+            Book
+          </div>
+        </div>
+      </div>
+
+      {/* Section 1 — Hero */}
+      <section className="bg-gradient-to-b from-rose-50 via-white to-white px-4 py-5">
+        <div className="grid grid-cols-[1fr_auto] gap-3 items-center">
+          <div>
+            <div className="inline-block rounded bg-rose-100 px-1.5 py-0.5 mb-1.5">
+              <span className="text-[7px] font-semibold text-rose-700 tracking-wide uppercase">Now booking · Sat 1pm</span>
+            </div>
+            <div className="font-serif text-[17px] font-semibold leading-[1.1] text-slate-900">
+              The <em className="text-rose-500 not-italic font-bold">smile</em> you&apos;ve been hiding.
+            </div>
+            <div className="mt-1.5 text-[8px] text-slate-500 leading-snug max-w-[160px]">
+              Same-day crowns. All insurance. Evenings &amp; weekends.
+            </div>
+            <div className="mt-2.5 flex items-center gap-1.5">
+              <div className="h-5 px-2.5 rounded-full bg-slate-900 text-white text-[8px] font-semibold flex items-center">Book a visit</div>
+              <div className="h-5 px-2.5 rounded-full border border-slate-300 text-slate-700 text-[8px] font-semibold flex items-center">Meet the team</div>
+            </div>
+          </div>
+          <FakeImg className="w-20 h-24 rounded-xl ring-2 ring-white shadow-md shrink-0" gradient="from-rose-200 via-rose-100 to-rose-300" />
+        </div>
+        {/* Insurance strip */}
+        <div className="mt-4 pt-3 border-t border-slate-200/70">
+          <div className="text-[7px] text-slate-400 uppercase tracking-wide mb-1.5 text-center">In-network with</div>
+          <div className="flex items-center justify-center gap-2.5">
+            {["BCBS", "Aetna", "Cigna", "Delta", "Met"].map((p) => (
+              <div key={p} className="text-[8px] font-bold text-slate-400 tracking-tight">{p}</div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Section 2 — Services grid */}
+      <section className="px-4 py-5 bg-white">
+        <div className="text-center mb-3">
+          <div className="text-[7px] font-semibold text-rose-500 tracking-widest uppercase mb-1">Care that fits your life</div>
+          <div className="font-serif text-[14px] font-semibold text-slate-900 leading-tight">Everything you need under one roof.</div>
+        </div>
+        <div className="grid grid-cols-2 gap-1.5">
+          {[
+            { t: "Cleanings", n: "Hygienist visits in 30 min", icon: "🦷" },
+            { t: "Same-day crowns", n: "CEREC · 2 hour visit", icon: "✨" },
+            { t: "Implants", n: "0% financing · 24mo", icon: "🪥" },
+            { t: "Whitening", n: "ZOOM in-office · Take-home", icon: "💎" },
+          ].map((s) => (
+            <div key={s.t} className="rounded-md border border-slate-200 bg-white p-2">
+              <div className="text-[10px] mb-0.5">{s.icon}</div>
+              <div className="font-serif text-[10px] font-bold text-slate-900 leading-tight">{s.t}</div>
+              <div className="text-[7px] text-slate-500 mt-0.5">{s.n}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Section 3 — Doctor bio */}
+      <section className="px-4 py-5 bg-rose-50/60">
+        <div className="grid grid-cols-[auto_1fr] gap-3 items-start">
+          <FakeImg className="w-16 h-16 rounded-full ring-2 ring-white shadow shrink-0" gradient="from-rose-300 to-rose-400" />
+          <div>
+            <div className="text-[7px] font-semibold text-rose-500 uppercase tracking-widest">Meet your dentist</div>
+            <div className="font-serif text-[13px] font-semibold text-slate-900 leading-tight mt-0.5">
+              Dr. Sarah Chen, DDS
+            </div>
+            <div className="text-[8px] text-slate-600 leading-relaxed mt-1.5">
+              12 years in Bright Smile practice. UPenn dental school. Member of the American Academy of
+              Cosmetic Dentistry. Believes the best appointment is one you don&apos;t dread.
+            </div>
+            <div className="mt-2 flex flex-wrap gap-1">
+              {["DDS", "AACD", "Invisalign Provider"].map((c) => (
+                <span key={c} className="text-[7px] font-semibold text-rose-700 bg-rose-100 px-1.5 py-0.5 rounded">{c}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 4 — Booking widget */}
+      <section className="px-4 py-5 bg-white">
+        <div className="text-center mb-3">
+          <div className="text-[7px] font-semibold text-rose-500 tracking-widest uppercase mb-1">Book online</div>
+          <div className="font-serif text-[14px] font-semibold text-slate-900 leading-tight">Pick a time that works.</div>
+          <div className="text-[8px] text-slate-500 mt-1">Confirmed instantly. Reminders by text.</div>
+        </div>
+        <div className="rounded-md border border-slate-200 bg-white p-2.5">
+          <div className="text-[7px] font-semibold text-slate-500 uppercase tracking-wide mb-2 text-center">This week</div>
+          <div className="grid grid-cols-5 gap-1">
+            {[
+              { d: "Tue", n: "21" },
+              { d: "Wed", n: "22", on: true },
+              { d: "Thu", n: "23" },
+              { d: "Fri", n: "24" },
+              { d: "Sat", n: "25" },
+            ].map((s, i) => (
+              <div
+                key={i}
+                className={`rounded p-1 text-center ${s.on ? "bg-rose-500 text-white" : "bg-slate-50 text-slate-700"}`}
+              >
+                <div className="text-[6px] font-semibold uppercase">{s.d}</div>
+                <div className="text-[10px] font-bold">{s.n}</div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-2 grid grid-cols-3 gap-1">
+            {["9:30am", "11:00am", "2:00pm", "3:30pm", "5:00pm", "6:15pm"].map((t, i) => (
+              <div
+                key={t}
+                className={`rounded text-center text-[8px] font-semibold py-1 ${
+                  i === 2 ? "bg-rose-500 text-white" : "bg-slate-50 text-slate-700 border border-slate-200"
+                }`}
+              >
+                {t}
+              </div>
+            ))}
+          </div>
+          <div className="mt-2 text-center">
+            <div className="inline-flex h-5 px-3 rounded-full bg-slate-900 text-white text-[8px] font-semibold items-center">
+              Confirm Wed · 2:00pm
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 5 — Testimonials */}
+      <section className="px-4 py-5 bg-slate-50">
+        <div className="text-center mb-3">
+          <div className="text-[7px] font-semibold text-rose-500 tracking-widest uppercase mb-1">Patient stories</div>
+          <div className="font-serif text-[14px] font-semibold text-slate-900 leading-tight">240 five-star reviews and counting.</div>
+        </div>
+        <div className="space-y-1.5">
+          {[
+            { q: "Dr. Chen fixed my crown in 90 minutes — same day. I was shocked.", n: "M. Rivera", r: "Crown · 2024" },
+            { q: "First dentist I haven't dreaded going to. The whole team is kind.", n: "S. Park", r: "New patient · 2024" },
+          ].map((t, i) => (
+            <div key={i} className="rounded-md bg-white border border-slate-200 p-2">
+              <div className="flex gap-0.5 mb-1">
+                {Array.from({ length: 5 }).map((_, j) => (
+                  <svg key={j} className="w-2 h-2 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <div className="text-[8px] text-slate-700 leading-relaxed italic">&ldquo;{t.q}&rdquo;</div>
+              <div className="text-[7px] text-slate-500 mt-1">— {t.n} · {t.r}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Section 6 — Footer + map sliver */}
+      <section className="px-4 py-5 bg-slate-900 text-white">
+        <div className="grid grid-cols-[1fr_auto] gap-3 items-start">
+          <div>
+            <div className="font-serif text-[11px] font-bold tracking-tight">Bright Smile Dental</div>
+            <div className="text-[7px] text-slate-400 mt-1.5 leading-relaxed">
+              412 Maple St · Suite 2B<br />
+              Riverside, CA 92501<br />
+              (555) 030-2200
+            </div>
+            <div className="text-[7px] text-slate-400 mt-2 uppercase tracking-wide">Hours</div>
+            <div className="text-[7px] text-slate-300 mt-0.5">Mon-Fri · 8am – 7pm</div>
+            <div className="text-[7px] text-slate-300">Sat · 9am – 2pm</div>
+          </div>
+          {/* Tiny map */}
+          <div className="w-20 h-16 rounded bg-slate-700 relative overflow-hidden shrink-0">
+            <div className="absolute inset-0 opacity-50">
+              <div className="absolute top-1/3 left-0 right-0 h-px bg-slate-500" />
+              <div className="absolute top-2/3 left-0 right-0 h-px bg-slate-500" />
+              <div className="absolute top-0 bottom-0 left-1/3 w-px bg-slate-500" />
+            </div>
+            <div className="absolute top-1/2 left-1/2 w-2 h-2 rounded-full bg-rose-400 ring-2 ring-white -translate-x-1/2 -translate-y-1/2" />
+          </div>
+        </div>
+        <div className="mt-3 pt-3 border-t border-white/10 text-[6px] text-slate-500">
+          © 2026 Bright Smile Dental · Built by Pristine Site
+        </div>
+      </section>
+    </div>
+  );
+}
+
+// ============================================================================
+// Hero — auto-scrolls the polished dental site top to bottom inside the
+// browser frame. Loops indefinitely.
+// ============================================================================
+
+const SCROLL_DURATION_S = 14; // 14s top-to-bottom scroll
+const PAUSE_S = 1.5;          // pause at top + bottom
 
 export function HeroWebsiteMockup() {
   const [mounted, setMounted] = useState(false);
-  const [variantIdx, setVariantIdx] = useState(0);
+  const innerRef = useRef<HTMLDivElement | null>(null);
+  const viewportRef = useRef<HTMLDivElement | null>(null);
+  const [maxScroll, setMaxScroll] = useState(0);
 
   useEffect(() => setMounted(true), []);
 
+  // Measure scroll distance after mount + on resize
   useEffect(() => {
-    const id = setInterval(() => {
-      setVariantIdx((i) => (i + 1) % SITE_VARIANTS.length);
-    }, CYCLE_INTERVAL_MS);
-    return () => clearInterval(id);
-  }, []);
-
-  const variant = SITE_VARIANTS[variantIdx];
+    const measure = () => {
+      const inner = innerRef.current;
+      const viewport = viewportRef.current;
+      if (!inner || !viewport) return;
+      setMaxScroll(Math.max(0, inner.offsetHeight - viewport.offsetHeight));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (innerRef.current) ro.observe(innerRef.current);
+    if (viewportRef.current) ro.observe(viewportRef.current);
+    return () => ro.disconnect();
+  }, [mounted]);
 
   return (
     <div className="relative mx-auto w-full max-w-[460px]">
@@ -494,18 +498,7 @@ export function HeroWebsiteMockup() {
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
           </div>
           <div className="flex-1 mx-2 h-6 rounded-md bg-card-hover flex items-center justify-center px-3 overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.span
-                key={variant}
-                initial={{ opacity: 0, y: -4 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 4 }}
-                transition={{ duration: 0.25 }}
-                className="text-[10px] text-muted font-mono truncate"
-              >
-                {VARIANT_DOMAINS[variant]}
-              </motion.span>
-            </AnimatePresence>
+            <span className="text-[10px] text-muted font-mono truncate">brightsmiledental.com</span>
           </div>
           <div className="hidden sm:flex items-center gap-1.5 text-muted">
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -514,34 +507,65 @@ export function HeroWebsiteMockup() {
           </div>
         </div>
 
-        {/* The mocked site — cross-fades on variant change */}
-        <div className="aspect-[4/5] sm:aspect-[3/4] overflow-hidden rounded-b-2xl relative">
-          <AnimatePresence mode="sync">
-            <motion.div
-              key={variant}
-              className="absolute inset-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.7, ease: "easeInOut" }}
-            >
-              <MockedWebsiteContent variant={variant} />
-            </motion.div>
-          </AnimatePresence>
+        {/* Viewport — scrolls the inner site */}
+        <div
+          ref={viewportRef}
+          className="aspect-[4/5] sm:aspect-[3/4] overflow-hidden rounded-b-2xl relative bg-white"
+        >
+          <motion.div
+            ref={innerRef}
+            className="absolute inset-x-0 top-0 will-change-transform"
+            animate={
+              maxScroll > 0
+                ? { y: [0, 0, -maxScroll, -maxScroll, 0] }
+                : { y: 0 }
+            }
+            transition={
+              maxScroll > 0
+                ? {
+                    duration: SCROLL_DURATION_S + PAUSE_S * 2,
+                    times: [
+                      0,
+                      PAUSE_S / (SCROLL_DURATION_S + PAUSE_S * 2),
+                      (PAUSE_S + SCROLL_DURATION_S) / (SCROLL_DURATION_S + PAUSE_S * 2),
+                      (PAUSE_S + SCROLL_DURATION_S + PAUSE_S) / (SCROLL_DURATION_S + PAUSE_S * 2),
+                      1,
+                    ],
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }
+                : { duration: 0 }
+            }
+          >
+            <ScrollingDentalSite />
+          </motion.div>
 
-          {/* Variant indicator dots */}
-          <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
-            {SITE_VARIANTS.map((v, i) => (
-              <span
-                key={v}
-                className="h-1.5 rounded-full transition-all duration-500"
-                style={{
-                  background: i === variantIdx ? "rgba(15,15,15,0.55)" : "rgba(15,15,15,0.18)",
-                  width: i === variantIdx ? "16px" : "5px",
+          {/* Soft top + bottom fades to mask scroll boundaries */}
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-4 bg-gradient-to-b from-white to-transparent z-10" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-white to-transparent z-10" />
+
+          {/* Scroll-progress dot — gives subtle "this is scrolling" hint */}
+          {maxScroll > 0 && (
+            <div className="absolute right-1.5 top-3 bottom-3 w-1 rounded-full bg-slate-200/40 z-10">
+              <motion.div
+                className="absolute left-0 right-0 rounded-full bg-rose-500/70"
+                style={{ height: "20%" }}
+                animate={{ top: ["0%", "0%", "80%", "80%", "0%"] }}
+                transition={{
+                  duration: SCROLL_DURATION_S + PAUSE_S * 2,
+                  times: [
+                    0,
+                    PAUSE_S / (SCROLL_DURATION_S + PAUSE_S * 2),
+                    (PAUSE_S + SCROLL_DURATION_S) / (SCROLL_DURATION_S + PAUSE_S * 2),
+                    (PAUSE_S + SCROLL_DURATION_S + PAUSE_S) / (SCROLL_DURATION_S + PAUSE_S * 2),
+                    1,
+                  ],
+                  repeat: Infinity,
+                  ease: "easeInOut",
                 }}
               />
-            ))}
-          </div>
+            </div>
+          )}
         </div>
       </motion.div>
     </div>

@@ -45,15 +45,9 @@ export default function Navigation() {
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo — typographic wordmark, no symbol mark */}
-          <Link href="/" className="group inline-flex items-baseline gap-0 leading-none">
-            <span className="font-heading text-2xl lg:text-[26px] tracking-tight text-primary leading-none">
-              Pristine
-            </span>
-            <span className="font-heading text-2xl lg:text-[26px] tracking-tight text-accent leading-none">.</span>
-            <span className="font-heading text-2xl lg:text-[26px] tracking-tight text-muted leading-none italic ml-0.5">
-              Site
-            </span>
+          {/* Logo — clean text wordmark */}
+          <Link href="/" className="font-heading text-2xl lg:text-[26px] tracking-tight text-primary leading-none">
+            Pristine Site
           </Link>
 
           {/* Desktop Links */}

@@ -25,7 +25,7 @@ import { FAQPageJsonLd } from "./JsonLd";
 /* ───────────────────────── Hero ───────────────────────── */
 export function AnimatedHero() {
   return (
-    <section className="relative min-h-[100vh] flex items-center overflow-hidden hero-gradient">
+    <section className="relative min-h-[85vh] flex items-center overflow-hidden hero-gradient">
       {/* Single quiet accent glow — three blurred indigo blobs read as
           SaaS-template hero background. One subtle pull from the upper
           right is enough atmosphere; restraint is the design move. */}
@@ -35,7 +35,7 @@ export function AnimatedHero() {
         </ParallaxLayer>
       </div>
 
-      <div className="relative w-full max-w-7xl mx-auto px-6 lg:px-10 pt-28 pb-20 lg:pt-24 lg:pb-32">
+      <div className="relative w-full max-w-7xl mx-auto px-6 lg:px-10 pt-24 pb-16 lg:pt-20 lg:pb-24">
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
           {/* LEFT — text content */}
           <div className="lg:col-span-6 lg:pr-6 text-center lg:text-left">
@@ -296,7 +296,7 @@ export function AnimatedHowItWorks() {
   return (
     <section id="how-it-works" className="py-24 lg:py-32 mesh-gradient">
       <div className="max-w-6xl mx-auto px-6">
-        <FadeIn className="text-center mb-16">
+        <FadeIn className="text-center mb-14">
           <span className="text-xs font-medium text-accent tracking-widest uppercase mb-4 block">
             The Process
           </span>
@@ -405,7 +405,7 @@ export function AnimatedPricingSection() {
   return (
     <section id="pricing" className="py-24 lg:py-32 bg-surface">
       <div className="max-w-6xl mx-auto px-6">
-        <FadeIn className="text-center mb-16">
+        <FadeIn className="text-center mb-14">
           <span className="text-xs font-medium text-accent tracking-widest uppercase mb-4 block">
             Pricing
           </span>
@@ -821,7 +821,7 @@ export function AnimatedTrustSection() {
   return (
     <section className="py-24 lg:py-32 bg-surface">
       <div className="max-w-6xl mx-auto px-6">
-        <FadeIn className="text-center mb-16">
+        <FadeIn className="text-center mb-14">
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight mb-4">
             Built to last. <span className="text-gradient">Guaranteed.</span>
           </h2>
@@ -878,7 +878,7 @@ export function AnimatedFAQSection() {
     <section id="faq" className="py-24 lg:py-32 mesh-gradient">
       <FAQPageJsonLd items={faqs.map((f) => ({ question: f.q, answer: f.a }))} />
       <div className="max-w-3xl mx-auto px-6">
-        <FadeIn className="text-center mb-16">
+        <FadeIn className="text-center mb-14">
           <span className="text-xs font-medium text-accent tracking-widest uppercase mb-4 block">
             FAQ
           </span>

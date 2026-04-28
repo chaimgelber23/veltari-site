@@ -29,11 +29,12 @@ interface ProofBadge {
   position: BadgePosition;
 }
 
+// Sit straight — rotated badges read as Web 2.0 stickers, not editorial.
 const BADGE_POS: Record<BadgePosition, string> = {
-  "top-left": "absolute -left-4 sm:-left-8 top-12 hidden md:block rotate-[-3deg]",
-  "top-right": "absolute -right-4 sm:-right-8 top-12 hidden md:block rotate-[3deg]",
-  "bottom-left": "absolute -left-4 sm:-left-8 bottom-20 hidden md:block rotate-[3deg]",
-  "bottom-right": "absolute -right-2 sm:-right-6 bottom-20 hidden md:block rotate-[2deg]",
+  "top-left": "absolute -left-4 sm:-left-8 top-12 hidden md:block",
+  "top-right": "absolute -right-4 sm:-right-8 top-12 hidden md:block",
+  "bottom-left": "absolute -left-4 sm:-left-8 bottom-20 hidden md:block",
+  "bottom-right": "absolute -right-2 sm:-right-6 bottom-20 hidden md:block",
 };
 
 const STAGGER_ORDER: BadgePosition[] = ["top-left", "top-right", "bottom-right", "bottom-left"];
@@ -566,13 +567,15 @@ export function ScrollingDentalSite() {
         </div>
         <div className="grid grid-cols-2 gap-1.5">
           {[
-            { t: "Cleanings", n: "Hygienist visits in 30 min", icon: "🦷" },
-            { t: "Same-day crowns", n: "CEREC · 2 hour visit", icon: "✨" },
-            { t: "Implants", n: "0% financing · 24mo", icon: "🪥" },
-            { t: "Whitening", n: "ZOOM in-office · Take-home", icon: "💎" },
-          ].map((s) => (
+            { t: "Cleanings", n: "Hygienist visits in 30 min" },
+            { t: "Same-day crowns", n: "CEREC · 2 hour visit" },
+            { t: "Implants", n: "0% financing · 24mo" },
+            { t: "Whitening", n: "ZOOM in-office · Take-home" },
+          ].map((s, i) => (
             <div key={s.t} className="rounded-md border border-slate-200 bg-white p-2">
-              <div className="text-[10px] mb-0.5">{s.icon}</div>
+              <div className="text-[7px] font-bold text-rose-700 tracking-widest mb-0.5">
+                {String(i + 1).padStart(2, "0")}
+              </div>
               <div className="font-serif text-[10px] font-bold text-slate-900 leading-tight">{s.t}</div>
               <div className="text-[7px] text-slate-500 mt-0.5">{s.n}</div>
             </div>

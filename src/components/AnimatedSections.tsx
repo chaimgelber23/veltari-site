@@ -26,19 +26,12 @@ import { FAQPageJsonLd } from "./JsonLd";
 export function AnimatedHero() {
   return (
     <section className="relative min-h-[100vh] flex items-center overflow-hidden hero-gradient">
-      {/* Mesh gradient blobs with parallax */}
+      {/* Single quiet accent glow — three blurred indigo blobs read as
+          SaaS-template hero background. One subtle pull from the upper
+          right is enough atmosphere; restraint is the design move. */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <ParallaxLayer speed={0.3}>
-          <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent/[0.06] blur-3xl animate-float" />
-        </ParallaxLayer>
-        <ParallaxLayer speed={-0.2}>
-          <div
-            className="absolute -bottom-40 -left-40 w-[600px] h-[600px] rounded-full bg-accent-light/[0.05] blur-3xl animate-float"
-            style={{ animationDelay: "3s" }}
-          />
-        </ParallaxLayer>
-        <ParallaxLayer speed={0.5}>
-          <div className="absolute top-1/3 left-1/2 w-[300px] h-[300px] rounded-full bg-accent/[0.04] blur-3xl animate-pulse-slow" />
+        <ParallaxLayer speed={0.2}>
+          <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-accent/[0.04] blur-3xl" />
         </ParallaxLayer>
       </div>
 
@@ -58,15 +51,12 @@ export function AnimatedHero() {
               </div>
             </FadeIn>
 
-            {/* Headline */}
-            <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl leading-[1.05] tracking-tight mb-6">
+            {/* Headline — solid color, no gradient. Gradient text reads as
+                SaaS-template; restrained typography reads as design studio. */}
+            <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl leading-[1.05] tracking-tight mb-6 text-primary">
               <TextReveal text="Your Custom Website." delay={0.1} />
               <br />
-              <TextReveal
-                text="Live in 24 Hours."
-                className="text-gradient"
-                delay={0.4}
-              />
+              <TextReveal text="Live in 24 Hours." delay={0.4} />
             </h1>
 
             {/* Subtitle */}

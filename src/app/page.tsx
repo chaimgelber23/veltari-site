@@ -3,13 +3,10 @@ import Navigation from "@/components/Navigation";
 import {
   AnimatedHero,
   AnimatedProblemSection,
-  AnimatedLogoMarquee,
-  AnimatedStatsRow,
   AnimatedHowItWorks,
   AnimatedPricingSection,
   AnimatedPortfolioSection,
   AnimatedTestimonialsSection,
-  AnimatedTrustSection,
   AnimatedFAQSection,
   AnimatedCTASection,
 } from "@/components/AnimatedSections";
@@ -67,13 +64,10 @@ export default function Home() {
       <Navigation />
       <AnimatedHero />
       <AnimatedProblemSection />
-      <AnimatedLogoMarquee />
-      <AnimatedStatsRow />
       <AnimatedHowItWorks />
       <AnimatedPricingSection />
       <AnimatedPortfolioSection />
       <AnimatedTestimonialsSection />
-      <AnimatedTrustSection />
       <AnimatedFAQSection />
       <AnimatedCTASection />
       <Footer />

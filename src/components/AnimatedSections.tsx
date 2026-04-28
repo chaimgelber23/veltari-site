@@ -142,16 +142,6 @@ export function AnimatedProblemSection() {
       description:
         "Over 60% of traffic comes from phones. If your site isn't mobile-first, you're invisible to most buyers.",
     },
-    {
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      ),
-      title: "Blending in with template sites",
-      description:
-        "Cookie-cutter designs kill trust. Your website should feel as unique as the business behind it.",
-    },
   ];
 
   return (
@@ -165,7 +155,7 @@ export function AnimatedProblemSection() {
           </h2>
         </FadeIn>
 
-        <StaggerChildren className="grid md:grid-cols-3 gap-8">
+        <StaggerChildren className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {problems.map((p, i) => (
             <StaggerItem key={i}>
               <div className="group p-8 rounded-2xl border border-border bg-card hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 transition-all duration-300 hover:-translate-y-1 h-full">

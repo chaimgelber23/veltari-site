@@ -50,7 +50,7 @@ export default function Navigation() {
             Pristine Site
           </Link>
 
-          {/* Desktop Links */}
+          {/* Desktop nav — links + CTA grouped right */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <a
@@ -61,13 +61,9 @@ export default function Navigation() {
                 {link.label}
               </a>
             ))}
-          </div>
-
-          {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-4">
             <Link
               href="/start"
-              className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-white bg-accent hover:bg-accent-light rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+              className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-white bg-accent hover:bg-accent-light rounded-lg transition-all duration-200 shadow-sm hover:shadow-md ml-2"
             >
               Start Your Project
             </Link>

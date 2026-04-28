@@ -17,9 +17,15 @@ function Footer() {
     <footer className="py-16 bg-primary border-t border-white/5">
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          {/* Logo — clean text wordmark, matches Navigation */}
-          <div className="font-heading text-xl tracking-tight text-surface leading-none">
-            Pristine Site
+          {/* Logo — designed wordmark, matches Navigation. On dark footer
+              the accent indigo lifts well against #0a0a0a. */}
+          <div className="inline-flex items-baseline gap-2 leading-none">
+            <span className="font-heading text-xl tracking-tight text-surface leading-none">
+              Pristine
+            </span>
+            <span className="font-sans text-[10px] font-semibold text-accent-light tracking-[0.22em] uppercase leading-none">
+              Site
+            </span>
           </div>
 
           {/* Links */}

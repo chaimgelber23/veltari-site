@@ -45,9 +45,17 @@ export default function Navigation() {
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo — clean text wordmark */}
-          <Link href="/" className="font-heading text-2xl lg:text-[26px] tracking-tight text-primary leading-none">
-            Pristine Site
+          {/* Logo — designed wordmark: serif primary + sans label.
+              "Pristine" reads as the brand; "SITE" reads as a typographic
+              label (uppercase + tracked sans), giving visible contrast
+              without the rejected dot/italic/symbol marks. */}
+          <Link href="/" className="inline-flex items-baseline gap-2 leading-none">
+            <span className="font-heading text-2xl lg:text-[26px] tracking-tight text-primary leading-none">
+              Pristine
+            </span>
+            <span className="font-sans text-[11px] lg:text-xs font-semibold text-accent tracking-[0.22em] uppercase leading-none">
+              Site
+            </span>
           </Link>
 
           {/* Desktop nav — links + CTA grouped right */}

@@ -903,28 +903,45 @@ export function AnimatedFAQSection() {
   );
 }
 
-/* ────────────────── CTA Section ────────────────── */
+/* ────────────────── CTA Section ──────────────────
+   Designed CTA — kicker label, oversized editorial headline, indigo
+   accent rule above the button to "frame" it as the next step. */
 export function AnimatedCTASection() {
   return (
-    <section className="py-24 lg:py-32 bg-primary relative overflow-hidden">
+    <section className="py-28 lg:py-36 bg-primary relative overflow-hidden">
       {/* Subtle accent glow */}
       <ParallaxLayer speed={0.3} className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-accent/10 blur-3xl rounded-full" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[260px] bg-accent/15 blur-3xl rounded-full" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[180px] bg-accent-light/10 blur-3xl rounded-full" />
       </ParallaxLayer>
 
-      <div className="relative max-w-3xl mx-auto px-6 text-center">
+      <div className="relative max-w-4xl mx-auto px-6 text-center">
+        {/* Kicker label */}
         <FadeIn>
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl text-surface tracking-tight mb-6">
-            Ready to see what your
+          <div className="inline-flex items-center gap-3 mb-8">
+            <span className="h-px w-10 bg-accent-light/50" />
+            <span className="text-[11px] font-semibold text-accent-light tracking-[0.22em] uppercase">
+              The next step
+            </span>
+            <span className="h-px w-10 bg-accent-light/50" />
+          </div>
+        </FadeIn>
+
+        <FadeIn delay={0.1}>
+          <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-surface tracking-tight leading-[1.05] mb-8">
+            See your new site
             <br />
-            new site looks like?
+            <span className="text-gradient">before you pay a cent.</span>
           </h2>
         </FadeIn>
-        <FadeIn delay={0.15}>
-          <p className="text-surface/60 text-lg mb-10 max-w-xl mx-auto">
-            Fill out a quick form. Get a free preview in 24 hours. No payment required.
+
+        <FadeIn delay={0.2}>
+          <p className="text-surface/60 text-lg sm:text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
+            Fill out a quick brief. Get a free, custom-built preview in 24 hours.
+            Love it &mdash; we ship it. Don&apos;t &mdash; walk away. No payment required to start.
           </p>
         </FadeIn>
+
         <FadeIn delay={0.3}>
           <MagneticButton className="inline-block">
             <Link
@@ -944,10 +961,28 @@ export function AnimatedCTASection() {
             </Link>
           </MagneticButton>
         </FadeIn>
+
         <FadeIn delay={0.45}>
-          <p className="text-surface/30 text-sm mt-6">
-            100% satisfaction guarantee. Full refund if you&apos;re not happy.
-          </p>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs text-surface/45">
+            <span className="inline-flex items-center gap-1.5">
+              <svg className="w-3.5 h-3.5 text-accent-light" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+              No payment to start
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <svg className="w-3.5 h-3.5 text-accent-light" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+              100% money-back guarantee
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <svg className="w-3.5 h-3.5 text-accent-light" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+              You own everything
+            </span>
+          </div>
         </FadeIn>
       </div>
     </section>

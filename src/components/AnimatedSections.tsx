@@ -342,23 +342,28 @@ export function AnimatedHowItWorks() {
   );
 }
 
-/* ────────────────────── Pricing ────────────────────── */
+/* ────────────────────── Pricing ──────────────────────
+   Plans MUST match seo-business/src/lib/wb/brand-config.ts WB_BRAND.packages.
+   The "New Business Checklist" + pricing-sync-guard verify this at build time
+   in the seo-business hub. Drift = misleading prospects. */
 export function AnimatedPricingSection() {
   const plans = [
     {
       name: "Starter",
       price: 499,
-      priceDisplay: "$499",
-      monthly: "$119/mo x 5",
+      pages: "1-3 pages",
       description: "Perfect for solo businesses and personal brands",
       features: [
-        "Custom one-page website",
-        "Mobile-responsive design",
+        "Up to 3 pages",
+        "Custom domain (you only pay registrar)",
+        "Mobile-first responsive design",
+        "Brand-matched colors & fonts",
         "Contact form integration",
         "Basic SEO setup",
-        "Free hosting forever",
-        "24-hour delivery",
         "1 round of revisions",
+        "No Pristine Site branding",
+        "Free hosting on Vercel — forever",
+        "Email support",
       ],
       cta: "Start Your Project",
       popular: false,
@@ -366,19 +371,18 @@ export function AnimatedPricingSection() {
     {
       name: "Business",
       price: 899,
-      priceDisplay: "$899",
-      monthly: "$169/mo x 6",
+      pages: "3-7 pages",
       description: "For growing businesses that need more",
       features: [
-        "Up to 5-page website",
-        "Brand color customization",
+        "Up to 7 pages",
+        "Everything in Starter",
+        "Custom animations & hover effects",
         "Blog / News section",
-        "Google Analytics setup",
-        "Advanced SEO optimization",
-        "Free hosting forever",
-        "24-hour delivery",
-        "3 rounds of revisions",
-        "Social media integration",
+        "SEO optimization + Schema markup",
+        "Google Business integration",
+        "2 rounds of revisions",
+        "Free hosting on Vercel — forever",
+        "Priority support",
       ],
       cta: "Start Your Project",
       popular: true,
@@ -386,20 +390,18 @@ export function AnimatedPricingSection() {
     {
       name: "Premium",
       price: 1999,
-      priceDisplay: "$1,999",
-      monthly: "$229/mo x 10",
+      pages: "7-20 pages",
       description: "Full-scale web presence with everything included",
       features: [
-        "Unlimited pages",
-        "Custom animations & interactions",
-        "E-commerce ready",
-        "CMS for easy updates",
-        "Priority support",
-        "Advanced analytics dashboard",
-        "Free hosting forever",
-        "24-hour delivery",
-        "Unlimited revisions",
-        "Performance optimization",
+        "Up to 20 pages",
+        "Everything in Business",
+        "E-commerce / booking integration",
+        "Custom forms & integrations",
+        "Advanced animations",
+        "3 rounds of revisions",
+        "Free hosting on Vercel — forever",
+        "Dedicated support",
+        "Monthly performance reports (3 months included)",
       ],
       cta: "Start Your Project",
       popular: false,
@@ -478,7 +480,7 @@ export function AnimatedPricingSection() {
                       plan.popular ? "text-surface/40" : "text-muted/70"
                     }`}
                   >
-                    or {plan.monthly}
+                    {plan.pages} &middot; No subscription
                   </p>
                 </div>
 

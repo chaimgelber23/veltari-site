@@ -205,33 +205,92 @@ const VARIANTS: Record<SiteVariant, VariantTheme> = {
   },
 };
 
+// Per-variant photo-block palettes. Gradient placeholders stand in for
+// real photography but feel intentional, not stock. Each set is curated
+// to the vertical's palette.
+const MOCK_PHOTO_BLOCKS: Record<SiteVariant, string[]> = {
+  dental: ["from-slate-300 to-slate-500", "from-rose-200 to-rose-400", "from-stone-300 to-stone-500"],
+  salon: ["from-amber-200 to-amber-500", "from-stone-300 to-stone-500", "from-rose-200 to-rose-400"],
+  restaurant: ["from-amber-300 to-orange-500", "from-emerald-300 to-emerald-600", "from-rose-300 to-rose-500"],
+  realestate: ["from-slate-400 to-slate-700", "from-sky-200 to-sky-500", "from-blue-300 to-blue-600"],
+};
+
+// Per-variant service/feature pills — adds content density and gives each
+// vertical visible specifics that prove this isn't a template.
+const MOCK_PILLS: Record<SiteVariant, string[]> = {
+  dental: ["Same-day crowns", "All insurance", "Open evenings"],
+  salon: ["Balayage", "Color", "Cut & finish"],
+  restaurant: ["Reservations", "Private events", "Wine pairing"],
+  realestate: ["Waterfront", "New listings", "Local 20yr"],
+};
+
 interface MockedWebsiteContentProps {
   variant: SiteVariant;
 }
 
 export function MockedWebsiteContent({ variant }: MockedWebsiteContentProps) {
-  // Compact card-sized version of each variant for the Portfolio section.
-  // The hero uses ScrollingDentalSite (fully-built tall site) instead.
+  // Polished card-sized mockup — each variant feels like a designed site,
+  // not a wireframe. Includes: nav with menu links, hero with badge+headline,
+  // a 3-up photo strip, service pills, and a stats footer. Same density as
+  // a real one-page site, just compressed.
   const v = VARIANTS[variant];
+  const photos = MOCK_PHOTO_BLOCKS[variant];
+  const pills = MOCK_PILLS[variant];
+
   return (
-    <div className={`bg-gradient-to-br ${v.bg} h-full p-3 sm:p-4 flex flex-col gap-3`}>
-      <div className="flex items-center justify-between pb-2.5 border-b border-slate-200/70 shrink-0">
+    <div className={`bg-gradient-to-br ${v.bg} h-full flex flex-col`}>
+      {/* Nav strip — brand mark + menu hints + CTA pill */}
+      <div className="px-3 sm:px-4 py-2.5 flex items-center justify-between border-b border-slate-200/50 shrink-0">
         <div className="flex items-center gap-1.5">
           <div className={`w-4 h-4 rounded-md ${v.accentBg}`} />
           <div className="font-serif text-[11px] font-bold text-slate-900 tracking-tight">{v.brandName}</div>
         </div>
-        <div className={`h-4 px-2 rounded-md ${v.accentBg} flex items-center text-[8px] font-semibold text-white`}>
-          {v.primaryCta}
+        <div className="flex items-center gap-2">
+          <span className="text-[7px] uppercase tracking-wider text-slate-400 hidden sm:inline">Menu</span>
+          <span className="text-[7px] uppercase tracking-wider text-slate-400 hidden sm:inline">About</span>
+          <div className={`h-4 px-1.5 rounded-md ${v.accentBg} flex items-center text-[7px] font-semibold text-white`}>
+            {v.primaryCta}
+          </div>
         </div>
       </div>
-      <div className="flex-1 flex flex-col justify-center items-center text-center px-1">
-        <div className={`inline-flex items-center gap-1 rounded-full ${v.accentSoftBg} px-2 py-0.5 mb-2`}>
+
+      {/* Hero — badge, headline, subhead */}
+      <div className="px-3 sm:px-4 pt-3 pb-2 text-center">
+        <div className={`inline-flex items-center gap-1 rounded-full ${v.accentSoftBg} px-2 py-0.5 mb-1.5`}>
           <span className={`text-[8px] font-semibold ${v.accentSoftText} tracking-wide uppercase`}>{v.badgeText}</span>
         </div>
-        <div className="font-serif text-[15px] font-semibold leading-tight text-slate-900">{v.headline}</div>
-        <div className="mt-1.5 text-[9px] text-slate-500 max-w-[180px] leading-snug">{v.subhead}</div>
+        <div className="font-serif text-[14px] sm:text-[15px] font-semibold leading-[1.15] text-slate-900 px-1">
+          {v.headline}
+        </div>
+        <div className="mt-1 text-[8px] text-slate-500 max-w-[200px] mx-auto leading-snug">{v.subhead}</div>
       </div>
-      <div className="grid grid-cols-3 gap-1.5 pt-2 border-t border-slate-200/70 shrink-0">
+
+      {/* Photo strip — 3-up gradient blocks, adds editorial richness */}
+      <div className="px-3 sm:px-4 mt-1">
+        <div className="grid grid-cols-3 gap-1">
+          {photos.map((p, i) => (
+            <div key={i} className={`aspect-[4/3] rounded bg-gradient-to-br ${p}`} />
+          ))}
+        </div>
+      </div>
+
+      {/* Service / feature pills */}
+      <div className="px-3 sm:px-4 mt-2 flex flex-wrap justify-center gap-1">
+        {pills.map((p) => (
+          <span
+            key={p}
+            className={`text-[7px] font-semibold ${v.accentSoftText} ${v.accentSoftBg} px-1.5 py-0.5 rounded`}
+          >
+            {p}
+          </span>
+        ))}
+      </div>
+
+      {/* Spacer pushes stats to bottom */}
+      <div className="flex-1" />
+
+      {/* Stats footer */}
+      <div className="px-3 sm:px-4 py-2 grid grid-cols-3 gap-1.5 border-t border-slate-200/50 shrink-0">
         {v.stats.map((s, i) => (
           <div key={i} className="text-center">
             <div className="font-serif text-[11px] font-bold text-slate-900">{s.v}</div>

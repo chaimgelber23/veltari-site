@@ -44,12 +44,14 @@ export function AnimatedHero() {
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
           {/* LEFT — text content */}
           <div className="lg:col-span-6 lg:pr-6 text-center lg:text-left">
-            {/* Badge */}
+            {/* Badge — includes the brand name so title, H1, and schema all
+                anchor on "Pristine Site" (fixes the geo-analyzer entity-clarity
+                gap). Reads naturally as a credit line above the H1. */}
             <FadeIn delay={0}>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-card/80 backdrop-blur-sm mb-8">
                 <span className="w-2 h-2 rounded-full bg-accent animate-pulse-slow" />
                 <span className="text-xs font-medium text-muted tracking-wide uppercase">
-                  Premium Web Design Studio
+                  Pristine Site &middot; Custom Web Design
                 </span>
               </div>
             </FadeIn>

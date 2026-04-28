@@ -254,7 +254,7 @@ function FakeImg({ className = "", gradient = "from-rose-200 to-rose-300" }: { c
   return <div className={`bg-gradient-to-br ${gradient} ${className}`} />;
 }
 
-function ScrollingDentalSite() {
+export function ScrollingDentalSite() {
   return (
     <div className="bg-white">
       {/* Sticky-look mini nav */}

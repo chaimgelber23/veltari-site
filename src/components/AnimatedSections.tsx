@@ -17,7 +17,12 @@ import {
   MockedWebsiteContent,
   SITE_VARIANTS,
   VARIANT_LABELS,
+  ScrollingDentalSite,
 } from "./HeroWebsiteMockup";
+import {
+  BeforeAfterScrollingMockup,
+  BoringDentalBefore,
+} from "./BeforeAfterScrollingMockup";
 import { FAQPageJsonLd } from "./JsonLd";
 
 /* ───────────────────────── Hero ───────────────────────── */
@@ -552,31 +557,81 @@ export function AnimatedPricingSection() {
 }
 
 /* ────────────────── Portfolio ──────────────────
-   Replaces what was 4 fake-named "client sites" (with fake before/after
-   scores) with 4 honest "style examples" — fully-rendered CSS mockups of
-   the kind of site we'd build for each vertical. Same MockedWebsiteContent
-   the hero uses, so visual consistency across the whole page.
-   When we have real launched clients, swap each card's body for an iframe
-   or screenshot and add a "View live site" link. Until then, no fakery. */
+   Featured BEFORE/AFTER card (scrolling mockup that toggles between the
+   ugly outdated original and the polished site Pristine Site would build),
+   followed by 3 small "style example" cards for the other verticals so
+   the section still shows breadth. */
 export function AnimatedPortfolioSection() {
+  // The featured card uses the dental variant. The 3 small examples below
+  // are the OTHER three verticals so we don't repeat the dental one twice.
+  const otherVariants = SITE_VARIANTS.filter((v) => v !== "dental");
+
   return (
     <section id="portfolio" className="py-24 lg:py-32 mesh-gradient">
       <div className="max-w-6xl mx-auto px-6">
         <FadeIn className="text-center mb-16">
           <span className="text-xs font-medium text-accent tracking-widest uppercase mb-4 block">
-            Style examples
+            What a transformation looks like
           </span>
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight mb-4">
-            The kinds of sites we build
+            Outdated &rarr; polished, in 24 hours
           </h2>
           <p className="text-muted max-w-xl mx-auto text-sm">
-            These are CSS mockups, not specific clients — we won&apos;t fake reviews or screenshot
-            sites we didn&apos;t make. Yours starts as a free preview tailored to your business.
+            Watch the BEFORE/AFTER toggle below. The &ldquo;before&rdquo; is the kind of dated WordPress
+            template we typically replace; the &ldquo;after&rdquo; is the polished site we build —
+            same screen, scrolled top to bottom.
           </p>
         </FadeIn>
 
-        <StaggerChildren staggerDelay={0.12} className="grid sm:grid-cols-2 gap-8">
-          {SITE_VARIANTS.map((variant) => (
+        {/* Featured BEFORE/AFTER card — the showcase */}
+        <FadeIn className="mb-16">
+          <div className="grid lg:grid-cols-[3fr_2fr] gap-8 lg:gap-12 items-center">
+            <div className="mx-auto w-full max-w-[460px] lg:max-w-none">
+              <BeforeAfterScrollingMockup
+                beforeUrl="brightsmiledental.tripod.com/index.html"
+                afterUrl="brightsmiledental.com"
+                before={<BoringDentalBefore />}
+                after={<ScrollingDentalSite />}
+              />
+            </div>
+            <div className="text-center lg:text-left">
+              <span className="text-[10px] font-medium text-accent tracking-widest uppercase">
+                Featured transformation
+              </span>
+              <h3 className="font-heading text-2xl sm:text-3xl tracking-tight mt-2 mb-4">
+                Dental practice rebuild
+              </h3>
+              <p className="text-muted leading-relaxed text-sm mb-5">
+                A typical practice walks in with a 2009-era site that hurts to look at — bad fonts,
+                visitor counters, no mobile design, copy that buries every reason to book. We replace it
+                with a modern site that actually books appointments: insurance trust strip, services
+                grid, doctor bio, live booking widget, real testimonials, mobile-first.
+              </p>
+              <Link
+                href="/start"
+                className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:text-accent-light transition-colors"
+              >
+                Start your transformation
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </FadeIn>
+
+        {/* Other verticals — small style examples (still honest: labeled as CSS mockups) */}
+        <FadeIn className="text-center mb-8">
+          <span className="text-xs font-medium text-accent tracking-widest uppercase mb-2 block">
+            Other styles we build
+          </span>
+          <p className="text-muted text-sm max-w-md mx-auto">
+            CSS mockups, not specific clients. Yours starts as a free preview tailored to your business.
+          </p>
+        </FadeIn>
+
+        <StaggerChildren staggerDelay={0.12} className="grid sm:grid-cols-3 gap-6">
+          {otherVariants.map((variant) => (
             <StaggerItem key={variant}>
               <motion.div
                 className="group rounded-2xl overflow-hidden border border-border bg-card hover:border-accent/30 transition-all duration-500"
@@ -586,23 +641,20 @@ export function AnimatedPortfolioSection() {
                 <div className="aspect-[4/5] sm:aspect-[3/4] overflow-hidden">
                   <MockedWebsiteContent variant={variant} />
                 </div>
-                <div className="p-5 flex items-center justify-between border-t border-border">
+                <div className="p-4 flex items-center justify-between border-t border-border">
                   <div>
                     <span className="text-[10px] font-medium text-accent tracking-widest uppercase">
                       Style example
                     </span>
-                    <h3 className="font-heading text-lg leading-tight mt-0.5">
+                    <h3 className="font-heading text-base leading-tight mt-0.5">
                       {VARIANT_LABELS[variant]}
                     </h3>
                   </div>
                   <Link
                     href="/start"
-                    className="text-xs font-medium text-accent inline-flex items-center gap-1 opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+                    className="text-xs font-medium text-accent opacity-70 group-hover:opacity-100 transition-opacity duration-300"
                   >
-                    Start mine
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
+                    Start
                   </Link>
                 </div>
               </motion.div>

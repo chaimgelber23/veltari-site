@@ -20,12 +20,15 @@ function Footer() {
     <footer className="py-16 bg-primary border-t border-white/5">
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          {/* Logo */}
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-accent flex items-center justify-center">
-              <span className="text-white font-bold text-xs">P</span>
-            </div>
-            <span className="font-heading text-lg text-surface">Pristine Site</span>
+          {/* Logo — typographic wordmark matches Navigation */}
+          <div className="inline-flex items-baseline gap-0 leading-none">
+            <span className="font-heading text-xl tracking-tight text-surface leading-none">
+              Pristine
+            </span>
+            <span className="font-heading text-xl tracking-tight text-accent leading-none">.</span>
+            <span className="font-heading text-xl tracking-tight text-surface/60 leading-none italic ml-0.5">
+              Site
+            </span>
           </div>
 
           {/* Links */}

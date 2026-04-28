@@ -12,7 +12,12 @@ import {
   MagneticButton,
   RevealOnScroll,
 } from "./animations";
-import { HeroWebsiteMockup } from "./HeroWebsiteMockup";
+import {
+  HeroWebsiteMockup,
+  MockedWebsiteContent,
+  SITE_VARIANTS,
+  VARIANT_LABELS,
+} from "./HeroWebsiteMockup";
 
 /* ───────────────────────── Hero ───────────────────────── */
 export function AnimatedHero() {
@@ -210,17 +215,22 @@ export function AnimatedStatsRow() {
   );
 }
 
-/* ───────────────────── Logo Marquee ─────────────────── */
+/* ───────────────────── Verticals We Build For ─────────────────── */
+// Replaces the old "fake client logo marquee". We don't list specific
+// companies because we don't have permission + we'd rather honestly say
+// what KINDS of businesses we build for than fake a name-drop strip.
 export function AnimatedLogoMarquee() {
   const logos = [
-    "TechVenture",
-    "GreenLeaf Co",
-    "Atlas Digital",
-    "Ironwork Studio",
-    "Peak Performance",
-    "Coastal Living",
-    "Urban Eats",
-    "Apex Solutions",
+    "Dental practices",
+    "Salons & spas",
+    "Restaurants",
+    "Real estate offices",
+    "HVAC & plumbing",
+    "Law firms",
+    "Chiropractors",
+    "Photographers",
+    "Boutique fitness",
+    "Wedding vendors",
   ];
 
   const row = [...logos, ...logos]; // duplicate for seamless loop
@@ -230,7 +240,7 @@ export function AnimatedLogoMarquee() {
       <div className="max-w-6xl mx-auto px-6 mb-8">
         <FadeIn className="text-center">
           <p className="text-xs font-medium text-muted tracking-widest uppercase">
-            Trusted by businesses everywhere
+            We build for service businesses like
           </p>
         </FadeIn>
       </div>
@@ -366,7 +376,7 @@ export function AnimatedPricingSection() {
       description: "For growing businesses that need more",
       features: [
         "Up to 5-page website",
-        "Custom brand design",
+        "Brand color customization",
         "Blog / News section",
         "Google Analytics setup",
         "Advanced SEO optimization",
@@ -401,11 +411,13 @@ export function AnimatedPricingSection() {
     },
   ];
 
+  // Logo Design removed — we don't offer brand identity work, only website
+  // builds. If a customer needs a logo we refer out to a designer.
   const addons = [
     { name: "SEO Management", price: "$79/mo" },
     { name: "Content Updates", price: "$49/mo" },
     { name: "Additional Pages", price: "$99 each" },
-    { name: "Logo Design", price: "$199" },
+    { name: "Custom Animations", price: "$149" },
   ];
 
   return (
@@ -540,108 +552,59 @@ export function AnimatedPricingSection() {
   );
 }
 
-/* ────────────────── Portfolio ────────────────── */
+/* ────────────────── Portfolio ──────────────────
+   Replaces what was 4 fake-named "client sites" (with fake before/after
+   scores) with 4 honest "style examples" — fully-rendered CSS mockups of
+   the kind of site we'd build for each vertical. Same MockedWebsiteContent
+   the hero uses, so visual consistency across the whole page.
+   When we have real launched clients, swap each card's body for an iframe
+   or screenshot and add a "View live site" link. Until then, no fakery. */
 export function AnimatedPortfolioSection() {
-  const projects = [
-    {
-      name: "The Corner Bakery",
-      industry: "Food & Beverage",
-      color: "from-amber-100 to-orange-50",
-      scoreBefore: 28,
-      scoreAfter: 91,
-    },
-    {
-      name: "Atlas Fitness",
-      industry: "Health & Fitness",
-      color: "from-blue-100 to-indigo-50",
-      scoreBefore: 35,
-      scoreAfter: 94,
-    },
-    {
-      name: "Greenleaf Dental",
-      industry: "Healthcare",
-      color: "from-emerald-100 to-teal-50",
-      scoreBefore: 22,
-      scoreAfter: 96,
-    },
-    {
-      name: "Ironwork Studio",
-      industry: "Creative Agency",
-      color: "from-zinc-200 to-stone-100",
-      scoreBefore: 41,
-      scoreAfter: 93,
-    },
-  ];
-
   return (
     <section id="portfolio" className="py-24 lg:py-32 mesh-gradient">
       <div className="max-w-6xl mx-auto px-6">
         <FadeIn className="text-center mb-16">
           <span className="text-xs font-medium text-accent tracking-widest uppercase mb-4 block">
-            Portfolio
+            Style examples
           </span>
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight">
-            Sites we&apos;ve built
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight mb-4">
+            The kinds of sites we build
           </h2>
+          <p className="text-muted max-w-xl mx-auto text-sm">
+            These are CSS mockups, not specific clients — we won&apos;t fake reviews or screenshot
+            sites we didn&apos;t make. Yours starts as a free preview tailored to your business.
+          </p>
         </FadeIn>
 
         <StaggerChildren staggerDelay={0.12} className="grid sm:grid-cols-2 gap-8">
-          {projects.map((project) => (
-            <StaggerItem key={project.name}>
+          {SITE_VARIANTS.map((variant) => (
+            <StaggerItem key={variant}>
               <motion.div
-                className="group portfolio-card rounded-2xl overflow-hidden border border-border bg-card hover:border-accent/30 transition-all duration-500"
-                whileHover={{ y: -6, scale: 1.01 }}
+                className="group rounded-2xl overflow-hidden border border-border bg-card hover:border-accent/30 transition-all duration-500"
+                whileHover={{ y: -6 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                data-cursor="view"
               >
-                {/* Screenshot placeholder with dot pattern */}
-                <div
-                  className={`aspect-[16/10] bg-gradient-to-br ${project.color} relative overflow-hidden`}
-                >
-                  {/* Dot pattern background */}
-                  <div className="absolute inset-0 dot-pattern opacity-60" />
-
-                  {/* Score badge */}
-                  <div className="absolute top-4 right-4 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-sm border border-white/80 shadow-lg">
-                    <span className="text-xs font-medium text-red-400 line-through">
-                      {project.scoreBefore}
-                    </span>
-                    <svg className="w-3 h-3 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                    <span className="text-xs font-bold text-accent">{project.scoreAfter}</span>
-                  </div>
-
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-3/4 h-3/4 rounded-lg bg-white/60 shadow-2xl border border-white/80 flex items-center justify-center backdrop-blur-sm">
-                      <div className="text-center px-6">
-                        {/* Mini wireframe */}
-                        <div className="w-8 h-8 rounded-md bg-accent/20 mx-auto mb-3" />
-                        <div className="w-16 h-1.5 bg-primary/20 rounded-full mx-auto mb-2" />
-                        <div className="w-24 h-1 bg-primary/10 rounded-full mx-auto mb-1.5" />
-                        <div className="w-20 h-1 bg-primary/10 rounded-full mx-auto mb-4" />
-                        <div className="flex gap-2 justify-center">
-                          <div className="w-10 h-6 rounded bg-accent/15" />
-                          <div className="w-10 h-6 rounded bg-primary/5" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-all duration-500" />
+                <div className="aspect-[4/5] sm:aspect-[3/4] overflow-hidden">
+                  <MockedWebsiteContent variant={variant} />
                 </div>
-
-                {/* Info */}
-                <div className="p-6 flex items-center justify-between">
+                <div className="p-5 flex items-center justify-between border-t border-border">
                   <div>
-                    <h3 className="font-heading text-lg">{project.name}</h3>
-                    <span className="text-xs text-muted">{project.industry}</span>
+                    <span className="text-[10px] font-medium text-accent tracking-widest uppercase">
+                      Style example
+                    </span>
+                    <h3 className="font-heading text-lg leading-tight mt-0.5">
+                      {VARIANT_LABELS[variant]}
+                    </h3>
                   </div>
-                  <span className="text-sm text-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1">
-                    View Live Site
+                  <Link
+                    href="/start"
+                    className="text-xs font-medium text-accent inline-flex items-center gap-1 opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+                  >
+                    Start mine
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
-                  </span>
+                  </Link>
                 </div>
               </motion.div>
             </StaggerItem>
@@ -652,29 +615,28 @@ export function AnimatedPortfolioSection() {
   );
 }
 
-/* ───────────────── Testimonials ───────────────── */
+/* ───────────────── Honest Promise (replaces fake Testimonials) ─────────────────
+   Per memory feedback_no_fake_social_proof_own_sites: Rule 6 (no fake outcomes)
+   applies to OUR sites too, not just sites we build for prospects. We don't have
+   real reviews yet — instead of stock-photo testimonials, this section is the
+   honest promise we make + the money-back guarantee front and center. */
 export function AnimatedTestimonialsSection() {
-  const testimonials = [
+  const promises = [
     {
-      quote:
-        "We went from a dated WordPress site to a modern, blazing-fast website in under 24 hours. Our conversion rate doubled in the first month.",
-      name: "Sarah Chen",
-      business: "Peak Performance Gym",
-      role: "Owner",
+      title: "24-hour delivery",
+      detail: "Guaranteed in writing. If we miss it, your build is free.",
     },
     {
-      quote:
-        "I was skeptical about the 24-hour promise, but they delivered. The site looks like something a $50K agency would build.",
-      name: "Marcus Rivera",
-      business: "Urban Eats",
-      role: "Founder",
+      title: "100% money-back",
+      detail: "Don't love your preview? Full refund. No questions, no friction.",
     },
     {
-      quote:
-        "The free preview sold me. I could see exactly what my new site would look like before spending a cent. No other agency does this.",
-      name: "Dr. Emily Foster",
-      business: "Greenleaf Dental",
-      role: "Practice Owner",
+      title: "You own everything",
+      detail: "Code, design, hosting, every pixel. No lock-in. We hand it over.",
+    },
+    {
+      title: "No templates ever",
+      detail: "Every site built from scratch around your business. No cookie-cutter.",
     },
   ];
 
@@ -683,54 +645,69 @@ export function AnimatedTestimonialsSection() {
       <div className="max-w-6xl mx-auto px-6">
         <FadeIn className="text-center mb-16">
           <span className="text-xs font-medium text-accent tracking-widest uppercase mb-4 block">
-            Testimonials
+            Our honest promise
           </span>
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight">
-            What our clients say
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight mb-4">
+            Real reviews coming soon.
+            <br />
+            <span className="text-muted">Until then, here&apos;s what we promise in writing.</span>
           </h2>
+          <p className="text-muted max-w-xl mx-auto text-sm">
+            We&apos;re newer than most agencies. Instead of stock-photo testimonials,
+            we put every promise in plain text — and back it with a real money-back guarantee.
+          </p>
         </FadeIn>
 
-        <StaggerChildren staggerDelay={0.15} className="grid md:grid-cols-3 gap-8">
-          {testimonials.map((t, i) => (
-            <StaggerItem key={i}>
-              <div className="testimonial-card rounded-2xl border border-border bg-card p-8 h-full flex flex-col">
-                {/* Stars */}
-                <div className="flex gap-1 mb-5">
-                  {[...Array(5)].map((_, j) => (
-                    <svg
-                      key={j}
-                      className="w-4 h-4 text-amber-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
+        <StaggerChildren staggerDelay={0.12} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-14">
+          {promises.map((p) => (
+            <StaggerItem key={p.title}>
+              <div className="p-6 rounded-2xl border border-border bg-card h-full flex flex-col">
+                <div className="w-9 h-9 rounded-lg bg-accent/10 text-accent flex items-center justify-center mb-4">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
                 </div>
-
-                {/* Quote */}
-                <blockquote className="text-sm leading-relaxed text-primary/80 mb-6 flex-1">
-                  &ldquo;{t.quote}&rdquo;
-                </blockquote>
-
-                {/* Author */}
-                <div className="flex items-center gap-3 pt-4 border-t border-border">
-                  <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
-                    <span className="text-accent font-heading text-sm">
-                      {t.name.split(" ").map((n) => n[0]).join("")}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-primary">{t.name}</p>
-                    <p className="text-xs text-muted">
-                      {t.role}, {t.business}
-                    </p>
-                  </div>
-                </div>
+                <h3 className="font-heading text-lg mb-2">{p.title}</h3>
+                <p className="text-sm text-muted leading-relaxed">{p.detail}</p>
               </div>
             </StaggerItem>
           ))}
         </StaggerChildren>
+
+        {/* Money-back guarantee — front and center */}
+        <FadeIn>
+          <div className="relative overflow-hidden rounded-3xl border border-accent/20 bg-gradient-to-br from-accent/5 via-card to-card p-10 lg:p-12">
+            <div className="grid lg:grid-cols-[auto_1fr_auto] items-center gap-8">
+              {/* Big shield icon */}
+              <div className="flex justify-center lg:justify-start">
+                <div className="w-20 h-20 rounded-2xl bg-accent/10 text-accent flex items-center justify-center">
+                  <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+                  </svg>
+                </div>
+              </div>
+
+              <div className="text-center lg:text-left">
+                <h3 className="font-heading text-2xl sm:text-3xl tracking-tight mb-2">
+                  100% money-back guarantee
+                </h3>
+                <p className="text-muted leading-relaxed max-w-xl">
+                  See your free preview. If you don&apos;t love it, walk away — you don&apos;t pay a cent.
+                  Build it and still don&apos;t love it after revisions? Full refund. No questions asked.
+                </p>
+              </div>
+
+              <div className="flex justify-center lg:justify-end">
+                <Link
+                  href="/start"
+                  className="inline-flex items-center justify-center px-7 py-3.5 text-sm font-medium text-white bg-accent hover:bg-accent-light rounded-xl transition-all duration-300 shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 hover:-translate-y-0.5 whitespace-nowrap"
+                >
+                  Get your free preview
+                </Link>
+              </div>
+            </div>
+          </div>
+        </FadeIn>
       </div>
     </section>
   );

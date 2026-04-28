@@ -14,25 +14,11 @@ import {
 } from "./animations";
 import {
   HeroWebsiteMockup,
+  MockedWebsiteContent,
   SITE_VARIANTS,
   VARIANT_LABELS,
   ScrollingRestaurantSite,
-  ScrollingDentalSite,
-  ScrollingSalonSite,
-  ScrollingRealEstateSite,
-  type SiteVariant,
 } from "./HeroWebsiteMockup";
-
-// Map each vertical to its polished scrolling site. Used in the Portfolio
-// "Other styles" grid so each card shows a scaled-down view of the actual
-// polished build (not a schematic placeholder), demonstrating the same
-// quality bar across every vertical we build for.
-const SCROLLING_SITE_FOR: Record<SiteVariant, () => React.JSX.Element> = {
-  dental: ScrollingDentalSite,
-  salon: ScrollingSalonSite,
-  restaurant: ScrollingRestaurantSite,
-  realestate: ScrollingRealEstateSite,
-};
 import { BeforeAfterScrollingMockup } from "./BeforeAfterScrollingMockup";
 import { FAQPageJsonLd } from "./JsonLd";
 
@@ -86,7 +72,7 @@ export function AnimatedHero() {
             {/* Subtitle */}
             <FadeIn delay={0.6}>
               <p className="text-lg sm:text-xl text-muted max-w-xl mx-auto lg:mx-0 mb-10 leading-relaxed">
-                Premium design. Built to convert. No templates. No waiting.
+                Agency-grade design at a fraction of the price. No templates. Live in 24 hours.
               </p>
             </FadeIn>
 
@@ -434,10 +420,11 @@ export function AnimatedPricingSection() {
             Pricing
           </span>
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight mb-4">
-            Simple, transparent pricing
+            Agency quality. <span className="text-gradient">Not the agency invoice.</span>
           </h2>
-          <p className="text-muted max-w-xl mx-auto">
-            One-time payment. No subscriptions. No hidden fees. Free hosting included forever.
+          <p className="text-muted max-w-2xl mx-auto leading-relaxed">
+            Most agencies charge <span className="text-primary font-medium">$5,000–$15,000</span> upfront plus a <span className="text-primary font-medium">$300–$500/mo retainer</span> for the same scope.
+            We don&apos;t. One-time payment, no subscriptions, no hidden fees, free hosting forever.
           </p>
         </FadeIn>
 
@@ -536,12 +523,31 @@ export function AnimatedPricingSection() {
           ))}
         </StaggerChildren>
 
-        {/* Custom requests — replaces fake addons menu */}
+        {/* Why-cheaper trust-builder — answers the unspoken "how can you charge
+            so little?" question that prospects always have. Honest cost-structure
+            explanation builds trust and reframes "cheap" as "efficient". */}
         <RevealOnScroll>
+          <div className="max-w-3xl mx-auto rounded-2xl border border-border bg-card p-6 sm:p-8 mb-8">
+            <div className="text-center">
+              <span className="text-[10px] font-semibold text-accent tracking-[0.22em] uppercase">
+                Not cheap &mdash; efficient
+              </span>
+              <h3 className="font-heading text-xl sm:text-2xl tracking-tight mt-2 mb-3">
+                How we charge 1/10th of agency rates
+              </h3>
+              <p className="text-sm text-muted leading-relaxed">
+                Agencies have offices, account managers, hourly billers, and recurring retainers.
+                We use AI-assisted design + experienced developers, ship from
+                Vercel&apos;s free tier, and skip the overhead. Same quality bar, none of the bloat.
+                That&apos;s how the same site that&apos;s $10K elsewhere costs $499 here.
+              </p>
+            </div>
+          </div>
+
           <div className="max-w-2xl mx-auto text-center">
             <p className="text-sm text-muted leading-relaxed mb-4">
               Need something not in the plans above? E-commerce, custom integration,
-              ongoing maintenance, anything else — tell us about it and we&apos;ll quote it honestly.
+              ongoing maintenance, anything else &mdash; tell us about it and we&apos;ll quote it honestly.
             </p>
             <Link
               href="/start"
@@ -648,52 +654,35 @@ export function AnimatedPortfolioSection() {
         </FadeIn>
 
         <StaggerChildren staggerDelay={0.12} className="grid sm:grid-cols-3 gap-6">
-          {otherVariants.map((variant) => {
-            const ScrollingSite = SCROLLING_SITE_FOR[variant];
-            return (
-              <StaggerItem key={variant}>
-                <motion.div
-                  className="group rounded-2xl overflow-hidden border border-border bg-card hover:border-accent/30 transition-all duration-500"
-                  whileHover={{ y: -6 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                >
-                  {/* Scaled-down view of the FULL polished build for this
-                      vertical. transform-origin top-left + scale 0.55 +
-                      compensating width/height so the card crops to the
-                      top portion of the actual site (nav + hero + first
-                      sections). Shows real design density, not a wireframe. */}
-                  <div className="aspect-[4/5] sm:aspect-[3/4] overflow-hidden relative bg-white">
-                    <div
-                      className="absolute top-0 left-0 origin-top-left pointer-events-none"
-                      style={{
-                        transform: "scale(0.55)",
-                        width: "182%",
-                        height: "182%",
-                      }}
-                    >
-                      <ScrollingSite />
-                    </div>
+          {otherVariants.map((variant) => (
+            <StaggerItem key={variant}>
+              <motion.div
+                className="group rounded-2xl overflow-hidden border border-border bg-card hover:border-accent/30 transition-all duration-500"
+                whileHover={{ y: -6 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+              >
+                <div className="aspect-[4/5] sm:aspect-[3/4] overflow-hidden">
+                  <MockedWebsiteContent variant={variant} />
+                </div>
+                <div className="p-4 flex items-center justify-between border-t border-border">
+                  <div>
+                    <span className="text-[10px] font-medium text-accent tracking-widest uppercase">
+                      Style example
+                    </span>
+                    <h3 className="font-heading text-base leading-tight mt-0.5">
+                      {VARIANT_LABELS[variant]}
+                    </h3>
                   </div>
-                  <div className="p-4 flex items-center justify-between border-t border-border">
-                    <div>
-                      <span className="text-[10px] font-medium text-accent tracking-widest uppercase">
-                        Style example
-                      </span>
-                      <h3 className="font-heading text-base leading-tight mt-0.5">
-                        {VARIANT_LABELS[variant]}
-                      </h3>
-                    </div>
-                    <Link
-                      href="/start"
-                      className="text-xs font-medium text-accent opacity-70 group-hover:opacity-100 transition-opacity duration-300"
-                    >
-                      Start
-                    </Link>
-                  </div>
-                </motion.div>
-              </StaggerItem>
-            );
-          })}
+                  <Link
+                    href="/start"
+                    className="text-xs font-medium text-accent opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+                  >
+                    Start
+                  </Link>
+                </div>
+              </motion.div>
+            </StaggerItem>
+          ))}
         </StaggerChildren>
       </div>
     </section>

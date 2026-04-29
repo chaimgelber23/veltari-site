@@ -1,3 +1,20 @@
+# Pristine Site
+
+> **Public domain:** [pristinesite.com](https://pristinesite.com) &middot;
+> **GitHub:** [chaimgelber23/pristine-site](https://github.com/chaimgelber23/pristine-site) &middot;
+> **Vercel project:** `pristine-site`
+>
+> Local folder is still `c:\Users\chaim\veltari-site` (folder rename was
+> blocked by locked node processes — non-blocking, but search for
+> "pristine-site" on GitHub or Vercel to find this project quickly).
+
+The marketing site for **Pristine Site** — custom 24-hour websites at
+$499 / $899 / $1,999 (matching `WB_BRAND.packages` in the seo-business hub).
+
+Brand spec: `c:/Users/chaim/seo-business/src/lib/wb/brand-config.ts`
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

@@ -1,201 +1,104 @@
 "use client";
 
-import { useRef, useEffect, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import {
   motion,
-  useInView,
   useMotionValue,
   useTransform,
   useScroll,
   useSpring,
-  animate,
-  type Variant,
 } from "framer-motion";
 
-/* ─────────────────── FadeIn ─────────────────── */
-interface FadeInProps {
+/*  Entry animations (FadeIn, StaggerChildren, StaggerItem, TextReveal,
+    RevealOnScroll, CountUp) used to gate visibility on `useInView` with
+    `initial={{ opacity: 0 }}`. On a tall multi-section page, the
+    IntersectionObserver fires unreliably for sections far below the fold,
+    leaving 20-50 elements permanently at opacity:0 — a real customer-facing
+    render bug, not just a screenshot artifact.
+
+    They are now visibility-passthrough wrappers. Hover effects (MagneticButton)
+    and decorative parallax (ParallaxLayer) still run because they aren't
+    entry-gated. */
+
+interface PassthroughProps {
+  children: ReactNode;
+  className?: string;
+}
+
+export function FadeIn({
+  children,
+  className,
+}: {
   children: ReactNode;
   delay?: number;
   duration?: number;
   direction?: "up" | "down" | "left" | "right";
   className?: string;
+}) {
+  return <div className={className}>{children}</div>;
 }
-
-const directionOffset = {
-  up: { y: 40, x: 0 },
-  down: { y: -40, x: 0 },
-  left: { x: 40, y: 0 },
-  right: { x: -40, y: 0 },
-};
-
-export function FadeIn({
-  children,
-  delay = 0,
-  duration = 0.6,
-  direction = "up",
-  className,
-}: FadeInProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  const offset = directionOffset[direction];
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, x: offset.x, y: offset.y }}
-      animate={inView ? { opacity: 1, x: 0, y: 0 } : undefined}
-      transition={{ duration, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-/* ─────────────── StaggerChildren ─────────────── */
-interface StaggerChildrenProps {
-  children: ReactNode;
-  staggerDelay?: number;
-  className?: string;
-}
-
-const staggerContainer = {
-  hidden: {},
-  visible: (staggerDelay: number) => ({
-    transition: { staggerChildren: staggerDelay },
-  }),
-};
-
-const staggerItem: Record<string, Variant> = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] },
-  },
-};
 
 export function StaggerChildren({
-  children,
-  staggerDelay = 0.12,
-  className,
-}: StaggerChildrenProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-
-  return (
-    <motion.div
-      ref={ref}
-      variants={staggerContainer}
-      custom={staggerDelay}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-export function StaggerItem({
   children,
   className,
 }: {
   children: ReactNode;
+  staggerDelay?: number;
   className?: string;
 }) {
-  return (
-    <motion.div variants={staggerItem} className={className}>
-      {children}
-    </motion.div>
-  );
+  return <div className={className}>{children}</div>;
 }
 
-/* ─────────────── TextReveal ─────────────── */
-interface TextRevealProps {
+export function StaggerItem({ children, className }: PassthroughProps) {
+  return <div className={className}>{children}</div>;
+}
+
+export function TextReveal({
+  text,
+  className,
+}: {
   text: string;
   className?: string;
   delay?: number;
+}) {
+  return <span className={className}>{text}</span>;
 }
 
-export function TextReveal({ text, className, delay = 0 }: TextRevealProps) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  const words = text.split(" ");
-
-  return (
-    <span ref={ref} className={className}>
-      {words.map((word, i) => (
-        <motion.span
-          key={i}
-          className="inline-block mr-[0.25em]"
-          initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
-          animate={
-            inView
-              ? { opacity: 1, y: 0, filter: "blur(0px)" }
-              : undefined
-          }
-          transition={{
-            duration: 0.4,
-            delay: delay + i * 0.06,
-            ease: [0.21, 0.47, 0.32, 0.98],
-          }}
-        >
-          {word}
-        </motion.span>
-      ))}
-    </span>
-  );
-}
-
-/* ─────────────── CountUp ─────────────── */
-interface CountUpProps {
+export function CountUp({
+  to,
+  suffix = "",
+  prefix = "",
+  className,
+}: {
   from?: number;
   to: number;
   duration?: number;
   suffix?: string;
   prefix?: string;
   className?: string;
-}
-
-export function CountUp({
-  from = 0,
-  to,
-  duration = 1.5,
-  suffix = "",
-  prefix = "",
-  className,
-}: CountUpProps) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
-  const motionVal = useMotionValue(from);
-  const rounded = useTransform(motionVal, (v) => Math.round(v));
-
-  useEffect(() => {
-    if (inView) {
-      const controls = animate(motionVal, to, {
-        duration,
-        ease: [0.21, 0.47, 0.32, 0.98],
-      });
-      return () => controls.stop();
-    }
-  }, [inView, motionVal, to, duration]);
-
-  useEffect(() => {
-    const unsubscribe = rounded.on("change", (v) => {
-      if (ref.current) {
-        ref.current.textContent = `${prefix}${v}${suffix}`;
-      }
-    });
-    return () => unsubscribe();
-  }, [rounded, prefix, suffix]);
-
+}) {
   return (
-    <span ref={ref} className={className}>
+    <span className={className}>
       {prefix}
-      {from}
+      {to}
       {suffix}
     </span>
+  );
+}
+
+export function RevealOnScroll({
+  children,
+  className,
+  width = "100%",
+}: {
+  children: ReactNode;
+  className?: string;
+  width?: "fit-content" | "100%";
+}) {
+  return (
+    <div style={{ width }} className={className}>
+      {children}
+    </div>
   );
 }
 
@@ -269,36 +172,5 @@ export function MagneticButton({
     >
       {children}
     </motion.div>
-  );
-}
-
-/* ─────────────── RevealOnScroll ─────────────── */
-interface RevealOnScrollProps {
-  children: ReactNode;
-  className?: string;
-  width?: "fit-content" | "100%";
-}
-
-export function RevealOnScroll({
-  children,
-  className,
-  width = "100%",
-}: RevealOnScrollProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-
-  return (
-    <div ref={ref} style={{ width }} className={className}>
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={inView ? { opacity: 1, y: 0 } : undefined}
-        transition={{
-          duration: 0.6,
-          ease: [0.21, 0.47, 0.32, 0.98],
-        }}
-      >
-        {children}
-      </motion.div>
-    </div>
   );
 }

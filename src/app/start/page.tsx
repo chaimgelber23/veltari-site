@@ -76,8 +76,8 @@ export default function StartPage() {
               We&apos;re on it.
             </h1>
             <p className="text-muted text-lg mb-8 leading-relaxed">
-              We&apos;ll review your details and send you a free preview within 24
-              hours. Keep an eye on your inbox.
+              We&apos;ll review your details and send you a free preview within
+              minutes. Keep an eye on your inbox.
             </p>
             <Link
               href="/"
@@ -106,7 +106,7 @@ export default function StartPage() {
           </h1>
           <p className="text-muted text-lg max-w-xl mx-auto">
             Fill out the form below and we&apos;ll send you a free preview of your
-            new website within 24 hours.
+            new website within minutes.
           </p>
         </div>
 
@@ -303,7 +303,7 @@ export default function StartPage() {
               />
             </svg>
             <p className="text-sm text-muted">
-              We&apos;ll send you a free preview within 24 hours. No payment
+              We&apos;ll send you a free preview within minutes. No payment
               required. No spam, ever.
             </p>
           </div>

@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import {
   FadeIn,
   StaggerChildren,
@@ -12,23 +11,18 @@ import {
   MagneticButton,
   RevealOnScroll,
 } from "./animations";
-import {
-  HeroWebsiteMockup,
-  MockedWebsiteContent,
-  SITE_VARIANTS,
-  VARIANT_LABELS,
-  ScrollingRestaurantSite,
-} from "./HeroWebsiteMockup";
-import { BeforeAfterScrollingMockup } from "./BeforeAfterScrollingMockup";
 import { FAQPageJsonLd } from "./JsonLd";
 
-/* ───────────────────────── Hero ───────────────────────── */
+/* ───────────────────────── Hero ─────────────────────────
+   B-copy direct contrast with the agency timeline. Right column is a real
+   Kling 2.1 generated 5s editorial loop (matte cardstock + brass ruler +
+   graphite pencil push-in) — the visual that proves the "minutes" claim by
+   actually being a piece of generated craft on the page.
+   Source assets: public/hero/hero.png (Imagen 4) + public/hero/transition.mp4
+   regenerable via `node scripts/generate-pristine-assets.mjs` in seo-business. */
 export function AnimatedHero() {
   return (
     <section className="relative min-h-[85vh] flex items-center overflow-hidden hero-gradient">
-      {/* Single quiet accent glow — three blurred indigo blobs read as
-          SaaS-template hero background. One subtle pull from the upper
-          right is enough atmosphere; restraint is the design move. */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <ParallaxLayer speed={0.2}>
           <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-accent/[0.04] blur-3xl" />
@@ -37,11 +31,8 @@ export function AnimatedHero() {
 
       <div className="relative w-full max-w-7xl mx-auto px-6 lg:px-10 pt-24 pb-16 lg:pt-20 lg:pb-24">
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
-          {/* LEFT — text content */}
+          {/* LEFT — text */}
           <div className="lg:col-span-6 lg:pr-6 text-center lg:text-left">
-            {/* Badge — includes the brand name so title, H1, and schema all
-                anchor on "Pristine Site" (fixes the geo-analyzer entity-clarity
-                gap). Reads naturally as a credit line above the H1. */}
             <FadeIn delay={0}>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-card/80 backdrop-blur-sm mb-8">
                 <span className="w-2 h-2 rounded-full bg-accent animate-pulse-slow" />
@@ -51,22 +42,18 @@ export function AnimatedHero() {
               </div>
             </FadeIn>
 
-            {/* Headline — solid color, no gradient. Gradient text reads as
-                SaaS-template; restrained typography reads as design studio. */}
             <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl leading-[1.05] tracking-tight mb-6 text-primary">
-              <TextReveal text="Your Custom Website." delay={0.1} />
+              <TextReveal text="Most agencies take 6 weeks." delay={0.1} />
               <br />
-              <TextReveal text="Live in 24 Hours." delay={0.4} />
+              <TextReveal text="We take minutes." delay={0.4} />
             </h1>
 
-            {/* Subtitle */}
             <FadeIn delay={0.6}>
               <p className="text-lg sm:text-xl text-muted max-w-xl mx-auto lg:mx-0 mb-10 leading-relaxed">
-                Agency-grade design at a fraction of the price. No templates. Live in 24 hours.
+                Custom design. No templates. No monthly fees. You own everything.
               </p>
             </FadeIn>
 
-            {/* CTAs */}
             <FadeIn delay={0.8}>
               <div className="flex flex-col sm:flex-row items-center lg:items-start gap-4 sm:justify-center lg:justify-start">
                 <MagneticButton>
@@ -74,7 +61,7 @@ export function AnimatedHero() {
                     href="/start"
                     className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-accent hover:bg-accent-light rounded-xl transition-all duration-300 shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 hover:-translate-y-0.5"
                   >
-                    Get Your Free Preview
+                    Generate my preview
                     <svg
                       className="ml-2 w-4 h-4"
                       fill="none"
@@ -87,23 +74,39 @@ export function AnimatedHero() {
                   </Link>
                 </MagneticButton>
                 <a
-                  href="#portfolio"
+                  href="#pricing"
                   className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-primary bg-card hover:bg-card-hover border border-border rounded-xl transition-all duration-300"
                 >
-                  See Our Work
+                  See pricing
                 </a>
               </div>
             </FadeIn>
           </div>
 
-          {/* RIGHT — animated website mockup with floating proof badges */}
+          {/* RIGHT — Kling 2.1 generated editorial hero loop */}
           <div className="lg:col-span-6 mt-4 lg:mt-0">
-            <HeroWebsiteMockup />
+            <FadeIn delay={0.5}>
+              <div className="relative aspect-[16/9] rounded-2xl overflow-hidden border border-border shadow-2xl shadow-black/20 bg-card">
+                <video
+                  src="/hero/transition.mp4"
+                  poster="/hero/hero.png"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                  className="w-full h-full object-cover"
+                  aria-hidden="true"
+                />
+                <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-md bg-primary/70 backdrop-blur-sm text-[10px] tracking-widest uppercase text-surface/85 font-medium">
+                  Generated for this page
+                </div>
+              </div>
+            </FadeIn>
           </div>
         </div>
       </div>
 
-      {/* Bottom fade */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-surface to-transparent" />
     </section>
   );
@@ -166,7 +169,7 @@ export function AnimatedProblemSection() {
 /* ───────────────────── Stats Row (NEW) ─────────────────── */
 export function AnimatedStatsRow() {
   const stats = [
-    { value: 24, suffix: "h", label: "Delivery Time" },
+    { value: 5, suffix: "min", label: "Preview Time" },
     { value: 90, suffix: "+", label: "Lighthouse Score" },
     { value: 100, suffix: "%", label: "Satisfaction Rate" },
     { value: 0, from: 99, suffix: "", prefix: "$", label: "Monthly Fees" },
@@ -281,7 +284,7 @@ export function AnimatedHowItWorks() {
     },
     {
       num: "03",
-      title: "Preview in 24 hours",
+      title: "Preview in minutes",
       description:
         "See your new site before you pay a dime. No commitment, no pressure.",
     },
@@ -555,125 +558,52 @@ export function AnimatedPricingSection() {
   );
 }
 
-/* ────────────────── Portfolio ──────────────────
-   Featured BEFORE/AFTER card (scrolling mockup that toggles between the
-   ugly outdated original and the polished site Pristine Site would build),
-   followed by 3 small "style example" cards for the other verticals so
-   the section still shows breadth. */
+/* ────────────────── Portfolio → "The proof is yours" ──────────────────
+   Replaces the previous BeforeAfterScrollingMockup + 3 CSS-mockup cards.
+   That section showed an anonymized real-prospect screenshot (stregabar.com via
+   thum.io) plus mocked "style examples" — the visitor's takeaway was "these
+   aren't real client sites, this is just demo." Per
+   feedback_no_fake_social_proof_own_sites.md, the honest move is to remove
+   the demo and put the funnel itself in its place: paste your URL, get a
+   custom preview built from scratch in minutes, decide AFTER you see it. */
 export function AnimatedPortfolioSection() {
-  // The featured card uses the real restaurant prospect transformation.
-  // The 3 small examples below are the OTHER three verticals.
-  const otherVariants = SITE_VARIANTS.filter((v) => v !== "restaurant");
-
   return (
-    <section id="portfolio" className="py-20 lg:py-28 mesh-gradient">
-      <div className="max-w-6xl mx-auto px-6">
-        <FadeIn className="text-center mb-14">
-          <span className="text-xs font-medium text-accent tracking-widest uppercase mb-4 block">
-            What a transformation looks like
+    <section id="portfolio" className="py-24 lg:py-32 mesh-gradient">
+      <div className="max-w-3xl mx-auto px-6 text-center">
+        <FadeIn>
+          <span className="text-xs font-medium text-accent tracking-widest uppercase mb-5 block">
+            The proof is yours, not ours
           </span>
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight mb-4">
-            Outdated &rarr; polished, in 24 hours
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight mb-5">
+            Don&apos;t trust our work.
+            <br />
+            <span className="text-muted">Try yours.</span>
           </h2>
-          <p className="text-muted max-w-xl mx-auto text-sm">
-            Watch the BEFORE/AFTER toggle below. The &ldquo;before&rdquo; is the kind of dated WordPress
-            template we typically replace; the &ldquo;after&rdquo; is the polished site we build —
-            same screen, scrolled top to bottom.
+          <p className="text-muted max-w-xl mx-auto leading-relaxed mb-10">
+            Paste your current site. We build a custom Pristine version from scratch and
+            send you a real preview in minutes. Decide AFTER you see it. Free until you say go.
           </p>
         </FadeIn>
 
-        {/* Featured BEFORE/AFTER card — uses a REAL screenshot of a real
-            prospect site for the BEFORE pane (anonymized URL bar). The
-            AFTER is a polished restaurant-vertical mockup. */}
-        <FadeIn className="mb-16">
-          <div className="grid lg:grid-cols-[3fr_2fr] gap-8 lg:gap-12 items-center">
-            <div className="mx-auto w-full max-w-[460px] lg:max-w-none">
-              <BeforeAfterScrollingMockup
-                beforeUrl="your-current-site.com"
-                afterUrl="your-new-site.com"
-                before={{
-                  // Real screenshot via thum.io (free public service).
-                  // maxAge=3600 caches for 1 hour so we don't hammer them.
-                  // The URL bar above is masked; only the screenshot is real.
-                  image:
-                    "https://image.thum.io/get/width/720/maxAge/3600/png/https://stregabar.com",
-                  alt: "A real prospect site we'd transform",
-                }}
-                after={<ScrollingRestaurantSite />}
-              />
-            </div>
-            <div className="text-center lg:text-left">
-              <span className="text-[10px] font-medium text-accent tracking-widest uppercase">
-                Featured transformation
-              </span>
-              <h3 className="font-heading text-2xl sm:text-3xl tracking-tight mt-2 mb-4">
-                Restaurant rebuild
-              </h3>
-              <p className="text-muted leading-relaxed text-sm mb-3">
-                Real prospect site on the BEFORE — exactly the kind of cluttered, hard-to-read
-                local-restaurant page that loses reservations. The AFTER is a 24-hour rebuild:
-                seasonal menu cards, chef bio, live reservation widget with party-size + time
-                pickers, real reviews, mobile-first.
-              </p>
-              <p className="text-muted/70 text-[11px] mb-5 italic">
-                BEFORE is a real public site we&apos;ve engaged with as a prospect; the URL bar above is
-                anonymized. AFTER is a CSS mockup of what we&apos;d build — actual builds are tailored
-                to each customer.
-              </p>
-              <Link
-                href="/start"
-                className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:text-accent-light transition-colors"
-              >
-                Start your transformation
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
-            </div>
-          </div>
+        <FadeIn delay={0.15}>
+          <MagneticButton className="inline-block">
+            <Link
+              href="/start"
+              className="inline-flex items-center justify-center px-10 py-5 text-base font-medium text-white bg-accent hover:bg-accent-light rounded-xl transition-all duration-300 shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 hover:-translate-y-0.5"
+            >
+              Generate my preview
+              <svg className="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </MagneticButton>
         </FadeIn>
 
-        {/* Other verticals — small style examples (still honest: labeled as CSS mockups) */}
-        <FadeIn className="text-center mb-8">
-          <span className="text-xs font-medium text-accent tracking-widest uppercase mb-2 block">
-            Other styles we build
-          </span>
-          <p className="text-muted text-sm max-w-md mx-auto">
-            CSS mockups, not specific clients. Yours starts as a free preview tailored to your business.
+        <FadeIn delay={0.25}>
+          <p className="text-xs text-muted/70 mt-6 tracking-wide">
+            Free preview. No signup until you like it. Every site built from scratch — never a template.
           </p>
         </FadeIn>
-
-        <StaggerChildren staggerDelay={0.12} className="grid sm:grid-cols-3 gap-6">
-          {otherVariants.map((variant) => (
-            <StaggerItem key={variant}>
-              <motion.div
-                className="group rounded-2xl overflow-hidden border border-border bg-card hover:border-accent/30 transition-all duration-500"
-                whileHover={{ y: -6 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-              >
-                <div className="aspect-[4/5] sm:aspect-[3/4] overflow-hidden">
-                  <MockedWebsiteContent variant={variant} />
-                </div>
-                <div className="p-4 flex items-center justify-between border-t border-border">
-                  <div>
-                    <span className="text-[10px] font-medium text-accent tracking-widest uppercase">
-                      Style example
-                    </span>
-                    <h3 className="font-heading text-base leading-tight mt-0.5">
-                      {VARIANT_LABELS[variant]}
-                    </h3>
-                  </div>
-                  <Link
-                    href="/start"
-                    className="text-xs font-medium text-accent opacity-70 group-hover:opacity-100 transition-opacity duration-300"
-                  >
-                    Start
-                  </Link>
-                </div>
-              </motion.div>
-            </StaggerItem>
-          ))}
-        </StaggerChildren>
       </div>
     </section>
   );
@@ -687,8 +617,8 @@ export function AnimatedPortfolioSection() {
 export function AnimatedTestimonialsSection() {
   const promises = [
     {
-      title: "24-hour delivery",
-      detail: "Guaranteed in writing. If we miss it, your build is free.",
+      title: "Delivery in minutes",
+      detail: "Free preview within minutes of your brief. If we miss it, your build is free.",
     },
     {
       title: "100% money-back",
@@ -849,8 +779,8 @@ export function AnimatedTrustSection() {
 export function AnimatedFAQSection() {
   const faqs = [
     {
-      q: "How can you build a site in 24 hours?",
-      a: "We combine AI-powered design tools with experienced developers. Our streamlined process extracts your brand, generates layouts, and our team polishes everything to perfection — all within 24 hours of receiving your brief.",
+      q: "How can you build a site in minutes?",
+      a: "We combine AI-powered design tools with experienced developers. Our pipeline extracts your brand, generates layouts, and assembles a custom site automatically — your free preview lands in minutes. Final polish and revisions before going live take longer; everything fits inside our same-day delivery window.",
     },
     {
       q: "What if I don't like the design?",
@@ -949,7 +879,7 @@ export function AnimatedCTASection() {
 
         <FadeIn delay={0.2}>
           <p className="text-surface/60 text-lg sm:text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
-            Fill out a quick brief. Get a free, custom-built preview in 24 hours.
+            Fill out a quick brief. Get a free, custom-built preview in minutes.
             Love it &mdash; we ship it. Don&apos;t &mdash; walk away. No payment required to start.
           </p>
         </FadeIn>

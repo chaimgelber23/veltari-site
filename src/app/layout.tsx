@@ -19,20 +19,20 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://pristinesite.com"),
   title: {
-    default: "Pristine Site — Custom Websites in 24 Hours",
+    default: "Pristine Site — Custom Websites in Minutes",
     template: "%s | Pristine Site",
   },
   description:
-    "Premium custom websites delivered in 24 hours. No templates. No waiting. Built to convert. 100% satisfaction guarantee.",
+    "Premium custom websites delivered in minutes. No templates. No waiting. Built to convert. 100% satisfaction guarantee.",
   keywords: [
     "custom website",
     "web design agency",
-    "24 hour website",
     "premium web design",
     "fast website builder",
     "professional website",
     "business website",
     "website redesign",
+    "websites in minutes",
   ],
   authors: [{ name: "Pristine Site" }],
   creator: "Pristine Site",
@@ -41,15 +41,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://pristinesite.com",
     siteName: "Pristine Site",
-    title: "Pristine Site — Custom Websites in 24 Hours",
+    title: "Pristine Site — Custom Websites in Minutes",
     description:
-      "Premium custom websites delivered in 24 hours. No templates. No waiting. Built to convert.",
+      "Premium custom websites delivered in minutes. No templates. No waiting. Built to convert.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pristine Site — Custom Websites in 24 Hours",
+    title: "Pristine Site — Custom Websites in Minutes",
     description:
-      "Premium custom websites delivered in 24 hours. No templates. No waiting. Built to convert.",
+      "Premium custom websites delivered in minutes. No templates. No waiting. Built to convert.",
   },
   robots: {
     index: true,

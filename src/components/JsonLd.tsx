@@ -16,7 +16,7 @@ export function OrganizationJsonLd() {
     name: "Pristine Site",
     url: SITE_URL,
     description:
-      "Premium custom websites delivered in 24 hours. No templates. No waiting. Built to convert. 100% money-back guarantee.",
+      "Premium custom websites delivered in minutes. No templates. No waiting. Built to convert. 100% money-back guarantee.",
     foundingDate: "2026",
     sameAs: [],
   };
@@ -35,7 +35,7 @@ export function WebSiteJsonLd() {
     name: "Pristine Site",
     url: SITE_URL,
     description:
-      "Custom website design + development in 24 hours. Premium quality, money-back guaranteed.",
+      "Custom website design + development in minutes. Premium quality, money-back guaranteed.",
     publisher: {
       "@type": "Organization",
       name: "Pristine Site",
@@ -64,7 +64,7 @@ export function ServiceJsonLd() {
       name: "United States",
     },
     description:
-      "Custom websites built in 24 hours. No templates. Premium design, free hosting, 100% money-back guarantee.",
+      "Custom websites built in minutes. No templates. Premium design, free hosting, 100% money-back guarantee.",
     offers: [
       {
         "@type": "Offer",

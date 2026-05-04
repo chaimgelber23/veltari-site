@@ -42,7 +42,7 @@ function Footer() {
               </span>
             </div>
             <p className="text-surface/60 text-sm max-w-md leading-relaxed">
-              Websites that convert. Live within 24 hours. Built from scratch — no templates, no monthly fees, free hosting forever.
+              Websites that convert. Live in minutes. Built from scratch — no templates, no monthly fees, free hosting forever.
             </p>
           </div>
           <div className="flex items-start lg:items-center">
@@ -72,7 +72,7 @@ function Footer() {
           <div>
             <h4 className="text-[10px] font-semibold text-surface tracking-[0.18em] uppercase mb-5">Promise</h4>
             <ul className="space-y-3 text-sm text-surface/55">
-              <li>24-hour delivery</li>
+              <li>Preview in minutes</li>
               <li>100% money-back</li>
               <li>You own everything</li>
               <li>No templates ever</li>

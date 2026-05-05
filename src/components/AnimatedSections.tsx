@@ -14,12 +14,11 @@ import {
 import { FAQPageJsonLd } from "./JsonLd";
 
 /* ───────────────────────── Hero ─────────────────────────
-   B-copy direct contrast with the agency timeline. Right column is a real
-   Kling 2.1 generated 5s editorial loop (matte cardstock + brass ruler +
-   graphite pencil push-in) — the visual that proves the "minutes" claim by
-   actually being a piece of generated craft on the page.
-   Source assets: public/hero/hero.png (Imagen 4) + public/hero/transition.mp4
-   regenerable via `node scripts/generate-pristine-assets.mjs` in seo-business. */
+   Right column: real screenshot of autosynkai.com (one of our shipped
+   production sites) inside a browser-chrome frame. The visual IS the proof
+   — visitor lands here and sees an actual site we built, not a mockup,
+   not abstract editorial art, not AI vapor. Screenshots via thum.io.
+   The portfolio section below shows the same approach for two more sites. */
 export function AnimatedHero() {
   return (
     <section className="relative min-h-[85vh] flex items-center overflow-hidden hero-gradient">
@@ -74,34 +73,44 @@ export function AnimatedHero() {
                   </Link>
                 </MagneticButton>
                 <a
-                  href="#pricing"
+                  href="#portfolio"
                   className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-primary bg-card hover:bg-card-hover border border-border rounded-xl transition-all duration-300"
                 >
-                  See pricing
+                  See sites we&apos;ve built
                 </a>
               </div>
             </FadeIn>
           </div>
 
-          {/* RIGHT — Kling 2.1 generated editorial hero loop */}
+          {/* RIGHT — real browser-frame screenshot of autosynkai.com */}
           <div className="lg:col-span-6 mt-4 lg:mt-0">
             <FadeIn delay={0.5}>
-              <div className="relative aspect-[16/9] rounded-2xl overflow-hidden border border-border shadow-2xl shadow-black/20 bg-card">
-                <video
-                  src="/hero/transition.mp4"
-                  poster="/hero/hero.png"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="auto"
-                  className="w-full h-full object-cover"
-                  aria-hidden="true"
-                />
-                <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-md bg-primary/70 backdrop-blur-sm text-[10px] tracking-widest uppercase text-surface/85 font-medium">
-                  Generated for this page
+              <a
+                href="https://autosynkai.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open AutoSync AI in a new tab"
+                className="block group"
+              >
+                <div className="rounded-xl overflow-hidden border border-border shadow-2xl shadow-black/15 bg-card transition-transform duration-500 group-hover:-translate-y-1">
+                  <div className="px-4 py-3 bg-card border-b border-border flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full bg-red-400/70" aria-hidden="true" />
+                    <span className="w-3 h-3 rounded-full bg-yellow-400/70" aria-hidden="true" />
+                    <span className="w-3 h-3 rounded-full bg-green-400/70" aria-hidden="true" />
+                    <div className="ml-3 flex-1 px-3 py-1 rounded-md bg-surface/80 text-[11px] text-muted font-mono tracking-tight truncate">
+                      autosynkai.com
+                    </div>
+                  </div>
+                  <div className="aspect-[16/10] bg-surface overflow-hidden">
+                    <img
+                      src="https://image.thum.io/get/width/1280/crop/800/maxAge/3600/png/https://autosynkai.com"
+                      alt="AutoSync AI homepage — a real Pristine-built production site"
+                      className="w-full h-full object-cover object-top"
+                      loading="eager"
+                    />
+                  </div>
                 </div>
-              </div>
+              </a>
             </FadeIn>
           </div>
         </div>
@@ -558,51 +567,98 @@ export function AnimatedPricingSection() {
   );
 }
 
-/* ────────────────── Portfolio → "The proof is yours" ──────────────────
-   Replaces the previous BeforeAfterScrollingMockup + 3 CSS-mockup cards.
-   That section showed an anonymized real-prospect screenshot (stregabar.com via
-   thum.io) plus mocked "style examples" — the visitor's takeaway was "these
-   aren't real client sites, this is just demo." Per
-   feedback_no_fake_social_proof_own_sites.md, the honest move is to remove
-   the demo and put the funnel itself in its place: paste your URL, get a
-   custom preview built from scratch in minutes, decide AFTER you see it. */
+/* ────────────────── Portfolio — three real shipped sites ──────────────────
+   Three production sites we built and run — autosynkai.com, seohandoff.com,
+   computerspyai.com. Each card is a clickable thum.io screenshot in a
+   browser frame; the link opens the live site so the visitor verifies the
+   work themselves. No mockups, no CSS facsimiles, no anonymized prospect
+   screenshots. The hero already shows autosynkai.com; this section gives
+   the visitor a reason to scroll past the hero and look at the others. */
+const PORTFOLIO_SITES = [
+  {
+    domain: "autosynkai.com",
+    name: "AutoSync AI",
+    tagline: "AI automations that run on your machine, your data, your voice.",
+  },
+  {
+    domain: "seohandoff.com",
+    name: "SEO Handoff",
+    tagline: "Done-for-you SEO for small businesses.",
+  },
+  {
+    domain: "computerspyai.com",
+    name: "Computer Spy AI",
+    tagline: "AI-powered workflow intelligence and automation.",
+  },
+] as const;
+
 export function AnimatedPortfolioSection() {
   return (
     <section id="portfolio" className="py-24 lg:py-32 mesh-gradient">
-      <div className="max-w-3xl mx-auto px-6 text-center">
-        <FadeIn>
-          <span className="text-xs font-medium text-accent tracking-widest uppercase mb-5 block">
-            The proof is yours, not ours
+      <div className="max-w-6xl mx-auto px-6">
+        <FadeIn className="text-center mb-14">
+          <span className="text-xs font-medium text-accent tracking-widest uppercase mb-4 block">
+            Sites we built
           </span>
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight mb-5">
-            Don&apos;t trust our work.
-            <br />
-            <span className="text-muted">Try yours.</span>
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight mb-4">
+            Production sites. Live right now.
           </h2>
-          <p className="text-muted max-w-xl mx-auto leading-relaxed mb-10">
-            Paste your current site. We build a custom Pristine version from scratch and
-            send you a real preview in minutes. Decide AFTER you see it. Free until you say go.
+          <p className="text-muted max-w-xl mx-auto text-sm leading-relaxed">
+            Three real businesses running on Pristine-built sites. Click any one — they open in a new tab.
           </p>
         </FadeIn>
 
-        <FadeIn delay={0.15}>
-          <MagneticButton className="inline-block">
-            <Link
-              href="/start"
-              className="inline-flex items-center justify-center px-10 py-5 text-base font-medium text-white bg-accent hover:bg-accent-light rounded-xl transition-all duration-300 shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 hover:-translate-y-0.5"
-            >
-              Generate my preview
-              <svg className="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-          </MagneticButton>
-        </FadeIn>
+        <StaggerChildren staggerDelay={0.12} className="grid sm:grid-cols-3 gap-6">
+          {PORTFOLIO_SITES.map((site) => (
+            <StaggerItem key={site.domain}>
+              <a
+                href={`https://${site.domain}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open ${site.name} (${site.domain}) in a new tab`}
+                className="group block rounded-2xl overflow-hidden border border-border bg-card hover:border-accent/40 hover:shadow-xl hover:shadow-black/10 transition-all duration-500 hover:-translate-y-1"
+              >
+                <div className="px-3 py-2 bg-card border-b border-border flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-400/60" aria-hidden="true" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/60" aria-hidden="true" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-green-400/60" aria-hidden="true" />
+                  <div className="ml-2 flex-1 px-2 py-0.5 rounded bg-surface/80 text-[10px] text-muted font-mono truncate">
+                    {site.domain}
+                  </div>
+                </div>
+                <div className="aspect-[4/3] bg-surface overflow-hidden">
+                  <img
+                    src={`https://image.thum.io/get/width/720/crop/540/maxAge/3600/png/https://${site.domain}`}
+                    alt={`${site.name} homepage screenshot`}
+                    className="w-full h-full object-cover object-top"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="p-5 border-t border-border">
+                  <h3 className="font-heading text-lg leading-tight mb-1.5">{site.name}</h3>
+                  <p className="text-muted text-xs leading-relaxed mb-3">{site.tagline}</p>
+                  <span className="inline-flex items-center gap-1 text-[11px] font-medium text-accent group-hover:text-accent-light transition-colors tracking-tight">
+                    {site.domain}
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </span>
+                </div>
+              </a>
+            </StaggerItem>
+          ))}
+        </StaggerChildren>
 
-        <FadeIn delay={0.25}>
-          <p className="text-xs text-muted/70 mt-6 tracking-wide">
-            Free preview. No signup until you like it. Every site built from scratch — never a template.
-          </p>
+        <FadeIn delay={0.4} className="text-center mt-14">
+          <Link
+            href="/start"
+            className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:text-accent-light transition-colors"
+          >
+            Want yours next? Generate a free preview
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </Link>
         </FadeIn>
       </div>
     </section>

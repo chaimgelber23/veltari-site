@@ -125,26 +125,11 @@ function HeroBrowserMockup() {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="rounded-xl overflow-hidden border border-border shadow-2xl shadow-black/15 bg-card transition-transform duration-500 group-hover:-translate-y-1">
-          <div className="px-4 py-3 bg-card border-b border-border flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-red-400/70" aria-hidden="true" />
-            <span className="w-3 h-3 rounded-full bg-yellow-400/70" aria-hidden="true" />
-            <span className="w-3 h-3 rounded-full bg-green-400/70" aria-hidden="true" />
-            <div className="ml-3 flex-1 px-3 py-1 rounded-md bg-surface/80 text-[11px] text-muted font-mono tracking-tight truncate relative h-[18px] overflow-hidden">
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.span
-                  key={current.domain}
-                  initial={{ y: 8, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -8, opacity: 0 }}
-                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                  className="absolute inset-x-3 top-1/2 -translate-y-1/2"
-                >
-                  {current.domain}
-                </motion.span>
-              </AnimatePresence>
-            </div>
-          </div>
+        <div className="rounded-xl overflow-hidden shadow-2xl shadow-black/15 bg-card transition-transform duration-500 group-hover:-translate-y-1">
+          {/* No browser chrome — owner specifically called out the macOS
+              traffic-light dots as "Apple-looking laptop part" and asked
+              for them gone across the site. The cycling domain pill now
+              lives below the card with the thumbnail dots row. */}
           <div className="relative aspect-[16/10] bg-card overflow-hidden">
             {/* All 3 screenshots stacked. Active one at opacity:1, others at 0.
                 No AnimatePresence — that was causing a crossfade dip where both
@@ -179,24 +164,42 @@ function HeroBrowserMockup() {
         </div>
       </motion.a>
 
-      {/* Thumbnail dots — click to jump, current is a wider pill */}
-      <div className="mt-5 flex items-center justify-center lg:justify-start gap-2.5">
-        {HERO_SITES.map((site, i) => (
-          <button
-            key={site.domain}
-            onClick={() => pickSite(i)}
-            aria-label={`Switch hero to ${site.name}`}
-            aria-current={i === active}
-            className={`h-1.5 rounded-full transition-all duration-500 ${
-              i === active
-                ? "w-10 bg-accent"
-                : "w-1.5 bg-muted/30 hover:bg-muted/60"
-            }`}
-          />
-        ))}
-        <span className="ml-2 text-[10px] font-medium text-muted/70 tracking-wider uppercase">
-          {active + 1} of {HERO_SITES.length} · live sites
-        </span>
+      {/* Dots + animated active-site label below the card. Replaces the
+          old browser-chrome address bar (owner asked to remove macOS dots).
+          The label says e.g. "AutoSync AI · autosynkai.com" and slides in
+          vertically as the site cycles. */}
+      <div className="mt-5 flex items-center justify-center lg:justify-start gap-3">
+        <div className="flex items-center gap-2">
+          {HERO_SITES.map((site, i) => (
+            <button
+              key={site.domain}
+              onClick={() => pickSite(i)}
+              aria-label={`Switch hero to ${site.name}`}
+              aria-current={i === active}
+              className={`h-1.5 rounded-full transition-all duration-500 ${
+                i === active
+                  ? "w-10 bg-accent"
+                  : "w-1.5 bg-muted/30 hover:bg-muted/60"
+              }`}
+            />
+          ))}
+        </div>
+        <div className="relative h-4 overflow-hidden">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={current.domain}
+              initial={{ y: 12, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -12, opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[11px] font-medium text-muted tracking-tight whitespace-nowrap"
+            >
+              <span className="text-primary">{current.name}</span>
+              <span className="text-muted/50"> · </span>
+              <span className="font-mono text-muted/80">{current.domain}</span>
+            </motion.span>
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );
@@ -747,16 +750,16 @@ const PORTFOLIO_SITES = [
     screenshot: "/hero-screenshots/autosynkai.png",
   },
   {
-    domain: "seohandoff.com",
-    name: "SEO Handoff",
-    tagline: "Done-for-you SEO for small businesses.",
-    screenshot: "/hero-screenshots/seohandoff.png",
-  },
-  {
     domain: "computerspyai.com",
     name: "Computer Spy AI",
     tagline: "AI-powered workflow intelligence and automation.",
     screenshot: "/hero-screenshots/computerspyai.png",
+  },
+  {
+    domain: "seohandoff.com",
+    name: "SEO Handoff",
+    tagline: "Done-for-you SEO for small businesses.",
+    screenshot: "/hero-screenshots/seohandoff.png",
   },
 ] as const;
 
@@ -786,14 +789,6 @@ export function AnimatedPortfolioSection() {
                 aria-label={`Open ${site.name} (${site.domain}) in a new tab`}
                 className="group block rounded-2xl overflow-hidden border border-border bg-card hover:border-accent/40 hover:shadow-xl hover:shadow-black/10 transition-all duration-500 hover:-translate-y-1"
               >
-                <div className="px-3 py-2 bg-card border-b border-border flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-400/60" aria-hidden="true" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/60" aria-hidden="true" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-green-400/60" aria-hidden="true" />
-                  <div className="ml-2 flex-1 px-2 py-0.5 rounded bg-surface/80 text-[10px] text-muted font-mono truncate">
-                    {site.domain}
-                  </div>
-                </div>
                 <div className="aspect-[4/3] bg-card overflow-hidden">
                   <img
                     src={site.screenshot}

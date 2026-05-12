@@ -141,20 +141,22 @@ function HeroBrowserMockup() {
               </AnimatePresence>
             </div>
           </div>
-          <div className="relative aspect-[16/10] bg-surface overflow-hidden">
-            <AnimatePresence initial={false}>
+          <div className="relative aspect-[16/10] bg-card overflow-hidden">
+            {/* All 3 screenshots stacked. Active one at opacity:1, others at 0.
+                No AnimatePresence — that was causing a crossfade dip where both
+                exit + enter sat at fractional opacity (0.16 + 0.83) and the
+                white bg-surface showed through, making the hero look blank. */}
+            {HERO_SITES.map((site, i) => (
               <motion.img
-                key={current.domain}
-                src={`https://image.thum.io/get/width/1280/crop/800/maxAge/3600/png/https://${current.domain}`}
-                alt={`${current.name} — a real Pristine-built production site`}
+                key={site.domain}
+                src={`https://image.thum.io/get/width/1280/crop/800/maxAge/3600/png/https://${site.domain}`}
+                alt={`${site.name} — a real Pristine-built production site`}
                 className="absolute inset-0 w-full h-full object-cover object-top"
-                initial={{ opacity: 0, scale: 1.04 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.97 }}
-                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                animate={{ opacity: i === active ? 1 : 0 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                 loading="eager"
               />
-            </AnimatePresence>
+            ))}
             {/* Cursor glint sweep — fires on every site transition */}
             <motion.div
               key={`glint-${active}`}

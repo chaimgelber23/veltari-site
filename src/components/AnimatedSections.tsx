@@ -1,6 +1,14 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  useSpring,
+  useScroll,
+} from "framer-motion";
 import {
   FadeIn,
   StaggerChildren,
@@ -12,6 +20,103 @@ import {
   RevealOnScroll,
 } from "./animations";
 import { FAQPageJsonLd } from "./JsonLd";
+
+/* ───────────────── Hero browser mockup with motion ─────────────────
+   3D tilt on cursor + subtle scroll parallax + one-time cursor glint
+   on mount. Kept as a separate component because all the motion math
+   would otherwise crowd the hero's JSX. Replaces the inline screenshot
+   block in AnimatedHero — the live thum.io screenshot of autosynkai.com
+   remains the source-of-truth visual; this just makes it feel alive. */
+function HeroBrowserMockup() {
+  const tiltRef = useRef<HTMLAnchorElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Cursor 3D tilt
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useTransform(y, [-150, 150], [4, -4]);
+  const rotateY = useTransform(x, [-150, 150], [-4, 4]);
+  const smoothRotateX = useSpring(rotateX, { stiffness: 100, damping: 30 });
+  const smoothRotateY = useSpring(rotateY, { stiffness: 100, damping: 30 });
+
+  function handleMouse(e: React.MouseEvent<HTMLAnchorElement>) {
+    const el = tiltRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    x.set(e.clientX - rect.left - rect.width / 2);
+    y.set(e.clientY - rect.top - rect.height / 2);
+  }
+  function handleLeave() {
+    x.set(0);
+    y.set(0);
+  }
+
+  // Subtle scroll parallax — drifts 12px down → 12px up across the
+  // viewport pass. NOT IntersectionObserver-gated, so it works across
+  // the page reliably even if the user scrolls quickly.
+  const { scrollYProgress } = useScroll({
+    target: scrollRef,
+    offset: ["start end", "end start"],
+  });
+  const parallaxY = useTransform(scrollYProgress, [0, 1], [12, -12]);
+  const smoothParallaxY = useSpring(parallaxY, { stiffness: 100, damping: 30 });
+
+  return (
+    <div ref={scrollRef} style={{ perspective: 1200 }}>
+      <motion.a
+        ref={tiltRef}
+        href="https://autosynkai.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open AutoSync AI in a new tab"
+        className="block group"
+        onMouseMove={handleMouse}
+        onMouseLeave={handleLeave}
+        style={{
+          rotateX: smoothRotateX,
+          rotateY: smoothRotateY,
+          y: smoothParallaxY,
+          transformStyle: "preserve-3d",
+        }}
+        initial={{ opacity: 0, scale: 0.96, y: 30 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <div className="rounded-xl overflow-hidden border border-border shadow-2xl shadow-black/15 bg-card transition-transform duration-500 group-hover:-translate-y-1">
+          <div className="px-4 py-3 bg-card border-b border-border flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full bg-red-400/70" aria-hidden="true" />
+            <span className="w-3 h-3 rounded-full bg-yellow-400/70" aria-hidden="true" />
+            <span className="w-3 h-3 rounded-full bg-green-400/70" aria-hidden="true" />
+            <div className="ml-3 flex-1 px-3 py-1 rounded-md bg-surface/80 text-[11px] text-muted font-mono tracking-tight truncate">
+              autosynkai.com
+            </div>
+          </div>
+          <div className="relative aspect-[16/10] bg-surface overflow-hidden">
+            <img
+              src="https://image.thum.io/get/width/1280/crop/800/maxAge/3600/png/https://autosynkai.com"
+              alt="AutoSync AI homepage — a real Pristine-built production site"
+              className="w-full h-full object-cover object-top"
+              loading="eager"
+            />
+            {/* One-time cursor glint sweep on first paint */}
+            <motion.div
+              className="absolute inset-0 pointer-events-none"
+              initial={{ x: "-100%", opacity: 0 }}
+              animate={{ x: "100%", opacity: [0, 0.5, 0] }}
+              transition={{ duration: 1.6, delay: 1.4, ease: [0.4, 0, 0.2, 1] }}
+              style={{
+                background:
+                  "linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.45) 50%, transparent 70%)",
+                mixBlendMode: "overlay",
+              }}
+              aria-hidden="true"
+            />
+          </div>
+        </div>
+      </motion.a>
+    </div>
+  );
+}
 
 /* ───────────────────────── Hero ─────────────────────────
    Right column: real screenshot of autosynkai.com (one of our shipped
@@ -82,36 +187,12 @@ export function AnimatedHero() {
             </FadeIn>
           </div>
 
-          {/* RIGHT — real browser-frame screenshot of autosynkai.com */}
+          {/* RIGHT — real browser-frame screenshot of autosynkai.com,
+              now wrapped in HeroBrowserMockup for 3D tilt + scroll parallax
+              + one-time cursor glint on first paint. The screenshot itself
+              is unchanged; only the surrounding motion is added. */}
           <div className="lg:col-span-6 mt-4 lg:mt-0">
-            <FadeIn delay={0.5}>
-              <a
-                href="https://autosynkai.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open AutoSync AI in a new tab"
-                className="block group"
-              >
-                <div className="rounded-xl overflow-hidden border border-border shadow-2xl shadow-black/15 bg-card transition-transform duration-500 group-hover:-translate-y-1">
-                  <div className="px-4 py-3 bg-card border-b border-border flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-red-400/70" aria-hidden="true" />
-                    <span className="w-3 h-3 rounded-full bg-yellow-400/70" aria-hidden="true" />
-                    <span className="w-3 h-3 rounded-full bg-green-400/70" aria-hidden="true" />
-                    <div className="ml-3 flex-1 px-3 py-1 rounded-md bg-surface/80 text-[11px] text-muted font-mono tracking-tight truncate">
-                      autosynkai.com
-                    </div>
-                  </div>
-                  <div className="aspect-[16/10] bg-surface overflow-hidden">
-                    <img
-                      src="https://image.thum.io/get/width/1280/crop/800/maxAge/3600/png/https://autosynkai.com"
-                      alt="AutoSync AI homepage — a real Pristine-built production site"
-                      className="w-full h-full object-cover object-top"
-                      loading="eager"
-                    />
-                  </div>
-                </div>
-              </a>
-            </FadeIn>
+            <HeroBrowserMockup />
           </div>
         </div>
       </div>

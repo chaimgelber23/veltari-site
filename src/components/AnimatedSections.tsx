@@ -36,10 +36,14 @@ import { FAQPageJsonLd } from "./JsonLd";
    reusable for any Pristine client deliverable that wants this hero
    treatment — captured as a skill so we don't have to rebuild it. */
 
+/* Self-captured Playwright screenshots in public/hero-screenshots/ — thum.io
+   was returning blank PNGs for these JS-heavy Next.js sites (bot detection
+   + SPA render timing). Refresh manually by re-running the capture script
+   if any site's design changes. */
 const HERO_SITES = [
-  { domain: "autosynkai.com", name: "AutoSync AI" },
-  { domain: "seohandoff.com", name: "SEO Handoff" },
-  { domain: "computerspyai.com", name: "Computer Spy AI" },
+  { domain: "autosynkai.com", name: "AutoSync AI", screenshot: "/hero-screenshots/autosynkai.png" },
+  { domain: "seohandoff.com", name: "SEO Handoff", screenshot: "/hero-screenshots/seohandoff.png" },
+  { domain: "computerspyai.com", name: "Computer Spy AI", screenshot: "/hero-screenshots/computerspyai.png" },
 ] as const;
 
 const CYCLE_MS = 5000; // auto-rotate every 5s when not hovered
@@ -149,7 +153,7 @@ function HeroBrowserMockup() {
             {HERO_SITES.map((site, i) => (
               <motion.img
                 key={site.domain}
-                src={`https://image.thum.io/get/width/1280/crop/800/maxAge/3600/png/https://${site.domain}`}
+                src={site.screenshot}
                 alt={`${site.name} — a real Pristine-built production site`}
                 className="absolute inset-0 w-full h-full object-cover object-top"
                 animate={{ opacity: i === active ? 1 : 0 }}
@@ -740,16 +744,19 @@ const PORTFOLIO_SITES = [
     domain: "autosynkai.com",
     name: "AutoSync AI",
     tagline: "AI automations that run on your machine, your data, your voice.",
+    screenshot: "/hero-screenshots/autosynkai.png",
   },
   {
     domain: "seohandoff.com",
     name: "SEO Handoff",
     tagline: "Done-for-you SEO for small businesses.",
+    screenshot: "/hero-screenshots/seohandoff.png",
   },
   {
     domain: "computerspyai.com",
     name: "Computer Spy AI",
     tagline: "AI-powered workflow intelligence and automation.",
+    screenshot: "/hero-screenshots/computerspyai.png",
   },
 ] as const;
 
@@ -787,9 +794,9 @@ export function AnimatedPortfolioSection() {
                     {site.domain}
                   </div>
                 </div>
-                <div className="aspect-[4/3] bg-surface overflow-hidden">
+                <div className="aspect-[4/3] bg-card overflow-hidden">
                   <img
-                    src={`https://image.thum.io/get/width/720/crop/540/maxAge/3600/png/https://${site.domain}`}
+                    src={site.screenshot}
                     alt={`${site.name} homepage screenshot`}
                     className="w-full h-full object-cover object-top"
                     loading="lazy"

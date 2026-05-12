@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
+  AnimatePresence,
   motion,
   useMotionValue,
   useTransform,
@@ -22,14 +23,41 @@ import {
 import { FAQPageJsonLd } from "./JsonLd";
 
 /* ───────────────── Hero browser mockup with motion ─────────────────
-   3D tilt on cursor + subtle scroll parallax + one-time cursor glint
-   on mount. Kept as a separate component because all the motion math
-   would otherwise crowd the hero's JSX. Replaces the inline screenshot
-   block in AnimatedHero — the live thum.io screenshot of autosynkai.com
-   remains the source-of-truth visual; this just makes it feel alive. */
+   Cycles through 3 real Pristine-built production sites every 5 sec
+   with crossfade transitions. 3D tilt on cursor + scroll parallax +
+   cursor glint on every site transition + thumbnail dots below for
+   manual navigation. Hover anywhere on the browser pauses auto-cycle
+   so the visitor can study one site without it sliding away.
+
+   Every screenshot is a live thum.io render — never AI vapor. Each
+   site card links out to the actual production site in a new tab.
+
+   The motion pattern (3D tilt + scroll parallax + entrance fade) is
+   reusable for any Pristine client deliverable that wants this hero
+   treatment — captured as a skill so we don't have to rebuild it. */
+
+const HERO_SITES = [
+  { domain: "autosynkai.com", name: "AutoSync AI" },
+  { domain: "seohandoff.com", name: "SEO Handoff" },
+  { domain: "computerspyai.com", name: "Computer Spy AI" },
+] as const;
+
+const CYCLE_MS = 5000; // auto-rotate every 5s when not hovered
+
 function HeroBrowserMockup() {
   const tiltRef = useRef<HTMLAnchorElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  // Auto-cycle through HERO_SITES, paused on hover
+  useEffect(() => {
+    if (paused) return;
+    const id = window.setInterval(() => {
+      setActive((i) => (i + 1) % HERO_SITES.length);
+    }, CYCLE_MS);
+    return () => window.clearInterval(id);
+  }, [paused]);
 
   // Cursor 3D tilt
   const x = useMotionValue(0);
@@ -46,14 +74,16 @@ function HeroBrowserMockup() {
     x.set(e.clientX - rect.left - rect.width / 2);
     y.set(e.clientY - rect.top - rect.height / 2);
   }
+  function handleEnter() {
+    setPaused(true);
+  }
   function handleLeave() {
+    setPaused(false);
     x.set(0);
     y.set(0);
   }
 
-  // Subtle scroll parallax — drifts 12px down → 12px up across the
-  // viewport pass. NOT IntersectionObserver-gated, so it works across
-  // the page reliably even if the user scrolls quickly.
+  // Scroll parallax
   const { scrollYProgress } = useScroll({
     target: scrollRef,
     offset: ["start end", "end start"],
@@ -61,16 +91,25 @@ function HeroBrowserMockup() {
   const parallaxY = useTransform(scrollYProgress, [0, 1], [12, -12]);
   const smoothParallaxY = useSpring(parallaxY, { stiffness: 100, damping: 30 });
 
+  const current = HERO_SITES[active];
+
+  function pickSite(i: number) {
+    setActive(i);
+    setPaused(true);
+    window.setTimeout(() => setPaused(false), 8000);
+  }
+
   return (
     <div ref={scrollRef} style={{ perspective: 1200 }}>
       <motion.a
         ref={tiltRef}
-        href="https://autosynkai.com"
+        href={`https://${current.domain}`}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Open AutoSync AI in a new tab"
+        aria-label={`Open ${current.name} in a new tab`}
         className="block group"
         onMouseMove={handleMouse}
+        onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
         style={{
           rotateX: smoothRotateX,
@@ -87,23 +126,42 @@ function HeroBrowserMockup() {
             <span className="w-3 h-3 rounded-full bg-red-400/70" aria-hidden="true" />
             <span className="w-3 h-3 rounded-full bg-yellow-400/70" aria-hidden="true" />
             <span className="w-3 h-3 rounded-full bg-green-400/70" aria-hidden="true" />
-            <div className="ml-3 flex-1 px-3 py-1 rounded-md bg-surface/80 text-[11px] text-muted font-mono tracking-tight truncate">
-              autosynkai.com
+            <div className="ml-3 flex-1 px-3 py-1 rounded-md bg-surface/80 text-[11px] text-muted font-mono tracking-tight truncate relative h-[18px] overflow-hidden">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={current.domain}
+                  initial={{ y: 8, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -8, opacity: 0 }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  className="absolute inset-x-3 top-1/2 -translate-y-1/2"
+                >
+                  {current.domain}
+                </motion.span>
+              </AnimatePresence>
             </div>
           </div>
           <div className="relative aspect-[16/10] bg-surface overflow-hidden">
-            <img
-              src="https://image.thum.io/get/width/1280/crop/800/maxAge/3600/png/https://autosynkai.com"
-              alt="AutoSync AI homepage — a real Pristine-built production site"
-              className="w-full h-full object-cover object-top"
-              loading="eager"
-            />
-            {/* One-time cursor glint sweep on first paint */}
+            <AnimatePresence initial={false}>
+              <motion.img
+                key={current.domain}
+                src={`https://image.thum.io/get/width/1280/crop/800/maxAge/3600/png/https://${current.domain}`}
+                alt={`${current.name} — a real Pristine-built production site`}
+                className="absolute inset-0 w-full h-full object-cover object-top"
+                initial={{ opacity: 0, scale: 1.04 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.97 }}
+                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                loading="eager"
+              />
+            </AnimatePresence>
+            {/* Cursor glint sweep — fires on every site transition */}
             <motion.div
+              key={`glint-${active}`}
               className="absolute inset-0 pointer-events-none"
               initial={{ x: "-100%", opacity: 0 }}
               animate={{ x: "100%", opacity: [0, 0.5, 0] }}
-              transition={{ duration: 1.6, delay: 1.4, ease: [0.4, 0, 0.2, 1] }}
+              transition={{ duration: 1.4, delay: 0.5, ease: [0.4, 0, 0.2, 1] }}
               style={{
                 background:
                   "linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.45) 50%, transparent 70%)",
@@ -114,6 +172,26 @@ function HeroBrowserMockup() {
           </div>
         </div>
       </motion.a>
+
+      {/* Thumbnail dots — click to jump, current is a wider pill */}
+      <div className="mt-5 flex items-center justify-center lg:justify-start gap-2.5">
+        {HERO_SITES.map((site, i) => (
+          <button
+            key={site.domain}
+            onClick={() => pickSite(i)}
+            aria-label={`Switch hero to ${site.name}`}
+            aria-current={i === active}
+            className={`h-1.5 rounded-full transition-all duration-500 ${
+              i === active
+                ? "w-10 bg-accent"
+                : "w-1.5 bg-muted/30 hover:bg-muted/60"
+            }`}
+          />
+        ))}
+        <span className="ml-2 text-[10px] font-medium text-muted/70 tracking-wider uppercase">
+          {active + 1} of {HERO_SITES.length} · live sites
+        </span>
+      </div>
     </div>
   );
 }
